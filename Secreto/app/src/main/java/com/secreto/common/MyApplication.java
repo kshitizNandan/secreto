@@ -17,7 +17,6 @@ import com.secreto.fonts.Typefaces;
 import com.secreto.image.ImageCacheManager;
 import com.secreto.image.RequestManager;
 import com.secreto.utils.Logger;
-import com.twitter.sdk.android.core.Twitter;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -49,7 +48,7 @@ public class MyApplication extends Application {
         createImageCache();
         preloadTypefaces();
         printHashKey();
-        Twitter.initialize(this);
+
     }
 
     private void preloadTypefaces() {
