@@ -5,56 +5,18 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    @SerializedName("patient_id")
-    private String patientId;
     @SerializedName("user_id")
     private String userId;
-    @SerializedName("first_name")
-    private String firstName;
-    @SerializedName("last_name")
-    private String lastName;
-    @SerializedName("email_id")
+    @SerializedName("email")
     private String emailId;
-    @SerializedName("profile_image")
-    private String profileImage;
-    @SerializedName("contact_number")
+    @SerializedName("name")
+    private String name;
+    @SerializedName("password")
+    private String password;
+    @SerializedName("contact")
     private String contactNumber;
-    @SerializedName("social_id")
-    private String socialId;
-    @SerializedName("social_type")
-    private String socialType;
-    @SerializedName("dob")
-    private String dob;
-    @SerializedName("gender")
-    private String gender;
     @SerializedName("status")
     private String status;
-    @SerializedName("is_verfied")
-    private String isVerified;
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getIsVerified() {
-        return isVerified;
-    }
-
-    public void setIsVerified(String isVerified) {
-        this.isVerified = isVerified;
-    }
-
-    public String getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
-    }
 
     public String getUserId() {
         return userId;
@@ -62,22 +24,6 @@ public class User implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getEmailId() {
@@ -88,12 +34,20 @@ public class User implements Serializable {
         this.emailId = emailId;
     }
 
-    public String getProfileImage() {
-        return profileImage;
+    public String getName() {
+        return name;
     }
 
-    public void setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getContactNumber() {
@@ -104,54 +58,23 @@ public class User implements Serializable {
         this.contactNumber = contactNumber;
     }
 
-    public String getSocialId() {
-        return socialId;
+    public String getStatus() {
+        return status;
     }
 
-    public void setSocialId(String socialId) {
-        this.socialId = socialId;
-    }
-
-    public String getSocialType() {
-        return socialType;
-    }
-
-    public void setSocialType(String socialType) {
-        this.socialType = socialType;
-    }
-
-    public String getDob() {
-        return dob;
-    }
-
-    public void setDob(String dob) {
-        this.dob = dob;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "patientId='" + patientId + '\'' +
-                ", userId='" + userId + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                "userId='" + userId + '\'' +
                 ", emailId='" + emailId + '\'' +
-                ", profileImage='" + profileImage + '\'' +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
                 ", contactNumber='" + contactNumber + '\'' +
-                ", socialId='" + socialId + '\'' +
-                ", socialType='" + socialType + '\'' +
-                ", dob='" + dob + '\'' +
-                ", gender='" + gender + '\'' +
                 ", status='" + status + '\'' +
-                ", isVerified='" + isVerified + '\'' +
                 '}';
     }
 }

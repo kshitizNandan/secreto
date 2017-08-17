@@ -5,6 +5,7 @@ import com.secreto.common.ApiConstants;
 import com.secreto.data.volley.MultipartRequest;
 import com.secreto.data.volley.RequestManagerApi;
 import com.secreto.data.volley.ResultListenerNG;
+import com.secreto.model.StatusMessage;
 import com.secreto.model.UserResponse;
 import com.secreto.utils.Logger;
 import java.io.File;
@@ -51,9 +52,9 @@ public class DataManager {
     }
 
     public void login(String email, String password, ResultListenerNG<UserResponse> resultListenerNG) {
-        HashMap<Object, Object> params = new HashMap<>();
-        params.put(ApiConstants.EMAIL_ID, email);
-        params.put(ApiConstants.PASSWORD, password);
-        makeRequest(Request.Method.POST, URL_LOGIN, params, UserResponse.class, resultListenerNG);
+
+    }
+
+    public void signUp(String firstName, String lastName, String email, String password, String mobile, ResultListenerNG<StatusMessage> resultListenerNG) {
     }
 }
