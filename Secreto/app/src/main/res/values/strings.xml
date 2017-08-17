@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">Secreto</string>
+
+    <string name="check_your_internet_connection">Check your internet connection</string>
+    <string name="something_went_wrong">Something went wrong. Please try again</string>
+    <string name="retry">Retry</string>
+    <string name="loading">Loading&#8230;</string>
+    <string name="please_wait">Please wait&#8230;</string>
+
+    <!-- LocationBaseActivity -->
+    <string name="permission_required_by_application_denied">Permission required by application denied</string>
+    <string name="application_requires_access_to_device_location">Application requires access to device location to display list of pharmacies near by you.</string>
+    <string name="location_service_is_not_turned_on">Device location service is not turned on.</string>
+    <string name="no_location_detected">No Location detected.</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="permission_granted">Permisssion granted</string>
+    <string name="permission_denied">Permission denied</string>
+    <string name="take_photo">Take photo</string>
+    <string name="choose_from_gallery">Choose from gallery</string>
+    <string name="select_photo">Select photo</string>
+    <string name="home">Home</string>
+
 </resources>

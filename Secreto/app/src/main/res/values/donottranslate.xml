@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="select_video_from_gallery">Select video from gallery</string>
+    <string name="select_video">Select video</string>
+    <string name="take_video">Take video</string>
+    <string name="video_length_error">Video length error</string>
+    <string-array name="gender_types">
+        <item>MALE</item>
+        <item>FEMALE</item>
+    </string-array>
+</resources>

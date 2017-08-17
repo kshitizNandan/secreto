@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CustomFont">
+        <attr name="fontStyle" format="enum">
+            <enum name="fontBold" value="1" />
+            <enum name="fontRegular" value="2" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="com.android.volley.toolbox.NetworkImageView">
+        <attr name="roundedCorner" format="boolean" />
+        <attr name="roundedCornerDP" format="float" />
+    </declare-styleable>
+</resources>
+

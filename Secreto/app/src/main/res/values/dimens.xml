@@ -1,0 +1,95 @@
+<resources>
+
+    <!-- Text sizes -->
+    <dimen name="text_size_8">8sp</dimen>
+    <dimen name="text_size_10">10sp</dimen>
+    <dimen name="text_size_11">11sp</dimen>
+    <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_13">13sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_15">15sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_17">17sp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+    <dimen name="text_size_19">19sp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+    <dimen name="text_size_22">22sp</dimen>
+    <dimen name="text_size_25">25sp</dimen>
+    <dimen name="text_size_26">26sp</dimen>
+    <dimen name="text_size_30">30sp</dimen>
+
+    <dimen name="rating_popup_width">75dp</dimen>
+    <dimen name="rating_popup_height">67dp</dimen>
+    <dimen name="star_width">33dp</dimen>
+    <dimen name="rating_panel_height">55dp</dimen>
+
+    <!-- Login screen-->
+    <dimen name="dimen_size_minus_1">-1dp</dimen>
+    <dimen name="dimen_size_minus_5">-5dp</dimen>
+    <dimen name="dimen_size_point_25">0.25dp</dimen>
+    <dimen name="dimen_size_point_75">0.75dp</dimen>
+    <dimen name="dimen_size_1">1dp</dimen>
+    <dimen name="dimen_size_1_point_5">1.5dp</dimen>
+    <dimen name="dimen_size_2">2dp</dimen>
+    <dimen name="dimen_size_2_point_5">2.5dp</dimen>
+    <dimen name="dimen_size_3">3dp</dimen>
+    <dimen name="dimen_size_4">4dp</dimen>
+    <dimen name="dimen_size_5">5dp</dimen>
+    <dimen name="dimen_size_6">6dp</dimen>
+    <dimen name="dimen_size_8">8dp</dimen>
+    <dimen name="dimen_size_9">9dp</dimen>
+    <dimen name="dimen_size_minus_10">-10dp</dimen>
+    <dimen name="dimen_size_10">10dp</dimen>
+    <dimen name="dimen_size_12">12dp</dimen>
+    <dimen name="dimen_size_13">13dp</dimen>
+    <dimen name="dimen_size_14">14dp</dimen>
+    <dimen name="dimen_size_15">15dp</dimen>
+    <dimen name="dimen_size_minus_15">-16dp</dimen>
+    <dimen name="dimen_size_18">18dp</dimen>
+    <dimen name="dimen_size_20">20dp</dimen>
+    <dimen name="dimen_size_minus_20">-20dp</dimen>
+    <dimen name="dimen_size_24">24dp</dimen>
+    <dimen name="dimen_size_25">25dp</dimen>
+    <dimen name="dimen_size_30">30dp</dimen>
+    <dimen name="dimen_size_32">32dp</dimen>
+    <dimen name="dimen_size_35">35dp</dimen>
+    <dimen name="dimen_size_36">36dp</dimen>
+    <dimen name="dimen_size_40">40dp</dimen>
+    <dimen name="dimen_size_44">44dp</dimen>
+    <dimen name="dimen_size_48">48dp</dimen>
+    <dimen name="dimen_size_50">50dp</dimen>
+    <dimen name="dimen_size_55">55dp</dimen>
+    <dimen name="dimen_size_56">56dp</dimen>
+    <dimen name="dimen_size_57">57dp</dimen>
+    <dimen name="dimen_size_58">58dp</dimen>
+    <dimen name="dimen_size_60">60dp</dimen>
+    <dimen name="dimen_size_66">66dp</dimen>
+    <dimen name="dimen_size_70">70dp</dimen>
+    <dimen name="dimen_size_76">76dp</dimen>
+    <dimen name="dimen_size_80">80dp</dimen>
+    <dimen name="dimen_size_82">82dp</dimen>
+    <dimen name="dimen_size_86">86dp</dimen>
+    <dimen name="dimen_size_88">88dp</dimen>
+    <dimen name="dimen_size_90">90dp</dimen>
+    <dimen name="dimen_size_110">110dp</dimen>
+    <dimen name="dimen_size_120">120dp</dimen>
+    <dimen name="dimen_size_112">112dp</dimen>
+    <dimen name="dimen_size_130">130dp</dimen>
+    <dimen name="dimen_size_142">142dp</dimen>
+    <dimen name="dimen_size_160">160dp</dimen>
+    <dimen name="dimen_size_170">170dp</dimen>
+    <dimen name="dimen_size_196">196dp</dimen>
+    <dimen name="dimen_size_200">200dp</dimen>
+    <dimen name="dimen_size_210">210dp</dimen>
+    <dimen name="dimen_size_300">300dp</dimen>
+    <dimen name="dimen_size_316">316dp</dimen>
+    <dimen name="dimen_size_380">380dp</dimen>
+    <dimen name="dimen_size_400">400dp</dimen>
+    <dimen name="dimen_size_480">480dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="dimen_size_115">115dp</dimen>
+    <dimen name="dimen_size_85">85dp</dimen>
+
+</resources>
