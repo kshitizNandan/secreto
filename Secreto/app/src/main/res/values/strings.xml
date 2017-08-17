@@ -33,4 +33,27 @@
     <string name="email_id_can_not_be_left_blank">Email id can not be left blank</string>
     <string name="invalid_email_id_format">Invalid email format</string>
 
+    <!-- SignUpActivity -->
+    <string name="sign_up">Sign Up</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="mobile_number">Mobile No.</string>
+    <string name="first_name_can_not_be_left_blank">First Name can not be left blank.</string>
+    <string name="entered_first_name_is_invalid">Entered First Name  is invalid.</string>
+    <string name="last_name_can_not_be_left_blank">Last Name can not be left blank.</string>
+    <string name="entered_last_name_is_invalid">Entered Last Name is invalid.</string>
+    <string name="mobile_phone_number_can_not_be_left_blank">Mobile Phone Number can not be left blank.</string>
+    <string name="mobile_phone_number_should_be_of_10_digits">Mobile Phone Number should be of 10 digits.</string>
+    <string name="password_security_criteria_are_not_met">Password security criteria\’s are not met. Please reenter.</string>
+    <string name="password_criteria">Password Criteria</string>
+    <string name="password_criteria_desc">Should contain 1 upper case, 1 special character, minimum length 6, maximum length 15</string>
+    <string name="confirm_password_can_not_be_left_blank">Confirm Password can not be left blank.</string>
+    <string name="password_and_confirm_password_does_not_match">Password and confirm password does not match, Please try again.</string>
+    <string name="create_account">Create Account</string>
+    <string name="i_have_read_and_agree_to"><![CDATA[<xml><light-grey>I have read and agree to the </light-grey><terms-of-use>TERMS OF USE</terms-of-use><light-grey> and </light-grey><privacy-policy>PRIVACY POLICY</privacy-policy></xml>]]></string>
+    <string name="please_agree_to_terms_of_use">Please agree to Terms of use and Privacy policy.</string>
+    <string name="terms_of_use">Terms Of Use</string>
+    <string name="privacy_policy">Privacy Policy</string>
+
 </resources>

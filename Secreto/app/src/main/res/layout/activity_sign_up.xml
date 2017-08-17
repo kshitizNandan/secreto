@@ -1,9 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.secreto.activities.SignUpActivity">
+    android:descendantFocusability="beforeDescendants"
+    android:fillViewport="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_transparent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dimen_size_44"
+            android:paddingRight="@dimen/dimen_size_44">
+
+
+            <com.secreto.fonts.CustomFontEditText
+                android:id="@+id/etFirstName"
+                style="@style/LoginEditStyle"
+                android:hint="@string/first_name"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences" />
+
+            <com.secreto.fonts.CustomFontEditText
+                android:id="@+id/etLastName"
+                style="@style/LoginEditStyle"
+                android:layout_marginTop="@dimen/dimen_size_4"
+                android:hint="@string/last_name"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences" />
+
+            <com.secreto.fonts.CustomFontEditText
+                android:id="@+id/etEmail"
+                style="@style/LoginEditStyle"
+                android:layout_marginTop="@dimen/dimen_size_4"
+                android:hint="@string/email_id"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress" />
+
+            <com.secreto.fonts.CustomFontEditText
+                android:id="@+id/etPassword"
+                style="@style/LoginEditStyle"
+                android:layout_weight="1"
+                android:hint="@string/password"
+                android:imeOptions="actionNext"
+                android:inputType="textPassword" />
+
+            <com.secreto.fonts.CustomFontEditText
+                android:id="@+id/etConfirmPassword"
+                style="@style/LoginEditStyle"
+                android:layout_marginTop="@dimen/dimen_size_4"
+                android:hint="@string/confirm_password"
+                android:imeOptions="actionNext"
+                android:inputType="textPassword" />
+
+            <com.secreto.fonts.CustomFontEditText
+                android:id="@+id/etMobile"
+                style="@style/LoginEditStyle"
+                android:layout_marginTop="@dimen/dimen_size_4"
+                android:hint="@string/mobile_number"
+                android:imeOptions="actionDone"
+                android:inputType="phone"
+                android:maxLength="10" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dimen_size_8"
+                android:paddingTop="@dimen/dimen_size_20">
+
+                <CheckBox
+                    android:id="@+id/cbTermsOfUse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/checkbox_selector" />
+
+                <View
+                    android:layout_width="@dimen/dimen_size_10"
+                    android:layout_height="match_parent" />
+
+                <com.secreto.fonts.SpannableTextView
+                    android:id="@+id/tvTermsOfUse"
+                    style="@style/LinkTextStyle"
+                    android:gravity="start"
+                    android:text="@string/i_have_read_and_agree_to" />
+            </LinearLayout>
+
+            <com.secreto.fonts.CustomFontTextView
+                android:id="@+id/tvCreateAccount"
+                style="@style/BlueBtnStyle"
+                android:layout_marginBottom="@dimen/dimen_size_12"
+                android:layout_marginTop="@dimen/dimen_size_12"
+                android:text="@string/create_account"
+                app:textAllCaps="true" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+
