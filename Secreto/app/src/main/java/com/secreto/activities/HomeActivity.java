@@ -7,16 +7,25 @@ import android.support.v7.widget.PopupMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.secreto.R;
 import com.secreto.base_activities.BaseActivityWithTransparentActionBar;
 import com.secreto.common.SharedPreferenceManager;
+import com.secreto.utils.LoginLogoutHandler;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class HomeActivity extends BaseActivityWithTransparentActionBar {
+    @BindView(R.id.tv_name)
+    TextView tv_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
+        tv_name.setText(SharedPreferenceManager.getUserObject().getFirstName());
     }
 
     @Override
@@ -28,6 +37,7 @@ public class HomeActivity extends BaseActivityWithTransparentActionBar {
     public String getScreenTitle() {
         return getString(R.string.app_name);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -69,10 +79,7 @@ public class HomeActivity extends BaseActivityWithTransparentActionBar {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.action_logout:
-                        SharedPreferenceManager.removeUserOnLogout();
-                        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+                        LoginLogoutHandler.logoutUser(HomeActivity.this);
                         break;
                 }
                 return false;
