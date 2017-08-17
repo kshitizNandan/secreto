@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:fillViewport="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_transparent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dimen_size_44"
+            android:paddingRight="@dimen/dimen_size_44">
+
+            <com.secreto.fonts.CustomFontEditText
+                android:id="@+id/etEmail"
+                style="@style/LoginEditStyle"
+                android:hint="@string/email_id"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress" />
+
+            <com.secreto.fonts.CustomFontEditText
+                android:id="@+id/etPassword"
+                style="@style/LoginEditStyle"
+                android:layout_marginTop="@dimen/dimen_size_4"
+                android:hint="@string/password"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword" />
+
+            <com.secreto.fonts.CustomFontTextView
+                android:id="@+id/tvLogin"
+                style="@style/BlueBtnStyle"
+                android:layout_marginTop="@dimen/dimen_size_12"
+                android:text="@string/sign_in"
+                android:textAllCaps="true" />
+
+            <com.secreto.fonts.CustomFontTextView
+                android:id="@+id/tvForgotPassword"
+                style="@style/LinkTextStyle"
+                android:paddingBottom="@dimen/dimen_size_15"
+                android:paddingTop="@dimen/dimen_size_15"
+                android:text="@string/forgot_password_q" />
+
+
+            <com.secreto.fonts.SpannableTextView
+                android:id="@+id/tvSignUp"
+                style="@style/LinkTextStyle"
+                android:paddingBottom="@dimen/dimen_size_20"
+                android:paddingTop="@dimen/dimen_size_20"
+                android:text="@string/dont_have_an_account" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+

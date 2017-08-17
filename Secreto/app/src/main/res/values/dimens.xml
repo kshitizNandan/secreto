@@ -91,5 +91,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="dimen_size_115">115dp</dimen>
     <dimen name="dimen_size_85">85dp</dimen>
+    <dimen name="text_size_50">50sp</dimen>
 
 </resources>
