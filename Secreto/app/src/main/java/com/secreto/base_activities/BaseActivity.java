@@ -29,7 +29,6 @@ public abstract class BaseActivity extends IBaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
             actionBar.setHomeAsUpIndicator(R.drawable.back_arrow_wh);
-
             TextView toolbarTitle = (TextView) toolbar.findViewById(R.id.toolbarTitle);
             if (toolbarTitle != null)
                 toolbarTitle.setText(getScreenTitle());
@@ -40,7 +39,6 @@ public abstract class BaseActivity extends IBaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Logger.d(TAG, "home click");
                 finish();
                 return true;
             default:
