@@ -56,5 +56,7 @@
     <string name="please_agree_to_terms_of_use">Please agree to Terms of use and Privacy policy.</string>
     <string name="terms_of_use">Terms Of Use</string>
     <string name="privacy_policy">Privacy Policy</string>
+    <string name="name">Name</string>
+    <string name="name_can_not_be_left_blank">Name can not be left blank</string>
 
 </resources>
