@@ -24,19 +24,11 @@
             android:paddingLeft="@dimen/dimen_size_44"
             android:paddingRight="@dimen/dimen_size_44">
 
-
             <com.secreto.fonts.CustomFontEditText
-                android:id="@+id/etFirstName"
-                style="@style/LoginEditStyle"
-                android:hint="@string/first_name"
-                android:imeOptions="actionNext"
-                android:inputType="textCapSentences" />
-
-            <com.secreto.fonts.CustomFontEditText
-                android:id="@+id/etLastName"
+                android:id="@+id/etName"
                 style="@style/LoginEditStyle"
                 android:layout_marginTop="@dimen/dimen_size_4"
-                android:hint="@string/last_name"
+                android:hint="@string/name"
                 android:imeOptions="actionNext"
                 android:inputType="textCapSentences" />
 

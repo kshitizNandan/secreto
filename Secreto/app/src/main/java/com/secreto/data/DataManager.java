@@ -1,6 +1,7 @@
 package com.secreto.data;
 
 import com.android.volley.Request;
+import com.google.android.gms.common.api.Api;
 import com.secreto.common.ApiConstants;
 import com.secreto.data.volley.MultipartRequest;
 import com.secreto.data.volley.RequestManagerApi;
@@ -18,6 +19,8 @@ public class DataManager {
 
     private static final String TAG = DataManager.class.getSimpleName();
     private static final String URL_LOGIN = BASE_SERVER_ADDRESS + "login";
+    private static final String URL_REGISTER = BASE_SERVER_ADDRESS + "register";
+
     private static DataManager singleton;
 
     private DataManager() {
@@ -60,6 +63,12 @@ public class DataManager {
         makeRequest(Request.Method.POST, URL_LOGIN, params, UserResponse.class, resultListenerNG);
     }
 
-    public void signUp(String firstName, String lastName, String email, String password, String mobile, ResultListenerNG<StatusMessage> resultListenerNG) {
+    public void signUp(String name, String email, String password, String mobile, ResultListenerNG<UserResponse> resultListenerNG) {
+        HashMap<Object, Object> params = new HashMap<>();
+        params.put(ApiConstants.NAME, name);
+        params.put(ApiConstants.EMAIL_ID, email);
+        params.put(ApiConstants.PASSWORD, password);
+        params.put(ApiConstants.CONTACT, mobile);
+        makeRequest(Request.Method.POST, URL_REGISTER, params, UserResponse.class, resultListenerNG);
     }
 }

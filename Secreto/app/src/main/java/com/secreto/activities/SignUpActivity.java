@@ -33,10 +33,8 @@ import butterknife.OnClick;
 
 public class SignUpActivity extends BaseActivityWithTransparentActionBar {
     private static final String TAG = SignUpActivity.class.getSimpleName();
-    @BindView(R.id.etFirstName)
-    EditText etFirstName;
-    @BindView(R.id.etLastName)
-    EditText etLastName;
+    @BindView(R.id.etName)
+    EditText etName;
     @BindView(R.id.etEmail)
     EditText etEmail;
     @BindView(R.id.etPassword)
@@ -50,7 +48,6 @@ public class SignUpActivity extends BaseActivityWithTransparentActionBar {
     @BindView(R.id.tvTermsOfUse)
     SpannableTextView tvTermsOfUse;
     private ProgressDialog progressDialog;
-    private AlertDialog passwordInfoDialog;
     private AlertDialog registrationSuccessDialog;
 
     @Override
@@ -81,52 +78,46 @@ public class SignUpActivity extends BaseActivityWithTransparentActionBar {
         tvTermsOfUse.setTermsAndPrivacyClickedListener(new TermsAndPrivacyClickedListener() {
             @Override
             public void onClickTerms(View view) {
-              //  WebViewLoginFlowActivity.startActivity(SignUpActivity.this, getString(R.string.terms_of_use), Constants.AppUrls.TERMS_OF_USE);
+                //  WebViewLoginFlowActivity.startActivity(SignUpActivity.this, getString(R.string.terms_of_use), Constants.AppUrls.TERMS_OF_USE);
             }
 
             @Override
             public void onClickPolicy(View view) {
-              //  WebViewLoginFlowActivity.startActivity(SignUpActivity.this, getString(R.string.privacy_policy), Constants.AppUrls.PRIVACY_POLICY);
+                //  WebViewLoginFlowActivity.startActivity(SignUpActivity.this, getString(R.string.privacy_policy), Constants.AppUrls.PRIVACY_POLICY);
             }
         });
     }
 
     @OnClick(R.id.tvCreateAccount)
     void onClickCreateAccount() {
-        String firstName = etFirstName.getText().toString().trim();
-        String lastName = etLastName.getText().toString().trim();
+        String name = etName.getText().toString();
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         String confirmPassword = etConfirmPassword.getText().toString().trim();
         String mobile = etMobile.getText().toString();
-        if (TextUtils.isEmpty(firstName)) {
-            Toast.makeText(this, R.string.first_name_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
-        } else if (!Common.isValidName(firstName)) {
-            Toast.makeText(this, R.string.entered_first_name_is_invalid, Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(lastName)) {
-            Toast.makeText(this, R.string.last_name_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
-        } else if (!Common.isValidName(lastName)) {
-            Toast.makeText(this, R.string.entered_last_name_is_invalid, Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(email)) {
+        if (TextUtils.isEmpty(name)) {
+            Toast.makeText(this, R.string.name_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
+        }  else if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, R.string.email_id_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
         } else if (!Common.isValidEmail(email)) {
             Toast.makeText(this, R.string.invalid_email_id_format, Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(mobile)) {
-            Toast.makeText(this, R.string.mobile_phone_number_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
-        } else if (!Common.isValidMobile(mobile)) {
-            Toast.makeText(this, R.string.mobile_phone_number_should_be_of_10_digits, Toast.LENGTH_SHORT).show();
-        } else if (!cbTermsOfUse.isChecked()) {
+        } else if (TextUtils.isEmpty(password)) {
+            Toast.makeText(this, R.string.password_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(confirmPassword)) {
+            Toast.makeText(this, R.string.confirm_password_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
+        } else if (!TextUtils.equals(password, confirmPassword)) {
+            Toast.makeText(this, R.string.password_and_confirm_password_does_not_match, Toast.LENGTH_SHORT).show();
+        }  else if (!cbTermsOfUse.isChecked()) {
             Toast.makeText(this, R.string.please_agree_to_terms_of_use, Toast.LENGTH_SHORT).show();
         } else {
             if (Common.isOnline(this)) {
                 progressDialog.show();
-
-                DataManager.getInstance().signUp(firstName, lastName, email, password, mobile, new ResultListenerNG<StatusMessage>() {
+                DataManager.getInstance().signUp(name, email, password, mobile, new ResultListenerNG<UserResponse>() {
                     @Override
-                    public void onSuccess(StatusMessage response) {
+                    public void onSuccess(UserResponse response) {
                         Logger.d(TAG, "signUp onSuccess : " + response);
                         progressDialog.dismiss();
-                        showSuccessDialog(response.getMessage());
+                        showSuccessDialog(response.getMessage(), response.getUser());
                     }
 
                     @Override
@@ -149,19 +140,16 @@ public class SignUpActivity extends BaseActivityWithTransparentActionBar {
         }
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if (progressDialog.isShowing())
             progressDialog.dismiss();
-        if (passwordInfoDialog != null && passwordInfoDialog.isShowing())
-            passwordInfoDialog.dismiss();
         if (registrationSuccessDialog != null && registrationSuccessDialog.isShowing())
             registrationSuccessDialog.dismiss();
     }
 
-    private void showSuccessDialog(String message) {
+    private void showSuccessDialog(String message, final User user) {
         if (registrationSuccessDialog == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.app_name)
@@ -170,7 +158,7 @@ public class SignUpActivity extends BaseActivityWithTransparentActionBar {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             registrationSuccessDialog.dismiss();
-                            finish();
+                            goToHomeScreen(user);
                         }
                     });
             registrationSuccessDialog = builder.create();
@@ -183,17 +171,6 @@ public class SignUpActivity extends BaseActivityWithTransparentActionBar {
         Intent homeIntent = new Intent(this, HomeActivity.class);
         homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(homeIntent);
-    }
-
-    private void passwordCriteriaDialog() {
-        if (passwordInfoDialog == null) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.password_criteria)
-                    .setMessage(R.string.password_criteria_desc)
-                    .setPositiveButton(R.string.ok, null);
-            passwordInfoDialog = builder.create();
-        }
-        passwordInfoDialog.show();
     }
 }
 
