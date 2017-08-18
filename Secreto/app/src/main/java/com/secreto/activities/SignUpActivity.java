@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.secreto.R;
 import com.secreto.base_activities.BaseActivityWithTransparentActionBar;
 import com.secreto.base_activities.ImagePickerActivity;
@@ -23,11 +24,13 @@ import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
 import com.secreto.fonts.SpannableTextView;
 import com.secreto.fonts.TermsAndPrivacyClickedListener;
+import com.secreto.image.ImageCacheManager;
 import com.secreto.model.StatusMessage;
 import com.secreto.model.User;
 import com.secreto.model.UserResponse;
 import com.secreto.utils.Logger;
 import com.secreto.utils.LoginLogoutHandler;
+import com.secreto.utils.NetworkImageView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -53,7 +56,7 @@ public class SignUpActivity extends ImagePickerActivity {
     @BindView(R.id.tvTermsOfUse)
     SpannableTextView tvTermsOfUse;
     @BindView(R.id.iv_profileImg)
-    ImageView iv_profileImg;
+    NetworkImageView iv_profileImg;
     private ProgressDialog progressDialog;
     private AlertDialog registrationSuccessDialog;
 
@@ -75,6 +78,7 @@ public class SignUpActivity extends ImagePickerActivity {
     }
 
     private void initView() {
+        iv_profileImg.setDefaultImageResId(R.drawable.default_user);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(getString(R.string.please_wait));
         progressDialog.setCancelable(false);
@@ -151,7 +155,8 @@ public class SignUpActivity extends ImagePickerActivity {
     @Override
     protected void onImageSet(File photoFile) {
         if (photoFile != null && photoFile.exists()) {
-            Picasso.with(this).load(photoFile).resize(80, 80).into(iv_profileImg);
+            iv_profileImg.setImageUrl(photoFile.getAbsolutePath(), ImageCacheManager.getInstance().getImageLoader());
+           // Picasso.with(this).load(photoFile).resize(80, 80).into(iv_profileImg);
         }
     }
 
