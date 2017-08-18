@@ -97,9 +97,7 @@ public class SignUpActivity extends BaseActivityWithTransparentActionBar {
         String mobile = etMobile.getText().toString();
         if (TextUtils.isEmpty(name)) {
             Toast.makeText(this, R.string.name_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
-        } else if (!Common.isValidName(name)) {
-            Toast.makeText(this, R.string.entered_first_name_is_invalid, Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(email)) {
+        }  else if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, R.string.email_id_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
         } else if (!Common.isValidEmail(email)) {
             Toast.makeText(this, R.string.invalid_email_id_format, Toast.LENGTH_SHORT).show();
