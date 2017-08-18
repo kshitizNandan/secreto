@@ -8,14 +8,16 @@ import com.secreto.data.volley.ResultListenerNG;
 import com.secreto.model.StatusMessage;
 import com.secreto.model.UserResponse;
 import com.secreto.utils.Logger;
+
 import java.io.File;
 import java.util.HashMap;
+
 import static com.secreto.BuildConfig.BASE_SERVER_ADDRESS;
 
 public class DataManager {
 
     private static final String TAG = DataManager.class.getSimpleName();
-    private static final String URL_LOGIN =BASE_SERVER_ADDRESS + "login";
+    private static final String URL_LOGIN = BASE_SERVER_ADDRESS + "login";
     private static DataManager singleton;
 
     private DataManager() {
@@ -52,7 +54,10 @@ public class DataManager {
     }
 
     public void login(String email, String password, ResultListenerNG<UserResponse> resultListenerNG) {
-
+        HashMap<Object, Object> params = new HashMap<>();
+        params.put(ApiConstants.EMAIL_ID, email);
+        params.put(ApiConstants.PASSWORD, password);
+        makeRequest(Request.Method.POST, URL_LOGIN, params, UserResponse.class, resultListenerNG);
     }
 
     public void signUp(String firstName, String lastName, String email, String password, String mobile, ResultListenerNG<StatusMessage> resultListenerNG) {
