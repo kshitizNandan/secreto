@@ -10,12 +10,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.secreto.R;
 import com.secreto.base_activities.BaseActivityWithTransparentActionBar;
+import com.secreto.base_activities.ImagePickerActivity;
 import com.secreto.common.Common;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
@@ -26,12 +28,15 @@ import com.secreto.model.User;
 import com.secreto.model.UserResponse;
 import com.secreto.utils.Logger;
 import com.secreto.utils.LoginLogoutHandler;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SignUpActivity extends BaseActivityWithTransparentActionBar {
+public class SignUpActivity extends ImagePickerActivity {
     private static final String TAG = SignUpActivity.class.getSimpleName();
     @BindView(R.id.etName)
     EditText etName;
@@ -47,6 +52,8 @@ public class SignUpActivity extends BaseActivityWithTransparentActionBar {
     CheckBox cbTermsOfUse;
     @BindView(R.id.tvTermsOfUse)
     SpannableTextView tvTermsOfUse;
+    @BindView(R.id.iv_profileImg)
+    ImageView iv_profileImg;
     private ProgressDialog progressDialog;
     private AlertDialog registrationSuccessDialog;
 
@@ -64,11 +71,7 @@ public class SignUpActivity extends BaseActivityWithTransparentActionBar {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        init();
         initView();
-    }
-
-    private void init() {
     }
 
     private void initView() {
@@ -88,6 +91,11 @@ public class SignUpActivity extends BaseActivityWithTransparentActionBar {
         });
     }
 
+    @OnClick(R.id.iv_profileImg)
+    void onProfileImgClick() {
+        showTakeImagePopup();
+    }
+
     @OnClick(R.id.tvCreateAccount)
     void onClickCreateAccount() {
         String name = etName.getText().toString();
@@ -97,7 +105,7 @@ public class SignUpActivity extends BaseActivityWithTransparentActionBar {
         String mobile = etMobile.getText().toString();
         if (TextUtils.isEmpty(name)) {
             Toast.makeText(this, R.string.name_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
-        }  else if (TextUtils.isEmpty(email)) {
+        } else if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, R.string.email_id_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
         } else if (!Common.isValidEmail(email)) {
             Toast.makeText(this, R.string.invalid_email_id_format, Toast.LENGTH_SHORT).show();
@@ -107,7 +115,7 @@ public class SignUpActivity extends BaseActivityWithTransparentActionBar {
             Toast.makeText(this, R.string.confirm_password_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
         } else if (!TextUtils.equals(password, confirmPassword)) {
             Toast.makeText(this, R.string.password_and_confirm_password_does_not_match, Toast.LENGTH_SHORT).show();
-        }  else if (!cbTermsOfUse.isChecked()) {
+        } else if (!cbTermsOfUse.isChecked()) {
             Toast.makeText(this, R.string.please_agree_to_terms_of_use, Toast.LENGTH_SHORT).show();
         } else {
             if (Common.isOnline(this)) {
@@ -138,6 +146,18 @@ public class SignUpActivity extends BaseActivityWithTransparentActionBar {
             }
 
         }
+    }
+
+    @Override
+    protected void onImageSet(File photoFile) {
+        if (photoFile != null && photoFile.exists()) {
+            Picasso.with(this).load(photoFile).resize(80, 80).into(iv_profileImg);
+        }
+    }
+
+    @Override
+    protected CropAspectRatio getCropAspectRatio() {
+        return null;
     }
 
     @Override

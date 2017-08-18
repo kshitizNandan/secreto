@@ -39,7 +39,6 @@ public abstract class BaseActivityWithTransparentActionBar extends IBaseActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Logger.d(TAG, "home click");
                 finish();
                 return true;
             default:

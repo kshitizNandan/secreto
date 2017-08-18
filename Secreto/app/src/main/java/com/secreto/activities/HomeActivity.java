@@ -25,7 +25,7 @@ public class HomeActivity extends BaseActivityWithTransparentActionBar {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        tv_name.setText(SharedPreferenceManager.getUserObject().getFirstName());
+        tv_name.setText(SharedPreferenceManager.getUserObject().getName());
     }
 
     @Override
