@@ -1,31 +1,36 @@
-package com.secreto.fonts;
+package com.secreto.widgets;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 
 import com.secreto.R;
 import com.secreto.common.MyApplication;
 
+/**
+ * Created by Aashish Tomar on 8/21/2017.
+ */
 
-public class CustomFontCheckBox extends android.support.v7.widget.AppCompatCheckBox {
-    private int fontStyle;
+public class CustomFontButton extends AppCompatButton {
     private TypedArray a = null;
+    private int fontStyle;
 
-    public CustomFontCheckBox(Context context) {
+    public CustomFontButton(Context context) {
         super(context);
         init(null, 0);
     }
 
-    public CustomFontCheckBox(Context context, AttributeSet attrs) {
+    public CustomFontButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs, 0);
     }
 
-    public CustomFontCheckBox(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init(attrs, defStyleAttr);
+    public CustomFontButton(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        init(attrs, defStyle);
     }
+
 
     private void init(AttributeSet attrs, int defStyle) {
         if (isInEditMode()) {

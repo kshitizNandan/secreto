@@ -34,7 +34,7 @@
                 app:roundedCorner="true"
                 app:roundedCornerDP="40" />
 
-            <com.secreto.fonts.CustomFontTextView
+            <com.secreto.widgets.CustomFontTextView
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
             android:layout_marginTop="@dimen/dimen_size_10"
             android:background="@color/gray" />
 
-        <com.secreto.fonts.CustomFontTextView
+        <com.secreto.widgets.CustomFontTextView
             android:id="@+id/tv_logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

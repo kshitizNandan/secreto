@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center">
 
-    <com.secreto.fonts.CustomFontTextView
+    <com.secreto.widgets.CustomFontTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

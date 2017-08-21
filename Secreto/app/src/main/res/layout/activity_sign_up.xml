@@ -8,9 +8,7 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar_transparent" />
+    <include layout="@layout/toolbar_transparent" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -32,7 +30,7 @@
                 app:roundedCorner="true"
                 app:roundedCornerDP="40" />
 
-            <com.secreto.fonts.CustomFontEditText
+            <com.secreto.widgets.CustomFontEditText
                 android:id="@+id/etName"
                 style="@style/LoginEditStyle"
                 android:layout_marginTop="@dimen/dimen_size_4"
@@ -40,7 +38,7 @@
                 android:imeOptions="actionNext"
                 android:inputType="textCapSentences" />
 
-            <com.secreto.fonts.CustomFontEditText
+            <com.secreto.widgets.CustomFontEditText
                 android:id="@+id/etEmail"
                 style="@style/LoginEditStyle"
                 android:layout_marginTop="@dimen/dimen_size_4"
@@ -48,7 +46,7 @@
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress" />
 
-            <com.secreto.fonts.CustomFontEditText
+            <com.secreto.widgets.CustomFontEditText
                 android:id="@+id/etPassword"
                 style="@style/LoginEditStyle"
                 android:layout_weight="1"
@@ -56,7 +54,7 @@
                 android:imeOptions="actionNext"
                 android:inputType="textPassword" />
 
-            <com.secreto.fonts.CustomFontEditText
+            <com.secreto.widgets.CustomFontEditText
                 android:id="@+id/etConfirmPassword"
                 style="@style/LoginEditStyle"
                 android:layout_marginTop="@dimen/dimen_size_4"
@@ -64,7 +62,7 @@
                 android:imeOptions="actionNext"
                 android:inputType="textPassword" />
 
-            <com.secreto.fonts.CustomFontEditText
+            <com.secreto.widgets.CustomFontEditText
                 android:id="@+id/etMobile"
                 style="@style/LoginEditStyle"
                 android:layout_marginTop="@dimen/dimen_size_4"
@@ -91,14 +89,14 @@
                     android:layout_width="@dimen/dimen_size_10"
                     android:layout_height="match_parent" />
 
-                <com.secreto.fonts.SpannableTextView
+                <com.secreto.widgets.SpannableTextView
                     android:id="@+id/tvTermsOfUse"
                     style="@style/LinkTextStyle"
                     android:gravity="start"
                     android:text="@string/i_have_read_and_agree_to" />
             </LinearLayout>
 
-            <com.secreto.fonts.CustomFontTextView
+            <com.secreto.widgets.CustomFontTextView
                 android:id="@+id/tvCreateAccount"
                 style="@style/BlueBtnStyle"
                 android:layout_marginBottom="@dimen/dimen_size_12"

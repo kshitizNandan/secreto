@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.secreto.R;
 
-public class BaseActivityWithActionBar extends IBaseActivity {
+public abstract class BaseActivityWithActionBar extends IBaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,11 +43,6 @@ public class BaseActivityWithActionBar extends IBaseActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public int getLayoutResource() {
-        return 0;
     }
 
     @Override

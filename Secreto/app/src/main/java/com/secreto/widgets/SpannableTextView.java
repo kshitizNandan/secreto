@@ -1,4 +1,4 @@
-package com.secreto.fonts;
+package com.secreto.widgets;
 
 import android.content.Context;
 import android.graphics.Bitmap;
