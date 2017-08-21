@@ -2,14 +2,10 @@ package com.secreto.activities;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.PopupMenu;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
@@ -69,16 +65,12 @@ public class HomeActivity extends BaseActivityWithActionBar {
         return getString(R.string.app_name);
     }
 
-    @Override
-    public boolean isShowHomeButton() {
-        return false;
-    }
-
 
     @OnClick(R.id.iv_profileImg)
     void onClickProfileImg() {
         Intent settingsActivityIntent = new Intent(mActivity, SettingsActivity.class);
         startActivity(settingsActivityIntent);
+        overridePendingTransition(R.anim.in_from_bottom, R.anim.no_animation);
     }
 
     @OnLongClick(R.id.iv_profileImg)
@@ -117,5 +109,6 @@ public class HomeActivity extends BaseActivityWithActionBar {
         contentView.findViewById(R.id.tv_logout).setOnClickListener(listener);
         return true;
     }
+
 }
 
