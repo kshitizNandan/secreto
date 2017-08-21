@@ -2,7 +2,7 @@ package com.secreto.model;
 
 import java.io.Serializable;
 
-public class UserResponse extends StatusMessage implements Serializable {
+public class UserResponse extends BaseResponse implements Serializable {
 
     private User user;
     public User getUser() {

@@ -12,7 +12,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.secreto.model.StatusMessage;
+import com.secreto.model.BaseResponse;
 import com.secreto.utils.Logger;
 
 import org.apache.http.entity.mime.MultipartEntity;
@@ -175,8 +175,8 @@ public class MultipartRequest<T> extends Request<T> {
 //          String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
             Logger.d(TAG, "response : " + utf8String);
             T o = gson.fromJson(utf8String, clazz);
-            if (o instanceof StatusMessage) {
-                ((StatusMessage) o).setStatusCode(response.statusCode);
+            if (o instanceof BaseResponse) {
+                ((BaseResponse) o).setStatusCode(response.statusCode);
             }
             return Response.success(o, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {

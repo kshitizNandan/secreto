@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.support.v7.widget.AppCompatImageView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ViewGroup.LayoutParams;
@@ -26,7 +27,7 @@ import java.io.FileNotFoundException;
  * associated request.
  * MSH: Wont work if extending original NetworkImageView !
  */
-public class NetworkImageView extends android.support.v7.widget.AppCompatImageView{
+public class NetworkImageView extends AppCompatImageView {
     private static final String TAG = NetworkImageView.class.getSimpleName();
 
     private int REQUIRED_SIZE = 100;

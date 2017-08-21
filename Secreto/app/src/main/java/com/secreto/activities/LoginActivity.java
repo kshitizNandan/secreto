@@ -2,7 +2,6 @@ package com.secreto.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
@@ -14,7 +13,7 @@ import com.secreto.base_activities.BaseActivityWithTransparentActionBar;
 import com.secreto.common.Common;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
-import com.secreto.model.StatusMessage;
+import com.secreto.model.BaseResponse;
 import com.secreto.model.User;
 import com.secreto.model.UserResponse;
 import com.secreto.utils.Logger;
@@ -87,13 +86,13 @@ public class LoginActivity  extends BaseActivityWithTransparentActionBar {
                     @Override
                     public void onError(VolleyError error) {
                         progressDialog.dismiss();
-                        StatusMessage statusMessage = Common.getStatusMessage(error);
-                        if (statusMessage == null || TextUtils.isEmpty(statusMessage.getMessage())) {
+                        BaseResponse baseResponse = Common.getStatusMessage(error);
+                        if (baseResponse == null || TextUtils.isEmpty(baseResponse.getMessage())) {
                             Logger.e(TAG, "loginActivityApi error : " + error.getMessage());
                             Toast.makeText(LoginActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
                         } else {
-                            Logger.e(TAG, "loginActivityApi error : " + statusMessage.getMessage());
-                            Toast.makeText(LoginActivity.this, statusMessage.getMessage(), Toast.LENGTH_SHORT).show();
+                            Logger.e(TAG, "loginActivityApi error : " + baseResponse.getMessage());
+                            Toast.makeText(LoginActivity.this, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

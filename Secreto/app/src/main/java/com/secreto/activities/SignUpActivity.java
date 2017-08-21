@@ -4,20 +4,15 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.secreto.R;
-import com.secreto.base_activities.BaseActivityWithTransparentActionBar;
 import com.secreto.base_activities.ImagePickerActivity;
 import com.secreto.common.Common;
 import com.secreto.data.DataManager;
@@ -25,13 +20,12 @@ import com.secreto.data.volley.ResultListenerNG;
 import com.secreto.fonts.SpannableTextView;
 import com.secreto.fonts.TermsAndPrivacyClickedListener;
 import com.secreto.image.ImageCacheManager;
-import com.secreto.model.StatusMessage;
+import com.secreto.model.BaseResponse;
 import com.secreto.model.User;
 import com.secreto.model.UserResponse;
 import com.secreto.utils.Logger;
 import com.secreto.utils.LoginLogoutHandler;
 import com.secreto.utils.NetworkImageView;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
@@ -59,6 +53,7 @@ public class SignUpActivity extends ImagePickerActivity {
     NetworkImageView iv_profileImg;
     private ProgressDialog progressDialog;
     private AlertDialog registrationSuccessDialog;
+    private File photoFile;
 
     @Override
     public int getLayoutResource() {
@@ -129,19 +124,23 @@ public class SignUpActivity extends ImagePickerActivity {
                     public void onSuccess(UserResponse response) {
                         Logger.d(TAG, "signUp onSuccess : " + response);
                         progressDialog.dismiss();
-                        showSuccessDialog(response.getMessage(), response.getUser());
+                        if (photoFile != null && photoFile.exists()) {
+                            uploadImageApiCall(response.getUser());
+                        } else {
+                            showSuccessDialog(response.getMessage(), response.getUser());
+                        }
                     }
 
                     @Override
                     public void onError(VolleyError error) {
                         progressDialog.dismiss();
-                        StatusMessage statusMessage = Common.getStatusMessage(error);
-                        if (statusMessage == null || TextUtils.isEmpty(statusMessage.getMessage())) {
+                        BaseResponse baseResponse = Common.getStatusMessage(error);
+                        if (baseResponse == null || TextUtils.isEmpty(baseResponse.getMessage())) {
                             Logger.e(TAG, "signUp error : " + error.getMessage());
                             Toast.makeText(SignUpActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
                         } else {
-                            Logger.e(TAG, "signUp error : " + statusMessage.getMessage());
-                            Toast.makeText(SignUpActivity.this, statusMessage.getMessage(), Toast.LENGTH_SHORT).show();
+                            Logger.e(TAG, "signUp error : " + baseResponse.getMessage());
+                            Toast.makeText(SignUpActivity.this, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -152,11 +151,41 @@ public class SignUpActivity extends ImagePickerActivity {
         }
     }
 
+
+    private void uploadImageApiCall(final User user) {
+        if (Common.isOnline(this)) {
+            progressDialog.show();
+            DataManager.getInstance().uploadImage(photoFile, user.getUserId(), new ResultListenerNG<BaseResponse>() {
+                @Override
+                public void onSuccess(BaseResponse response) {
+                    Logger.d(TAG, "Image Upload onSuccess : " + response);
+                    progressDialog.dismiss();
+                    showSuccessDialog(getString(R.string.user_successfully_registered), user);
+                }
+
+                @Override
+                public void onError(VolleyError error) {
+                    progressDialog.dismiss();
+                    BaseResponse baseResponse = Common.getStatusMessage(error);
+                    if (baseResponse == null || TextUtils.isEmpty(baseResponse.getMessage())) {
+                        Logger.e(TAG, "Image upload error : " + error.getMessage());
+                        Toast.makeText(SignUpActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Logger.e(TAG, "Image Upload error : " + baseResponse.getMessage());
+                        Toast.makeText(SignUpActivity.this, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(this, R.string.check_your_internet_connection, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     protected void onImageSet(File photoFile) {
         if (photoFile != null && photoFile.exists()) {
+            this.photoFile = photoFile;
             iv_profileImg.setImageUrl(photoFile.getAbsolutePath(), ImageCacheManager.getInstance().getImageLoader());
-           // Picasso.with(this).load(photoFile).resize(80, 80).into(iv_profileImg);
         }
     }
 

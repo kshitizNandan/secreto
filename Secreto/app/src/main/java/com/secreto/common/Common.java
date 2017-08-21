@@ -17,7 +17,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.secreto.model.StatusMessage;
+import com.secreto.model.BaseResponse;
 import com.secreto.utils.Logger;
 
 import java.io.UnsupportedEncodingException;
@@ -42,12 +42,12 @@ public class Common {
 
 
 
-    public static StatusMessage getStatusMessage(VolleyError error) {
+    public static BaseResponse getStatusMessage(VolleyError error) {
         if (error != null && error.networkResponse != null) {
             try {
                 NetworkResponse response = error.networkResponse;
                 String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-                StatusMessage statusCode = new Gson().fromJson(json, StatusMessage.class);
+                BaseResponse statusCode = new Gson().fromJson(json, BaseResponse.class);
                 statusCode.setStatusCode(response.statusCode);
                 return statusCode;
             } catch (UnsupportedEncodingException e) {

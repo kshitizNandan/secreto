@@ -1,10 +1,13 @@
 package com.secreto.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
-public class StatusMessage implements Serializable {
-
+public class BaseResponse implements Serializable {
+    @SerializedName("status")
     private String status;
+    @SerializedName("message")
     private String message;
     private int statusCode;
 
@@ -34,7 +37,7 @@ public class StatusMessage implements Serializable {
 
     @Override
     public String toString() {
-        return "StatusMessage{" +
+        return "BaseResponse{" +
                 "status='" + status + '\'' +
                 ", message='" + message + '\'' +
                 ", statusCode=" + statusCode +

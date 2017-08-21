@@ -4,26 +4,28 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class User implements Serializable {
+public class User extends BaseResponse implements Serializable {
     @SerializedName("user_id")
     private String userId;
-    @SerializedName("email")
-    private String emailId;
     @SerializedName("name")
     private String name;
+    @SerializedName("email")
+    private String emailId;
     @SerializedName("password")
     private String password;
     @SerializedName("contact")
     private String contactNumber;
-    @SerializedName("status")
+    @SerializedName("user_status")
     private String status;
+    @SerializedName("media_id")
+    private String media_id;
+    @SerializedName("media")
+    private String media;
+    @SerializedName("type")
+    private String type;
 
     public String getUserId() {
         return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getEmailId() {
@@ -54,16 +56,24 @@ public class User implements Serializable {
         return contactNumber;
     }
 
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
-    }
-
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getMedia_id() {
+        return media_id;
+    }
+
+    public String getMedia() {
+        return media;
+    }
+
+    public String getType() {
+        return type;
     }
 
     @Override
