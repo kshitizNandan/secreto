@@ -1,9 +1,11 @@
 package com.secreto.common;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -17,6 +19,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.secreto.R;
 import com.secreto.responsemodel.BaseResponse;
 import com.secreto.utils.Logger;
 
@@ -39,7 +42,6 @@ public class Common {
         }
         return result;
     }
-
 
 
     public static BaseResponse getStatusMessage(VolleyError error) {
@@ -112,5 +114,20 @@ public class Common {
         numberFormat.setMinimumFractionDigits(1);
         Double aDouble = Double.parseDouble(miles);
         return numberFormat.format(aDouble);
+    }
+
+    public static void showAlertDialog(Context context, String message, final DialogInterface.OnClickListener onClickListener) {
+        new AlertDialog.Builder(context)
+                .setTitle(context.getString(R.string.alert))
+                .setMessage(message)
+                .setPositiveButton(context.getString(R.string.ok), onClickListener)
+                .setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+
     }
 }

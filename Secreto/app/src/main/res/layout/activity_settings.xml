@@ -7,11 +7,12 @@
     android:orientation="vertical"
     tools:context="com.secreto.activities.SettingsActivity">
 
-    <com.secreto.utils.NetworkImageView
-        android:id="@+id/iv_profileImg"
-        android:layout_width="@dimen/dimen_size_80"
-        android:layout_height="@dimen/dimen_size_80"
-        android:layout_centerInParent="true"
-        app:roundedCorner="true"
-        app:roundedCornerDP="40" />
+    <include layout="@layout/toolbar" />
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:headerLayout="@layout/account_settings_nav_header"
+        app:menu="@menu/account_settings_menu" />
 </LinearLayout>

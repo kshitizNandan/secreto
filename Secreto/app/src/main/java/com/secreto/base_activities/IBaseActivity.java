@@ -22,10 +22,4 @@ public abstract class IBaseActivity extends AppCompatActivity {
      */
     public abstract boolean isShowHomeButton();
 
-    /**
-     * Toolbar abstract method
-     *
-     * @return boolean value true if show back button else false
-     */
-    public abstract boolean isShowToolbarTitle();
 }

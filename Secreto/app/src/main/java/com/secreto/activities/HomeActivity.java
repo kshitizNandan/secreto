@@ -1,44 +1,63 @@
 package com.secreto.activities;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.PopupMenu;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 
 import com.secreto.R;
 import com.secreto.base_activities.BaseActivityWithActionBar;
+import com.secreto.common.SharedPreferenceManager;
+import com.secreto.image.ImageCacheManager;
+import com.secreto.model.User;
+import com.secreto.utils.LoginLogoutHandler;
 import com.secreto.utils.NetworkImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 
 public class HomeActivity extends BaseActivityWithActionBar {
     @BindView(R.id.tv_name)
     TextView tv_name;
     @BindView(R.id.iv_profileImg)
     NetworkImageView iv_profileImg;
+    private HomeActivity mActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        setUserData();
         init();
     }
 
-    private void init() {
-        iv_profileImg.setDefaultImageResId(R.drawable.default_user);
+    private void setUserData() {
+        User user = SharedPreferenceManager.getUserObject();
+        if (user != null) {
+            tv_name.setText("Welcome " + user.getName());
+            if (!TextUtils.isEmpty(user.getProfile_pic())) {
+                iv_profileImg.setImageUrl(user.getProfile_pic(), ImageCacheManager.getInstance().getImageLoader());
+            } else {
+                iv_profileImg.setDefaultImageResId(R.drawable.default_user);
+            }
+        }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        User user = SharedPreferenceManager.getUserObject();
-//        if (user != null) {
-//            tv_name.setText(user.getName());
-//            if (!TextUtils.isEmpty(user.getProfile_pic()))
-//                iv_profileImg.setImageUrl(user.getProfile_pic(), ImageCacheManager.getInstance().getImageLoader());
-//        }
+    private void init() {
+        mActivity = this;
     }
+
 
     @Override
     public int getLayoutResource() {
@@ -55,64 +74,48 @@ public class HomeActivity extends BaseActivityWithActionBar {
         return false;
     }
 
-    @Override
-    public boolean isShowToolbarTitle() {
-        return true;
-    }
 
-    @OnClick
-    private void onClickProfileImg() {
-        Intent settingsActivityIntent = new Intent(this, SettingsActivity.class);
+    @OnClick(R.id.iv_profileImg)
+    void onClickProfileImg() {
+        Intent settingsActivityIntent = new Intent(mActivity, SettingsActivity.class);
         startActivity(settingsActivityIntent);
     }
 
+    @OnLongClick(R.id.iv_profileImg)
+    boolean showLogoutDialog() {
+        final Dialog dialog = new Dialog(mActivity, R.style.dialog_style);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View contentView = inflater.inflate(R.layout.custom_logout_dilaog, null);
+        dialog.setContentView(contentView);
+        dialog.setCancelable(false);
+        dialog.show();
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.home_menu, menu);
-//        // To Hide Text showing on Long press
-//        new Handler().post(new Runnable() {
-//            @Override
-//            public void run() {
-//                final View v = findViewById(R.id.action_menu);
-//                if (v != null) {
-//                    v.setOnLongClickListener(new View.OnLongClickListener() {
-//                        @Override
-//                        public boolean onLongClick(View v) {
-//                            return false;
-//                        }
-//                    });
-//                }
-//            }
-//        });
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.action_menu:
-//                openChatMorePopupWindow(findViewById(R.id.action_menu));
-//                break;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-//
-//    private void openChatMorePopupWindow(View id) {
-//        PopupMenu popup = new PopupMenu(this, id);
-//        popup.getMenuInflater().inflate(R.menu.home_menu_options, popup.getMenu());
-//        popup.show();
-//        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem menuItem) {
-//                switch (menuItem.getItemId()) {
-//                    case R.id.action_logout:
-//                        LoginLogoutHandler.logoutUser(HomeActivity.this);
-//                        break;
-//                }
-//                return false;
-//            }
-//        });
-//    }
+        User user = SharedPreferenceManager.getUserObject();
+        if (user != null) {
+            ((TextView) contentView.findViewById(R.id.tv_name)).setText(user.getName());
+            if (!TextUtils.isEmpty(user.getProfile_pic())) {
+                ((NetworkImageView) contentView.findViewById(R.id.iv_profileImg)).setImageUrl(user.getProfile_pic(), ImageCacheManager.getInstance().getImageLoader());
+            } else {
+                ((NetworkImageView) contentView.findViewById(R.id.iv_profileImg)).setDefaultImageResId(R.drawable.default_user);
+            }
+        }
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.iv_cross:
+                        dialog.dismiss();
+                        break;
+                    case R.id.tv_logout:
+                        LoginLogoutHandler.logoutUser(mActivity);
+                        break;
+                }
+            }
+        };
+        contentView.findViewById(R.id.iv_cross).setOnClickListener(listener);
+        contentView.findViewById(R.id.tv_logout).setOnClickListener(listener);
+        return true;
+    }
 }
 
