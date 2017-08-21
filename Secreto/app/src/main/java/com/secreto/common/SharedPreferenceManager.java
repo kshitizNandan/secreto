@@ -14,50 +14,45 @@ public class SharedPreferenceManager {
     private static final String IS_TUTORIAL_COMPLETE = "isTutorialComplete";
     private static final String PUSH_NOTIFICATION_TOKEN = "PUSH_NOTIFICATION_TOKEN";
 
-    public static SharedPreferences getSharedPreferences() {
-        if (sharedPreference == null) {
-            sharedPreference = MyApplication.getInstance().getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
-        }
-        return sharedPreference;
+    static {
+        sharedPreference = MyApplication.getInstance().getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
     }
 
     public static User getUserObject() {
-        Gson gson = new Gson();
-        return gson.fromJson(getSharedPreferences().getString(USER_OBJECT, ""), User.class);
+        return new Gson().fromJson(sharedPreference.getString(USER_OBJECT, ""), User.class);
     }
 
     public static void setUserObject(User userObject) {
-        Gson gson = new Gson();
-        String json = gson.toJson(userObject);
-        getSharedPreferences().edit().putString(USER_OBJECT, json).apply();
+        String json = new Gson().toJson(userObject);
+        sharedPreference.edit().putString(USER_OBJECT, json).apply();
     }
 
     public static String getUserId() {
-        return getSharedPreferences().getString(USER_ID, "");
+        return sharedPreference.getString(USER_ID, "");
     }
 
     public static void setUserId(String userId) {
-        getSharedPreferences().edit().putString(USER_ID, userId).apply();
+        sharedPreference.edit().putString(USER_ID, userId).apply();
     }
 
     public static String getFcmToken() {
-        return getSharedPreferences().getString(PUSH_NOTIFICATION_TOKEN, "");
+        return sharedPreference.getString(PUSH_NOTIFICATION_TOKEN, "");
     }
 
     public static void setFcmToken(String token) {
-        getSharedPreferences().edit().putString(PUSH_NOTIFICATION_TOKEN, token).apply();
+        sharedPreference.edit().putString(PUSH_NOTIFICATION_TOKEN, token).apply();
     }
 
     public static void removeUserOnLogout() {
-        getSharedPreferences().edit().remove(USER_OBJECT).apply();
-        getSharedPreferences().edit().remove(USER_ID).apply();
+        sharedPreference.edit().remove(USER_OBJECT).apply();
+        sharedPreference.edit().remove(USER_ID).apply();
     }
 
     public static boolean isTutorialComplete() {
-        return getSharedPreferences().getBoolean(IS_TUTORIAL_COMPLETE, false);
+        return sharedPreference.getBoolean(IS_TUTORIAL_COMPLETE, false);
     }
 
     public static void setIsTutorialComplete(boolean isTutorialComplete) {
-        getSharedPreferences().edit().putBoolean(IS_TUTORIAL_COMPLETE, isTutorialComplete).apply();
+        sharedPreference.edit().putBoolean(IS_TUTORIAL_COMPLETE, isTutorialComplete).apply();
     }
 }

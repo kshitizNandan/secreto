@@ -1,29 +1,27 @@
 package com.secreto.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.secreto.responsemodel.BaseResponse;
+import com.secreto.responsemodel.MediaResponse;
 
 import java.io.Serializable;
 
 public class User implements Serializable {
     @SerializedName("user_id")
     private String userId;
-    @SerializedName("email")
-    private String emailId;
     @SerializedName("name")
     private String name;
+    @SerializedName("email")
+    private String emailId;
     @SerializedName("password")
     private String password;
     @SerializedName("contact")
     private String contactNumber;
-    @SerializedName("status")
+    @SerializedName("user_status")
     private String status;
 
     public String getUserId() {
         return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getEmailId() {
@@ -54,10 +52,6 @@ public class User implements Serializable {
         return contactNumber;
     }
 
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -65,6 +59,7 @@ public class User implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
+
 
     @Override
     public String toString() {

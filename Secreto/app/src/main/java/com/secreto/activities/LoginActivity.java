@@ -2,7 +2,6 @@ package com.secreto.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
@@ -10,13 +9,14 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.secreto.R;
-import com.secreto.base_activities.BaseActivityWithTransparentActionBar;
+import com.secreto.base_activities.BaseActivityWithActionBar;
 import com.secreto.common.Common;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
-import com.secreto.model.StatusMessage;
+import com.secreto.responsemodel.BaseResponse;
 import com.secreto.model.User;
-import com.secreto.model.UserResponse;
+import com.secreto.responsemodel.UserResponse;
+import com.secreto.utils.CustomProgressDialog;
 import com.secreto.utils.Logger;
 import com.secreto.utils.LoginLogoutHandler;
 
@@ -24,13 +24,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity  extends BaseActivityWithTransparentActionBar {
+public class LoginActivity extends BaseActivityWithActionBar {
     private static final String TAG = LoginActivity.class.getSimpleName();
     @BindView(R.id.etEmail)
     EditText etEmail;
     @BindView(R.id.etPassword)
     EditText etPassword;
-    private ProgressDialog progressDialog;
+    private CustomProgressDialog progressDialog;
 
 
     @Override
@@ -44,23 +44,25 @@ public class LoginActivity  extends BaseActivityWithTransparentActionBar {
     }
 
     @Override
+    public boolean isShowHomeButton() {
+        return false;
+    }
+
+    @Override
+    public boolean isShowToolbarTitle() {
+        return true;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        }
         ButterKnife.bind(this);
-        init();
         initView();
     }
 
-    private void init() {
-    }
 
     private void initView() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(getString(R.string.please_wait));
-        progressDialog.setCancelable(false);
+        progressDialog = new CustomProgressDialog(this);
     }
 
     @OnClick(R.id.tvLogin)
@@ -87,13 +89,13 @@ public class LoginActivity  extends BaseActivityWithTransparentActionBar {
                     @Override
                     public void onError(VolleyError error) {
                         progressDialog.dismiss();
-                        StatusMessage statusMessage = Common.getStatusMessage(error);
-                        if (statusMessage == null || TextUtils.isEmpty(statusMessage.getMessage())) {
+                        BaseResponse baseResponse = Common.getStatusMessage(error);
+                        if (baseResponse == null || TextUtils.isEmpty(baseResponse.getMessage())) {
                             Logger.e(TAG, "loginActivityApi error : " + error.getMessage());
                             Toast.makeText(LoginActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
                         } else {
-                            Logger.e(TAG, "loginActivityApi error : " + statusMessage.getMessage());
-                            Toast.makeText(LoginActivity.this, statusMessage.getMessage(), Toast.LENGTH_SHORT).show();
+                            Logger.e(TAG, "loginActivityApi error : " + baseResponse.getMessage());
+                            Toast.makeText(LoginActivity.this, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

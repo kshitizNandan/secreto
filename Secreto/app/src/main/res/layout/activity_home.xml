@@ -6,9 +6,8 @@
     android:orientation="vertical"
     tools:context="com.secreto.activities.HomeActivity">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
+    <include layout="@layout/home_toolbar" />
+
 
     <com.secreto.fonts.CustomFontTextView
         android:id="@+id/tv_name"
