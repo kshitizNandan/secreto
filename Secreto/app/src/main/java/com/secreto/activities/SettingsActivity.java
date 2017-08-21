@@ -35,6 +35,7 @@ public class SettingsActivity extends BaseActivityWithActionBar {
         handleNavigationItemClick();
     }
 
+
     private void init() {
         mActivity = this;
     }
@@ -82,4 +83,9 @@ public class SettingsActivity extends BaseActivityWithActionBar {
         return true;
     }
 
+    @Override
+    protected void onBackPress() {
+        finish();
+        overridePendingTransition(R.anim.no_animation, R.anim.out_from_bottom);
+    }
 }

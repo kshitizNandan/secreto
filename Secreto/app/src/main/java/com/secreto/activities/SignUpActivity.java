@@ -238,5 +238,6 @@ public class SignUpActivity extends ImagePickerActivity {
         homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(homeIntent);
     }
+
 }
 

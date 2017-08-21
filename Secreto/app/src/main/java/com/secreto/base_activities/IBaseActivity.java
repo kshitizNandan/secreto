@@ -22,4 +22,5 @@ public abstract class IBaseActivity extends AppCompatActivity {
      */
     public abstract boolean isShowHomeButton();
 
+    protected abstract void onBackPress();
 }

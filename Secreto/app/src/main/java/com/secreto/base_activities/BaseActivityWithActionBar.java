@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.secreto.R;
 
-public abstract class BaseActivityWithActionBar extends IBaseActivity {
+public class BaseActivityWithActionBar extends IBaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,10 +38,30 @@ public abstract class BaseActivityWithActionBar extends IBaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                onBackPress();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public int getLayoutResource() {
+        return 0;
+    }
+
+    @Override
+    public String getScreenTitle() {
+        return getString(R.string.app_name);
+    }
+
+    @Override
+    public boolean isShowHomeButton() {
+        return false;
+    }
+
+    @Override
+    protected void onBackPress() {
+        finish();
     }
 }

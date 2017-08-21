@@ -44,12 +44,6 @@ public class LoginActivity extends BaseActivityWithActionBar {
     }
 
     @Override
-    public boolean isShowHomeButton() {
-        return false;
-    }
-
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
