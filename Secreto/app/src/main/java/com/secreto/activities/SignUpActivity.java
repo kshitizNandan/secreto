@@ -74,10 +74,6 @@ public class SignUpActivity extends ImagePickerActivity {
         return true;
     }
 
-    @Override
-    public boolean isShowToolbarTitle() {
-        return true;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,8 +168,8 @@ public class SignUpActivity extends ImagePickerActivity {
                 public void onSuccess(MediaResponse response) {
                     Logger.d(TAG, "Image Upload onSuccess : " + response);
                     progressDialog.dismiss();
-                    if (!TextUtils.isEmpty(response.getProfile_pic())) {
-//                        user.setProfile_pic(response.getProfile_pic());
+                    if (!TextUtils.isEmpty(response.getMedia())) {
+                        user.setProfile_pic(response.getMedia());
                         SharedPreferenceManager.setUserObject(user);
                     }
                     showSuccessDialog(getString(R.string.user_successfully_registered), user);

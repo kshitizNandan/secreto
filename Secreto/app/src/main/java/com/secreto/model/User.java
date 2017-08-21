@@ -6,7 +6,7 @@ import com.secreto.responsemodel.MediaResponse;
 
 import java.io.Serializable;
 
-public class User implements Serializable {
+public class User extends UserMedia implements Serializable {
     @SerializedName("user_id")
     private String userId;
     @SerializedName("name")

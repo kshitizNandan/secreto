@@ -3,18 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
+    android:layout_height="wrap_content"
     android:background="?attr/colorPrimary"
+    android:minHeight="?attr/actionBarSize"
+    app:contentInsetEnd="0dp"
+    app:contentInsetStart="0dp"
+    app:contentInsetStartWithNavigation="0dp"
     app:popupTheme="@style/AppTheme.PopupOverlay"
-    app:theme="@style/AppTheme.AppBarOverlay">
+    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
     <com.secreto.fonts.CustomFontTextView
         android:id="@+id/toolbarTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:maxLines="1"
         android:textColor="@android:color/white"
-        app:fontStyle="fontRegular" />
+        android:textSize="@dimen/text_size_18"
+        app:fontStyle="fontBold" />
 
 </android.support.v7.widget.Toolbar>
 

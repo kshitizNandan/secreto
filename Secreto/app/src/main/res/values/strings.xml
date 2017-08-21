@@ -60,5 +60,13 @@
     <string name="name_can_not_be_left_blank">Name can not be left blank</string>
     <string name="user_successfully_registered">User successfully registered</string>
     <string name="account">Account</string>
+    <string name="about_us">About us</string>
+    <string name="other">Other</string>
+    <string name="terms_policy">Terms &amp; privacy policy</string>
+    <string name="help_feedback">Help &amp; feedback</string>
+    <string name="notifications">Notifications</string>
+    <string name="language">Language</string>
+    <string name="alert">Alert</string>
+    <string name="sure_to_logout">Are you sure you want to logout?</string>
 
 </resources>

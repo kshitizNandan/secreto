@@ -48,10 +48,6 @@ public class LoginActivity extends BaseActivityWithActionBar {
         return false;
     }
 
-    @Override
-    public boolean isShowToolbarTitle() {
-        return true;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
