@@ -1,10 +1,14 @@
-package com.secreto.model;
+package com.secreto.responsemodel;
+
+import com.google.gson.annotations.SerializedName;
+import com.secreto.model.User;
 
 import java.io.Serializable;
 
 public class UserResponse extends BaseResponse implements Serializable {
-
+    @SerializedName("user")
     private User user;
+
     public User getUser() {
         return user;
     }

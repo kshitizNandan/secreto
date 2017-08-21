@@ -3,6 +3,7 @@ package com.secreto.activities;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,14 +16,17 @@ import com.android.volley.VolleyError;
 import com.secreto.R;
 import com.secreto.base_activities.ImagePickerActivity;
 import com.secreto.common.Common;
+import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
 import com.secreto.fonts.SpannableTextView;
 import com.secreto.fonts.TermsAndPrivacyClickedListener;
 import com.secreto.image.ImageCacheManager;
-import com.secreto.model.BaseResponse;
+import com.secreto.responsemodel.BaseResponse;
 import com.secreto.model.User;
-import com.secreto.model.UserResponse;
+import com.secreto.responsemodel.MediaResponse;
+import com.secreto.responsemodel.UserResponse;
+import com.secreto.utils.CustomProgressDialog;
 import com.secreto.utils.Logger;
 import com.secreto.utils.LoginLogoutHandler;
 import com.secreto.utils.NetworkImageView;
@@ -51,7 +55,7 @@ public class SignUpActivity extends ImagePickerActivity {
     SpannableTextView tvTermsOfUse;
     @BindView(R.id.iv_profileImg)
     NetworkImageView iv_profileImg;
-    private ProgressDialog progressDialog;
+    private CustomProgressDialog progressDialog;
     private AlertDialog registrationSuccessDialog;
     private File photoFile;
 
@@ -66,6 +70,16 @@ public class SignUpActivity extends ImagePickerActivity {
     }
 
     @Override
+    public boolean isShowHomeButton() {
+        return true;
+    }
+
+    @Override
+    public boolean isShowToolbarTitle() {
+        return true;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
@@ -74,9 +88,7 @@ public class SignUpActivity extends ImagePickerActivity {
 
     private void initView() {
         iv_profileImg.setDefaultImageResId(R.drawable.default_user);
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(getString(R.string.please_wait));
-        progressDialog.setCancelable(false);
+        progressDialog = new CustomProgressDialog(this);
         tvTermsOfUse.setTermsAndPrivacyClickedListener(new TermsAndPrivacyClickedListener() {
             @Override
             public void onClickTerms(View view) {
@@ -155,11 +167,15 @@ public class SignUpActivity extends ImagePickerActivity {
     private void uploadImageApiCall(final User user) {
         if (Common.isOnline(this)) {
             progressDialog.show();
-            DataManager.getInstance().uploadImage(photoFile, user.getUserId(), new ResultListenerNG<BaseResponse>() {
+            DataManager.getInstance().uploadImage(photoFile, user.getUserId(), new ResultListenerNG<MediaResponse>() {
                 @Override
-                public void onSuccess(BaseResponse response) {
+                public void onSuccess(MediaResponse response) {
                     Logger.d(TAG, "Image Upload onSuccess : " + response);
                     progressDialog.dismiss();
+                    if (!TextUtils.isEmpty(response.getProfile_pic())) {
+//                        user.setProfile_pic(response.getProfile_pic());
+                        SharedPreferenceManager.setUserObject(user);
+                    }
                     showSuccessDialog(getString(R.string.user_successfully_registered), user);
                 }
 

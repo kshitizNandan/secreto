@@ -3,13 +3,12 @@ package com.secreto.data;
 import com.android.volley.Request;
 import com.secreto.common.ApiConstants;
 import com.secreto.common.Constants;
-import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.volley.MultipartRequest;
 import com.secreto.data.volley.RequestManagerApi;
 import com.secreto.data.volley.ResultListenerNG;
-import com.secreto.model.BaseResponse;
-import com.secreto.model.User;
-import com.secreto.model.UserResponse;
+import com.secreto.responsemodel.BaseResponse;
+import com.secreto.responsemodel.MediaResponse;
+import com.secreto.responsemodel.UserResponse;
 import com.secreto.utils.Logger;
 
 import java.io.File;
@@ -69,12 +68,12 @@ public class DataManager {
         makeRequest(Request.Method.POST, URL_REGISTER, params, UserResponse.class, resultListenerNG);
     }
 
-    public void uploadImage(File file, String user_id, ResultListenerNG<BaseResponse> resultListenerNG) {
+    public void uploadImage(File file, String user_id, ResultListenerNG<MediaResponse> resultListenerNG) {
         HashMap<Object, Object> params = new HashMap<>();
         params.put(ApiConstants.FILE, file);
         params.put(ApiConstants.USER_ID, user_id);
         params.put(ApiConstants.TYPE, Constants.IMAGE);
-        makeMultipartRequest(URL_UPLOAD_IMAGE, params, BaseResponse.class, resultListenerNG, ApiConstants.FILE, file);
+        makeMultipartRequest(URL_UPLOAD_IMAGE, params, MediaResponse.class, resultListenerNG, ApiConstants.FILE, file);
     }
 
 }

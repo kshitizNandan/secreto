@@ -31,7 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
-public abstract class ImagePickerActivity extends BaseActivity {
+public abstract class ImagePickerActivity extends BaseActivityWithActionBar {
 
     private static final String TAG = ImagePickerActivity.class.getName();
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};

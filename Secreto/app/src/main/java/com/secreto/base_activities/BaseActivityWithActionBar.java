@@ -8,11 +8,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.secreto.R;
-import com.secreto.utils.Logger;
 
-
-public abstract class BaseActivity extends IBaseActivity {
-    private static final String TAG = BaseActivity.class.getSimpleName();
+public abstract class BaseActivityWithActionBar extends IBaseActivity {
+    private static final String TAG = BaseActivityWithActionBar.class.getSimpleName();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -23,12 +21,13 @@ public abstract class BaseActivity extends IBaseActivity {
 
     void setToolbarWithBack() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
+        ActionBar actionBar = getSupportActionBar();
+        if (toolbar != null && actionBar != null) {
             setSupportActionBar(toolbar);
-            ActionBar actionBar = getSupportActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowTitleEnabled(false);
-            actionBar.setHomeAsUpIndicator(R.drawable.back_arrow_wh);
+            actionBar.setDisplayHomeAsUpEnabled(isShowHomeButton());
+            actionBar.setDisplayShowTitleEnabled(isShowToolbarTitle());
+            actionBar.setHomeAsUpIndicator(R.drawable.back_icon);
+
             TextView toolbarTitle = (TextView) toolbar.findViewById(R.id.toolbarTitle);
             if (toolbarTitle != null)
                 toolbarTitle.setText(getScreenTitle());

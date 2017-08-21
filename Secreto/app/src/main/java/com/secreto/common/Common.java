@@ -17,7 +17,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.secreto.model.BaseResponse;
+import com.secreto.responsemodel.BaseResponse;
 import com.secreto.utils.Logger;
 
 import java.io.UnsupportedEncodingException;

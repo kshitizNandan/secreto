@@ -1,10 +1,12 @@
 package com.secreto.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.secreto.responsemodel.BaseResponse;
+import com.secreto.responsemodel.MediaResponse;
 
 import java.io.Serializable;
 
-public class User extends BaseResponse implements Serializable {
+public class User implements Serializable {
     @SerializedName("user_id")
     private String userId;
     @SerializedName("name")
@@ -17,12 +19,6 @@ public class User extends BaseResponse implements Serializable {
     private String contactNumber;
     @SerializedName("user_status")
     private String status;
-    @SerializedName("media_id")
-    private String media_id;
-    @SerializedName("media")
-    private String media;
-    @SerializedName("type")
-    private String type;
 
     public String getUserId() {
         return userId;
@@ -64,17 +60,6 @@ public class User extends BaseResponse implements Serializable {
         this.status = status;
     }
 
-    public String getMedia_id() {
-        return media_id;
-    }
-
-    public String getMedia() {
-        return media;
-    }
-
-    public String getType() {
-        return type;
-    }
 
     @Override
     public String toString() {
