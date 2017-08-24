@@ -13,7 +13,7 @@ import android.view.Display;
 import android.view.WindowManager;
 
 
-import com.secreto.fonts.Typefaces;
+import com.secreto.widgets.Typefaces;
 import com.secreto.image.ImageCacheManager;
 import com.secreto.image.RequestManager;
 import com.secreto.utils.Logger;

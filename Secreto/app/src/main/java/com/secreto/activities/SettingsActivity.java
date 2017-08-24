@@ -1,9 +1,8 @@
 package com.secreto.activities;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -50,6 +49,14 @@ public class SettingsActivity extends BaseActivityWithActionBar {
             } else {
                 ((NetworkImageView) headerView.findViewById(R.id.iv_profileImg)).setDefaultImageResId(R.drawable.default_user);
             }
+            headerView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent settingsActivityIntent = new Intent(mActivity, EditProfileActivity.class);
+                    startActivity(settingsActivityIntent);
+                    overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
+                }
+            });
         }
     }
 
@@ -75,7 +82,7 @@ public class SettingsActivity extends BaseActivityWithActionBar {
 
     @Override
     public String getScreenTitle() {
-        return getString(R.string.account);
+        return getString(R.string.settings);
     }
 
     @Override

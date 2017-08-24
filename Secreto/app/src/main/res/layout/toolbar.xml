@@ -12,7 +12,7 @@
     app:popupTheme="@style/AppTheme.PopupOverlay"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-    <com.secreto.fonts.CustomFontTextView
+    <com.secreto.widgets.CustomFontTextView
         android:id="@+id/toolbarTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

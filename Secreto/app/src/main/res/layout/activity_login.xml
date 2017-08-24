@@ -23,14 +23,14 @@
             android:paddingLeft="@dimen/dimen_size_44"
             android:paddingRight="@dimen/dimen_size_44">
 
-            <com.secreto.fonts.CustomFontEditText
+            <com.secreto.widgets.CustomFontEditText
                 android:id="@+id/etEmail"
                 style="@style/LoginEditStyle"
                 android:hint="@string/email_id"
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress" />
 
-            <com.secreto.fonts.CustomFontEditText
+            <com.secreto.widgets.CustomFontEditText
                 android:id="@+id/etPassword"
                 style="@style/LoginEditStyle"
                 android:layout_marginTop="@dimen/dimen_size_4"
@@ -38,14 +38,14 @@
                 android:imeOptions="actionDone"
                 android:inputType="textPassword" />
 
-            <com.secreto.fonts.CustomFontTextView
+            <com.secreto.widgets.CustomFontTextView
                 android:id="@+id/tvLogin"
                 style="@style/BlueBtnStyle"
                 android:layout_marginTop="@dimen/dimen_size_12"
                 android:text="@string/sign_in"
                 android:textAllCaps="true" />
 
-            <com.secreto.fonts.CustomFontTextView
+            <com.secreto.widgets.CustomFontTextView
                 android:id="@+id/tvForgotPassword"
                 style="@style/LinkTextStyle"
                 android:paddingBottom="@dimen/dimen_size_15"
@@ -53,7 +53,7 @@
                 android:text="@string/forgot_password_q" />
 
 
-            <com.secreto.fonts.SpannableTextView
+            <com.secreto.widgets.SpannableTextView
                 android:id="@+id/tvSignUp"
                 style="@style/LinkTextStyle"
                 android:paddingBottom="@dimen/dimen_size_20"

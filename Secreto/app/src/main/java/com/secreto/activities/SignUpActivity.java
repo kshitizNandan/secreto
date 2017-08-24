@@ -1,9 +1,7 @@
 package com.secreto.activities;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -19,8 +17,8 @@ import com.secreto.common.Common;
 import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
-import com.secreto.fonts.SpannableTextView;
-import com.secreto.fonts.TermsAndPrivacyClickedListener;
+import com.secreto.widgets.SpannableTextView;
+import com.secreto.widgets.TermsAndPrivacyClickedListener;
 import com.secreto.image.ImageCacheManager;
 import com.secreto.responsemodel.BaseResponse;
 import com.secreto.model.User;

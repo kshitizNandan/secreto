@@ -1,32 +1,30 @@
-package com.secreto.fonts;
+package com.secreto.widgets;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 
 import com.secreto.R;
 import com.secreto.common.MyApplication;
 
 
-public class CustomFontEditText extends AppCompatEditText {
+public class CustomFontCheckBox extends android.support.v7.widget.AppCompatCheckBox {
     private int fontStyle;
     private TypedArray a = null;
 
-    public CustomFontEditText(Context context) {
+    public CustomFontCheckBox(Context context) {
         super(context);
         init(null, 0);
     }
 
-    public CustomFontEditText(Context context, AttributeSet attrs) {
+    public CustomFontCheckBox(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs, 0);
-
     }
 
-    public CustomFontEditText(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init(attrs, defStyle);
+    public CustomFontCheckBox(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(attrs, defStyleAttr);
     }
 
     private void init(AttributeSet attrs, int defStyle) {

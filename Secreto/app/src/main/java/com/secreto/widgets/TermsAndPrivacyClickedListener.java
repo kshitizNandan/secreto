@@ -1,4 +1,4 @@
-package com.secreto.fonts;
+package com.secreto.widgets;
 
 import android.view.View;
 
