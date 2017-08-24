@@ -76,4 +76,7 @@ public class DataManager {
         makeMultipartRequest(URL_UPLOAD_IMAGE, params, MediaResponse.class, resultListenerNG, ApiConstants.FILE, file);
     }
 
+    public void updateProfile(String name, String mobile, ResultListenerNG<UserResponse> resultListenerNG) {
+
+    }
 }

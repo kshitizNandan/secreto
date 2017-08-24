@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.secreto.R;
 import com.secreto.base_activities.BaseActivityWithActionBar;
+import com.secreto.base_activities.ImagePickerActivity;
 import com.secreto.common.Common;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
@@ -24,11 +25,13 @@ import com.secreto.responsemodel.UserResponse;
 import com.secreto.utils.CustomProgressDialog;
 import com.secreto.utils.Logger;
 
+import java.io.File;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class EditProfileActivity extends BaseActivityWithActionBar {
+public class EditProfileActivity extends ImagePickerActivity {
     private static final String TAG = EditProfileActivity.class.getSimpleName();
     @BindView(R.id.tvChangePass)
     TextView tvChangePass;
@@ -53,6 +56,16 @@ public class EditProfileActivity extends BaseActivityWithActionBar {
         mActivity = this;
     }
 
+
+    @Override
+    protected void onImageSet(File photoFile) {
+
+    }
+
+    @Override
+    protected CropAspectRatio getCropAspectRatio() {
+        return null;
+    }
 
     @Override
     public int getLayoutResource() {
@@ -147,16 +160,16 @@ public class EditProfileActivity extends BaseActivityWithActionBar {
         } else {
             if (Common.isOnline(this)) {
                 progressDialog.show();
-                DataManager.getInstance().signUp(name, mobile, new ResultListenerNG<UserResponse>() {
+                DataManager.getInstance().updateProfile(name, mobile, new ResultListenerNG<UserResponse>() {
                     @Override
                     public void onSuccess(UserResponse response) {
                         Logger.d(TAG, "Profile update onSuccess : " + response);
                         progressDialog.dismiss();
-                        if (photoFile != null && photoFile.exists()) {
+                        /*if (photoFile != null && photoFile.exists()) {
                             uploadImageApiCall(response.getUser());
                         } else {
                             showSuccessDialog(response.getMessage(), response.getUser());
-                        }
+                        }*/
                     }
 
                     @Override
