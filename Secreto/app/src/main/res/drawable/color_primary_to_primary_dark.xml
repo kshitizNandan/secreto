@@ -7,5 +7,5 @@
         </layer-list>
     </item>
     <item android:drawable="@color/colorPrimary" android:state_enabled="true" />
-    <item android:drawable="@color/colorPrimaryDark" android:state_enabled="false" />
+    <item android:drawable="@color/half_black" android:state_enabled="false" />
 </selector>
