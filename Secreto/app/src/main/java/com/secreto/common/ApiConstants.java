@@ -6,6 +6,6 @@ public class ApiConstants {
     public static final String NAME = "name";
     public static final String CONTACT = "contact";
     public static final String FILE = "file";
-    public static final Object USER_ID = "user_id";
+    public static final Object USER_ID = "userId";
     public static final Object TYPE = "type";
 }
