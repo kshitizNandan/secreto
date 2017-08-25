@@ -3,6 +3,7 @@ package com.secreto.data;
 import com.android.volley.Request;
 import com.secreto.common.ApiConstants;
 import com.secreto.common.Constants;
+import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.volley.MultipartRequest;
 import com.secreto.data.volley.RequestManagerApi;
 import com.secreto.data.volley.ResultListenerNG;
@@ -22,6 +23,8 @@ public class DataManager {
     private static final String URL_LOGIN = BASE_SERVER_ADDRESS + "login";
     private static final String URL_REGISTER = BASE_SERVER_ADDRESS + "register";
     private static final String URL_UPLOAD_IMAGE = BASE_SERVER_ADDRESS + "uploadImg";
+    private static final String SEND_MESSAGE = BASE_SERVER_ADDRESS + "message";
+
 
     private static DataManager singleton;
 
@@ -74,6 +77,15 @@ public class DataManager {
         params.put(ApiConstants.USER_ID, user_id);
         params.put(ApiConstants.TYPE, Constants.IMAGE);
         makeMultipartRequest(URL_UPLOAD_IMAGE, params, MediaResponse.class, resultListenerNG, ApiConstants.FILE, file);
+    }
+    public void sendMessage(String userId, String message, String messageClue, ResultListenerNG<BaseResponse> resultListenerNG) {
+        HashMap<Object, Object> params = new HashMap<>();
+        String fromUserId= SharedPreferenceManager.getUserId();
+        params.put(ApiConstants.USER_ID, userId);
+        params.put(ApiConstants.MESSAGE, message);
+        params.put(ApiConstants.MESSAGE_CLUE, messageClue);
+        params.put(ApiConstants.FROM_USER_ID, fromUserId);
+        makeRequest(Request.Method.POST, URL_REGISTER, params, BaseResponse.class, resultListenerNG);
     }
 
     public void updateProfile(String name, String mobile, ResultListenerNG<UserResponse> resultListenerNG) {

@@ -81,5 +81,7 @@
     <string name="remember_me">Remember me</string>
     <string name="login_with_facebook">Login with facebook</string>
     <string name="browse">Browse</string>
+    <string name="send">Send</string>
+    <string name="leave_a_message">Leave a message</string>
 
 </resources>
