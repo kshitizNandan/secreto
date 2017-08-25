@@ -101,8 +101,8 @@
         <item name="android:textSize">@dimen/text_size_13</item>
         <item name="android:gravity">center</item>
         <item name="android:shadowColor">@color/colorPrimary</item>
+        <item name="android:background">@drawable/color_primary_to_primary_dark</item>
         <item name="fontStyle">fontRegular</item>
-        <item name="android:background">@drawable/button</item>
     </style>
 
     <style name="DefaultTextInputLayoutStyle" parent="Widget.Design.TextInputLayout">
