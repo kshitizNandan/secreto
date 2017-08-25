@@ -94,4 +94,13 @@
         <item name="fontStyle">fontRegular</item>
         <item name="android:background">@drawable/color_primary_to_primary_dark</item>
     </style>
+
+    <style name="EmptyTextStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="fontStyle">fontRegular</item>
+    </style>
 </resources>
