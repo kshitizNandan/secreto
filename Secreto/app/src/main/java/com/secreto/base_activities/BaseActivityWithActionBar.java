@@ -25,7 +25,7 @@ public abstract class BaseActivityWithActionBar extends IBaseActivity {
             ActionBar actionBar = getSupportActionBar();
             if (actionBar != null) {
                 actionBar.setDisplayHomeAsUpEnabled(isShowHomeButton());
-                actionBar.setHomeAsUpIndicator(R.drawable.back_arrow);
+                actionBar.setHomeAsUpIndicator(setHomeButtonDrawable());
                 getSupportActionBar().setDisplayShowTitleEnabled(false);
             }
             TextView toolbarTitle = (TextView) toolbar.findViewById(R.id.toolbarTitle);
@@ -52,11 +52,16 @@ public abstract class BaseActivityWithActionBar extends IBaseActivity {
 
     @Override
     public boolean isShowHomeButton() {
-        return false;
+        return true;
     }
 
     @Override
     protected void onBackPress() {
         finish();
+    }
+
+    @Override
+    public int setHomeButtonDrawable() {
+        return R.drawable.back_arrow_w;
     }
 }

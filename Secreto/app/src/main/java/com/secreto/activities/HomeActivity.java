@@ -82,6 +82,10 @@ public class HomeActivity extends BaseActivityWithActionBar {
         return getString(R.string.app_name);
     }
 
+    @Override
+    public boolean isShowHomeButton() {
+        return false;
+    }
 
     @OnClick(R.id.iv_profileImg)
     void onClickProfileImg() {

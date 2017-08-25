@@ -85,10 +85,6 @@ public class SettingsActivity extends BaseActivityWithActionBar {
         return getString(R.string.settings);
     }
 
-    @Override
-    public boolean isShowHomeButton() {
-        return true;
-    }
 
     @Override
     protected void onBackPress() {

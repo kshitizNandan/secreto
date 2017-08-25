@@ -80,10 +80,9 @@ public class SignUpActivity extends ImagePickerActivity {
     }
 
     @Override
-    public boolean isShowHomeButton() {
-        return true;
+    public int setHomeButtonDrawable() {
+        return R.drawable.back_arrow;
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
