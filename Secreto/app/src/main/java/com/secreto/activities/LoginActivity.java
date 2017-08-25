@@ -1,13 +1,11 @@
 package com.secreto.activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -15,6 +13,7 @@ import com.android.volley.VolleyError;
 import com.secreto.R;
 import com.secreto.base_activities.BaseActivityWithActionBar;
 import com.secreto.common.Common;
+import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
 import com.secreto.mediatorClasses.TextWatcherMediator;
@@ -31,6 +30,8 @@ import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivityWithActionBar {
     private static final String TAG = LoginActivity.class.getSimpleName();
+    @BindView(R.id.rememberCheckBox)
+    CheckBox rememberCheckBox;
     @BindView(R.id.etEmail)
     EditText etEmail;
     @BindView(R.id.etPassword)
@@ -47,11 +48,6 @@ public class LoginActivity extends BaseActivityWithActionBar {
     }
 
     @Override
-    public String getScreenTitle() {
-        return getString(R.string.login);
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
@@ -62,9 +58,14 @@ public class LoginActivity extends BaseActivityWithActionBar {
 
     private void initView() {
         progressDialog = new CustomProgressDialog(this);
+        etEmail.setText(SharedPreferenceManager.getLoginCredentials(SharedPreferenceManager.EMAIL));
+        etPassword.setText(SharedPreferenceManager.getLoginCredentials(SharedPreferenceManager.PASS));
+        if (!TextUtils.isEmpty(etEmail.getText())) {
+            rememberCheckBox.setChecked(true);
+        }
     }
 
-    @OnClick(R.id.tvLogin)
+    @OnClick(R.id.btnLogin)
     void onClickLogin() {
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
@@ -76,6 +77,10 @@ public class LoginActivity extends BaseActivityWithActionBar {
             textInputLayoutPassword.setError(getString(R.string.password_can_not_be_left_blank));
         } else {
             if (Common.isOnline(this)) {
+                if (rememberCheckBox.isChecked())
+                    SharedPreferenceManager.sertLoginCredentials(email, password);
+                else SharedPreferenceManager.removeLoginCredentials();
+
                 progressDialog.show();
                 DataManager.getInstance().login(email, password, new ResultListenerNG<UserResponse>() {
                     @Override

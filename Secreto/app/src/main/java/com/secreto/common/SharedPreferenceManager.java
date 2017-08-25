@@ -2,12 +2,15 @@ package com.secreto.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.secreto.model.User;
 
 public class SharedPreferenceManager {
     private static SharedPreferences sharedPreference;
+    public static final String EMAIL = "email";
+    public static final String PASS = "password";
     private static final String FILE_NAME = "PREFERENCE";
     private static final String USER_OBJECT = "user_object";
     private static final String USER_ID = "user_id";
@@ -54,5 +57,26 @@ public class SharedPreferenceManager {
 
     public static void setIsTutorialComplete(boolean isTutorialComplete) {
         sharedPreference.edit().putBoolean(IS_TUTORIAL_COMPLETE, isTutorialComplete).apply();
+    }
+
+    public static void sertLoginCredentials(String email, String pass) {
+        sharedPreference.edit().putString(EMAIL, email).apply();
+        sharedPreference.edit().putString(PASS, pass).apply();
+    }
+
+
+    public static String getLoginCredentials(String param) {
+        if (!TextUtils.isEmpty(param)) {
+            if (param.equalsIgnoreCase(EMAIL))
+                return sharedPreference.getString(EMAIL, "");
+            else if (param.equalsIgnoreCase(PASS))
+                return sharedPreference.getString(PASS, "");
+        }
+        return "";
+    }
+
+    public static void removeLoginCredentials() {
+        sharedPreference.edit().remove(EMAIL).apply();
+        sharedPreference.edit().remove(PASS).apply();
     }
 }

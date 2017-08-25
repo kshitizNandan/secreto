@@ -25,7 +25,7 @@ public abstract class BaseActivityWithActionBar extends IBaseActivity {
             ActionBar actionBar = getSupportActionBar();
             if (actionBar != null) {
                 actionBar.setDisplayHomeAsUpEnabled(isShowHomeButton());
-                actionBar.setHomeAsUpIndicator(R.drawable.back_icon);
+                actionBar.setHomeAsUpIndicator(R.drawable.back_arrow);
                 getSupportActionBar().setDisplayShowTitleEnabled(false);
             }
             TextView toolbarTitle = (TextView) toolbar.findViewById(R.id.toolbarTitle);
