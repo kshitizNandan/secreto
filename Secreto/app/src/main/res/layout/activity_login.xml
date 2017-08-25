@@ -73,7 +73,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="@string/forgot_password_q" />
+                android:text="@string/forgot_password_q"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <com.secreto.widgets.CustomFontButton
@@ -93,7 +94,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_size_15"
-            android:src="@drawable/or" />
+            android:src="@drawable/or"
+            android:visibility="gone" />
 
         <com.secreto.widgets.CustomFontButton
             android:id="@+id/facebookTxt"
@@ -103,7 +105,8 @@
             android:background="@drawable/blue_button"
             android:drawableLeft="@drawable/facebook"
             android:padding="@dimen/dimen_size_5"
-            android:text="@string/login_with_facebook" />
+            android:text="@string/login_with_facebook"
+            android:visibility="gone" />
 
     </LinearLayout>
 </ScrollView>

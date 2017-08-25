@@ -21,10 +21,10 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent;
-                if (TextUtils.isEmpty(SharedPreferenceManager.getUserId())) {
-                    intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                } else {
+                if (SharedPreferenceManager.getUserObject() != null) {
                     intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
+                } else {
+                    intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
                 }
                 startActivity(intent);
                 finish();
