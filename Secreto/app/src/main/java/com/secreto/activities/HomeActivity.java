@@ -74,7 +74,7 @@ public class HomeActivity extends BaseActivityWithActionBar {
     }
 
     private void initViews() {
-        String[] titles = getResources().getStringArray(R.array.gender_types);
+        String[] titles = getResources().getStringArray(R.array.message_types);
         fragmentArrayList.add(SentReceivedMessagesFragment.newInstance(Constants.SENT));
         fragmentArrayList.add(SentReceivedMessagesFragment.newInstance(Constants.RECEIVED));
         viewPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentArrayList, titles));
