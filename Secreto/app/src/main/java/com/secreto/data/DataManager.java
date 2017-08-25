@@ -7,13 +7,14 @@ import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.volley.MultipartRequest;
 import com.secreto.data.volley.RequestManagerApi;
 import com.secreto.data.volley.ResultListenerNG;
-import com.secreto.responsemodel.BaseResponse;
 import com.secreto.responsemodel.MediaResponse;
+import com.secreto.responsemodel.SendOrReceivedMessageResponse;
 import com.secreto.responsemodel.UserResponse;
 import com.secreto.utils.Logger;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Locale;
 
 import static com.secreto.BuildConfig.BASE_SERVER_ADDRESS;
 
@@ -25,6 +26,7 @@ public class DataManager {
     private static final String URL_UPLOAD_IMAGE = BASE_SERVER_ADDRESS + "uploadImg";
     private static final String SEND_MESSAGE = BASE_SERVER_ADDRESS + "message";
 
+    private static final String URL_GET_SENT_OR_RECEIVED_MSGS = BASE_SERVER_ADDRESS + "getSendOrReceivedMsgs";
 
     private static DataManager singleton;
 
@@ -90,5 +92,11 @@ public class DataManager {
 
     public void updateProfile(String name, String mobile, ResultListenerNG<UserResponse> resultListenerNG) {
 
+    }
+
+    public void getSendOrReceivedMsgs(String type, int offset, ResultListenerNG<SendOrReceivedMessageResponse> listenerNG) {
+        String userId = SharedPreferenceManager.getUserObject().getUserId();
+        String url = String.format(Locale.ENGLISH, URL_GET_SENT_OR_RECEIVED_MSGS + "?userId=%s&type=%s&offset=%d", userId, type, offset);
+        makeRequest(Request.Method.GET, URL_GET_SENT_OR_RECEIVED_MSGS, null, SendOrReceivedMessageResponse.class, listenerNG);
     }
 }
