@@ -24,8 +24,7 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 
 public class HomeActivity extends BaseActivityWithActionBar {
-    @BindView(R.id.tv_name)
-    TextView tv_name;
+
     @BindView(R.id.iv_profileImg)
     NetworkImageView iv_profileImg;
     private HomeActivity mActivity;
@@ -41,7 +40,6 @@ public class HomeActivity extends BaseActivityWithActionBar {
     private void setUserData() {
         User user = SharedPreferenceManager.getUserObject();
         if (user != null) {
-            tv_name.setText("Welcome " + user.getName());
             if (!TextUtils.isEmpty(user.getProfile_pic())) {
                 iv_profileImg.setImageUrl(user.getProfile_pic(), ImageCacheManager.getInstance().getImageLoader());
             } else {
