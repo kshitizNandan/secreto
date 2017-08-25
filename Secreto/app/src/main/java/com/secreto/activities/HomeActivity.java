@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.secreto.R;
 import com.secreto.base_activities.BaseActivityWithActionBar;
@@ -40,6 +43,8 @@ public class HomeActivity extends BaseActivityWithActionBar {
     TabLayout tabBar;
     @BindView(R.id.viewPager)
     ViewPager viewPager;
+    @BindView(R.id.fabComposeMessage)
+    FloatingActionButton fabComposeMessage;
     private Fragment sentMessagesFragment, receivedMessagesFragment;
 
     @Override
@@ -69,6 +74,13 @@ public class HomeActivity extends BaseActivityWithActionBar {
     private void initViews() {
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
         tabBar.setupWithViewPager(viewPager);
+        // fab compose Click
+        fabComposeMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CreateMessageActivity.startActivity(HomeActivity.this);
+            }
+        });
     }
 
 
@@ -89,6 +101,7 @@ public class HomeActivity extends BaseActivityWithActionBar {
         startActivity(settingsActivityIntent);
         overridePendingTransition(R.anim.in_from_bottom, R.anim.no_animation);
     }
+
 
     @OnLongClick(R.id.iv_profileImg)
     boolean showLogoutDialog() {
