@@ -6,7 +6,8 @@
     android:layout_gravity="center"
     android:descendantFocusability="beforeDescendants"
     android:fillViewport="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:scrollbars="none">
 
 
     <LinearLayout

@@ -22,5 +22,12 @@ public abstract class IBaseActivity extends AppCompatActivity {
      */
     public abstract boolean isShowHomeButton();
 
+    /**
+     * Toolbar abstract method
+     *
+     * @return backbutton background drawable
+     */
+    public abstract int setHomeButtonDrawable();
+
     protected abstract void onBackPress();
 }

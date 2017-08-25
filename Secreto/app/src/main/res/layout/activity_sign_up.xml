@@ -17,7 +17,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:fillViewport="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -141,7 +142,7 @@
             <com.secreto.widgets.CustomFontButton
                 android:id="@+id/btnCreateAccount"
                 style="@style/DefaultButtonStyle"
-                android:layout_marginTop="@dimen/dimen_size_12"
+                android:layout_marginTop="@dimen/dimen_size_10"
                 android:text="@string/create_account" />
         </LinearLayout>
     </ScrollView>
