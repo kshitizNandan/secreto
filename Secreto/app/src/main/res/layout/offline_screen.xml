@@ -20,12 +20,10 @@
         android:textSize="@dimen/text_size_15"
         app:fontStyle="fontRegular" />
 
-    <com.secreto.widgets.CustomFontTextView
+    <com.secreto.widgets.CustomFontButton
         android:id="@+id/tvRetry"
-        style="@style/BlueBtnStyle"
+        style="@style/DefaultButtonStyle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_size_20"
-        android:text="@string/retry"
-        android:textAllCaps="true" />
+        android:text="@string/retry" />
 </LinearLayout>

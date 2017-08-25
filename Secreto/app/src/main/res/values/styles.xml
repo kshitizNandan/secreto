@@ -83,17 +83,6 @@
         <item name="fontStyle">fontRegular</item>
     </style>
 
-    <style name="BlueBtnStyle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">@dimen/text_size_13</item>
-        <item name="android:gravity">center</item>
-        <item name="android:padding">@dimen/dimen_size_10</item>
-        <item name="android:background">@drawable/ripple_effect</item>
-        <item name="fontStyle">fontRegular</item>
-    </style>
-
     <style name="DefaultButtonStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/dimen_size_40</item>
