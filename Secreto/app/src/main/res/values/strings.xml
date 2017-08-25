@@ -28,7 +28,7 @@
     <string name="password">Password</string>
     <string name="forgot_password_q">Forgot Password?</string>
     <string name="login">Login</string>
-    <string name="dont_have_an_account"><![CDATA[<xml><blue-regular>Don\'t have an account? </blue-regular><dark-blue-bold>SIGN UP</dark-blue-bold></xml>]]></string>
+    <string name="dont_have_an_account"><![CDATA[<xml><blue-regular>Don\'t have an account? </blue-regular><dark-blue-bold><u>SIGN UP</u></dark-blue-bold></xml>]]></string>
     <string name="password_can_not_be_left_blank">Password can not be left blank.</string>
     <string name="email_id_can_not_be_left_blank">Email id can not be left blank</string>
     <string name="invalid_email_id_format">Invalid email format</string>
@@ -39,7 +39,7 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="mobile_number">Mobile No.</string>
+    <string name="contact_number">Contact number(optional)</string>
     <string name="first_name_can_not_be_left_blank">First Name can not be left blank.</string>
     <string name="entered_first_name_is_invalid">Entered First Name  is invalid.</string>
     <string name="last_name_can_not_be_left_blank">Last Name can not be left blank.</string>
@@ -56,7 +56,7 @@
     <string name="please_agree_to_terms_of_use">Please agree to Terms of use and Privacy policy.</string>
     <string name="terms_of_use">Terms Of Use</string>
     <string name="privacy_policy">Privacy Policy</string>
-    <string name="name">Name</string>
+    <string name="name">Nick Name</string>
     <string name="name_can_not_be_left_blank">Name can not be left blank</string>
     <string name="user_successfully_registered">User successfully registered</string>
     <string name="settings">Settings</string>
@@ -78,6 +78,9 @@
     <string name="please_enter_new_password">Please enter new password</string>
     <string name="please_confirm_your_password">Please confirm your password</string>
     <string name="pass_confirm_pass_validation">Confirm password is not same</string>
+    <string name="remember_me">Remember me</string>
+    <string name="login_with_facebook">Login with facebook</string>
+    <string name="browse">Browse</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

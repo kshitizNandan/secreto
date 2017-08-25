@@ -36,7 +36,7 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
-    <style name="EditStyle">
+    <style name="DefaultEditTextStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/dark_gray</item>
@@ -44,6 +44,15 @@
         <item name="android:textColorHint">@color/gray</item>
         <item name="android:drawablePadding">@dimen/dimen_size_10</item>
         <item name="android:maxLines">1</item>
+        <item name="fontStyle">fontRegular</item>
+    </style>
+
+    <style name="DefaultTextViewStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:gravity">center</item>
         <item name="fontStyle">fontRegular</item>
     </style>
 
@@ -69,7 +78,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textSize">@dimen/text_size_13</item>
+        <item name="android:textSize">@dimen/text_size_12</item>
         <item name="android:gravity">center</item>
         <item name="fontStyle">fontRegular</item>
     </style>
@@ -91,8 +100,14 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/text_size_13</item>
         <item name="android:gravity">center</item>
+        <item name="android:shadowColor">@color/colorPrimary</item>
         <item name="fontStyle">fontRegular</item>
-        <item name="android:background">@drawable/color_primary_to_primary_dark</item>
+        <item name="android:background">@drawable/button</item>
+    </style>
+
+    <style name="DefaultTextInputLayoutStyle" parent="Widget.Design.TextInputLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="EmptyTextStyle">

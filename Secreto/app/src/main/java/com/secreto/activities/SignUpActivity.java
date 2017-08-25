@@ -2,6 +2,7 @@ package com.secreto.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,6 +18,7 @@ import com.secreto.common.Common;
 import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
+import com.secreto.mediatorClasses.TextWatcherMediator;
 import com.secreto.widgets.SpannableTextView;
 import com.secreto.widgets.TermsAndPrivacyClickedListener;
 import com.secreto.image.ImageCacheManager;
@@ -53,6 +55,16 @@ public class SignUpActivity extends ImagePickerActivity {
     SpannableTextView tvTermsOfUse;
     @BindView(R.id.iv_profileImg)
     NetworkImageView iv_profileImg;
+    @BindView(R.id.input_layout_name_editText)
+    TextInputLayout textInputLayoutName;
+    @BindView(R.id.input_layout_email_editText)
+    TextInputLayout textInputLayoutEmail;
+    @BindView(R.id.input_layout_password_editText)
+    TextInputLayout textInputLayoutPassword;
+    @BindView(R.id.input_layout_confirmPass_editText)
+    TextInputLayout textInputLayoutconfirmPass;
+    @BindView(R.id.input_layout_mobile_editText)
+    TextInputLayout textInputLayoutMobile;
     private CustomProgressDialog progressDialog;
     private AlertDialog registrationSuccessDialog;
     private File photoFile;
@@ -78,6 +90,7 @@ public class SignUpActivity extends ImagePickerActivity {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         initView();
+        setTextWatcher();
     }
 
     private void initView() {
@@ -96,12 +109,47 @@ public class SignUpActivity extends ImagePickerActivity {
         });
     }
 
+    private void setTextWatcher() {
+        class GenericTextWatcher extends TextWatcherMediator {
+            private GenericTextWatcher(View view) {
+                super(view);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, View view) {
+                switch (view.getId()) {
+                    case R.id.etName:
+                        textInputLayoutName.setError("");
+                        break;
+                    case R.id.etEmail:
+                        textInputLayoutEmail.setError("");
+                        break;
+                    case R.id.etPassword:
+                        textInputLayoutPassword.setError("");
+                        break;
+                    case R.id.etConfirmPassword:
+                        textInputLayoutconfirmPass.setError("");
+                        break;
+                    case R.id.etMobile:
+                        textInputLayoutMobile.setError("");
+                        break;
+
+                }
+            }
+        }
+        etName.addTextChangedListener(new GenericTextWatcher(etName));
+        etEmail.addTextChangedListener(new GenericTextWatcher(etEmail));
+        etPassword.addTextChangedListener(new GenericTextWatcher(etPassword));
+        etConfirmPassword.addTextChangedListener(new GenericTextWatcher(etConfirmPassword));
+        etMobile.addTextChangedListener(new GenericTextWatcher(etMobile));
+    }
+
     @OnClick(R.id.iv_profileImg)
     void onProfileImgClick() {
         showTakeImagePopup();
     }
 
-    @OnClick(R.id.tvCreateAccount)
+    @OnClick(R.id.btnCreateAccount)
     void onClickCreateAccount() {
         String name = etName.getText().toString();
         String email = etEmail.getText().toString().trim();
@@ -109,17 +157,17 @@ public class SignUpActivity extends ImagePickerActivity {
         String confirmPassword = etConfirmPassword.getText().toString().trim();
         String mobile = etMobile.getText().toString();
         if (TextUtils.isEmpty(name)) {
-            Toast.makeText(this, R.string.name_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
+            textInputLayoutName.setError(getString(R.string.name_can_not_be_left_blank));
         } else if (TextUtils.isEmpty(email)) {
-            Toast.makeText(this, R.string.email_id_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
+            textInputLayoutEmail.setError(getString(R.string.email_id_can_not_be_left_blank));
         } else if (!Common.isValidEmail(email)) {
-            Toast.makeText(this, R.string.invalid_email_id_format, Toast.LENGTH_SHORT).show();
+            textInputLayoutEmail.setError(getString(R.string.invalid_email_id_format));
         } else if (TextUtils.isEmpty(password)) {
-            Toast.makeText(this, R.string.password_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
+            textInputLayoutPassword.setError(getString(R.string.password_can_not_be_left_blank));
         } else if (TextUtils.isEmpty(confirmPassword)) {
-            Toast.makeText(this, R.string.confirm_password_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
+            textInputLayoutconfirmPass.setError(getString(R.string.confirm_password_can_not_be_left_blank));
         } else if (!TextUtils.equals(password, confirmPassword)) {
-            Toast.makeText(this, R.string.password_and_confirm_password_does_not_match, Toast.LENGTH_SHORT).show();
+            textInputLayoutconfirmPass.setError(getString(R.string.password_and_confirm_password_does_not_match));
         } else if (!cbTermsOfUse.isChecked()) {
             Toast.makeText(this, R.string.please_agree_to_terms_of_use, Toast.LENGTH_SHORT).show();
         } else {

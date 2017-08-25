@@ -50,7 +50,7 @@
                 android:id="@+id/etMobile"
                 style="@style/LoginEditStyle"
                 android:layout_marginTop="@dimen/dimen_size_4"
-                android:hint="@string/mobile_number"
+                android:hint="@string/contact_number"
                 android:imeOptions="actionDone"
                 android:inputType="phone"
                 android:maxLength="10" />
