@@ -3,7 +3,11 @@ package com.secreto.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -13,6 +17,7 @@ import com.secreto.base_activities.BaseActivityWithActionBar;
 import com.secreto.common.Common;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
+import com.secreto.mediatorClasses.TextWatcherMediator;
 import com.secreto.responsemodel.BaseResponse;
 import com.secreto.model.User;
 import com.secreto.responsemodel.UserResponse;
@@ -30,8 +35,11 @@ public class LoginActivity extends BaseActivityWithActionBar {
     EditText etEmail;
     @BindView(R.id.etPassword)
     EditText etPassword;
+    @BindView(R.id.input_layout_email_editText)
+    TextInputLayout textInputLayoutEmail;
+    @BindView(R.id.input_layout_password_editText)
+    TextInputLayout textInputLayoutPassword;
     private CustomProgressDialog progressDialog;
-
 
     @Override
     public int getLayoutResource() {
@@ -48,6 +56,7 @@ public class LoginActivity extends BaseActivityWithActionBar {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         initView();
+        setTextWatcher();
     }
 
 
@@ -60,11 +69,11 @@ public class LoginActivity extends BaseActivityWithActionBar {
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(this, R.string.email_id_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
+            textInputLayoutEmail.setError(getString(R.string.email_id_can_not_be_left_blank));
         } else if (!Common.isValidEmail(email)) {
-            Toast.makeText(this, R.string.invalid_email_id_format, Toast.LENGTH_SHORT).show();
+            textInputLayoutEmail.setError(getString(R.string.invalid_email_id_format));
         } else if (TextUtils.isEmpty(password)) {
-            Toast.makeText(this, R.string.password_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
+            textInputLayoutPassword.setError(getString(R.string.password_can_not_be_left_blank));
         } else {
             if (Common.isOnline(this)) {
                 progressDialog.show();
@@ -95,6 +104,24 @@ public class LoginActivity extends BaseActivityWithActionBar {
         }
     }
 
+    private void setTextWatcher() {
+        etEmail.addTextChangedListener(new TextWatcherMediator(etEmail) {
+            @Override
+            public void onTextChanged(CharSequence s, View view) {
+                if (!TextUtils.isEmpty(s.toString())) {
+                    textInputLayoutEmail.setError("");
+                }
+            }
+        });
+        etPassword.addTextChangedListener(new TextWatcherMediator(etPassword) {
+            @Override
+            public void onTextChanged(CharSequence s, View view) {
+                if (!TextUtils.isEmpty(s.toString())) {
+                    textInputLayoutPassword.setError("");
+                }
+            }
+        });
+    }
 
     @OnClick(R.id.tvSignUp)
     void onClickSignUp() {
