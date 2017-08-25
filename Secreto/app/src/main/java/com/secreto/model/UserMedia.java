@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 
 public class UserMedia implements Serializable {
-    @SerializedName("media_id")
+    @SerializedName("mediaId")
     private String media_id;
     @SerializedName("media")
     private String profile_pic;

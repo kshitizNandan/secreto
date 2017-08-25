@@ -7,7 +7,7 @@ import com.secreto.responsemodel.MediaResponse;
 import java.io.Serializable;
 
 public class User extends UserMedia implements Serializable {
-    @SerializedName("user_id")
+    @SerializedName("userId")
     private String userId;
     @SerializedName("name")
     private String name;
@@ -17,7 +17,7 @@ public class User extends UserMedia implements Serializable {
     private String password;
     @SerializedName("contact")
     private String contactNumber;
-    @SerializedName("user_status")
+    @SerializedName("userStatus")
     private String status;
 
     public String getUserId() {

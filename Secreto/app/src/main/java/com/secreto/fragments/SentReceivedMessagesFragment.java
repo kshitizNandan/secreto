@@ -53,7 +53,6 @@ public class SentReceivedMessagesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.bind(getActivity());
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
         }
@@ -62,6 +61,7 @@ public class SentReceivedMessagesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_sent_received_messages, container, false);
+        ButterKnife.bind(this,rootView);
         setRecyclerAdapter();
         return rootView;
     }

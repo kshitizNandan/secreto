@@ -19,7 +19,7 @@ public class MessagesViewHolder extends BaseViewHolder {
 
     public MessagesViewHolder(View itemView) {
         super(itemView);
-        ButterKnife.bind(itemView);
+        ButterKnife.bind(this,itemView);
     }
 
     @Override
