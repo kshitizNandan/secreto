@@ -1,9 +1,15 @@
 package com.secreto.activities;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +18,9 @@ import android.widget.TextView;
 
 import com.secreto.R;
 import com.secreto.base_activities.BaseActivityWithActionBar;
+import com.secreto.common.Constants;
 import com.secreto.common.SharedPreferenceManager;
+import com.secreto.fragments.SentReceivedMessagesFragment;
 import com.secreto.image.ImageCacheManager;
 import com.secreto.model.User;
 import com.secreto.utils.LoginLogoutHandler;
@@ -24,11 +32,15 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 
 public class HomeActivity extends BaseActivityWithActionBar {
-    @BindView(R.id.tv_name)
-    TextView tv_name;
+
     @BindView(R.id.iv_profileImg)
     NetworkImageView iv_profileImg;
     private HomeActivity mActivity;
+    @BindView(R.id.tabBar)
+    TabLayout tabBar;
+    @BindView(R.id.viewPager)
+    ViewPager viewPager;
+    private Fragment sentMessagesFragment, receivedMessagesFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +48,12 @@ public class HomeActivity extends BaseActivityWithActionBar {
         ButterKnife.bind(this);
         setUserData();
         init();
+        initViews();
     }
 
     private void setUserData() {
         User user = SharedPreferenceManager.getUserObject();
         if (user != null) {
-            tv_name.setText("Welcome " + user.getName());
             if (!TextUtils.isEmpty(user.getProfile_pic())) {
                 iv_profileImg.setImageUrl(user.getProfile_pic(), ImageCacheManager.getInstance().getImageLoader());
             } else {
@@ -52,6 +64,11 @@ public class HomeActivity extends BaseActivityWithActionBar {
 
     private void init() {
         mActivity = this;
+    }
+
+    private void initViews() {
+        viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
+        tabBar.setupWithViewPager(viewPager);
     }
 
 
@@ -110,5 +127,43 @@ public class HomeActivity extends BaseActivityWithActionBar {
         return true;
     }
 
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
+
+        ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    sentMessagesFragment = SentReceivedMessagesFragment.newInstance(Constants.SENT);
+                    return sentMessagesFragment;
+                case 1:
+                    receivedMessagesFragment = SentReceivedMessagesFragment.newInstance(Constants.RECEIVED);
+                    return receivedMessagesFragment;
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            String title = "";
+            switch (position) {
+                case 0:
+                    title = getString(R.string.sent);
+                    break;
+                case 1:
+                    title = getString(R.string.received);
+                    break;
+            }
+            return title;
+        }
+    }
 }
 
