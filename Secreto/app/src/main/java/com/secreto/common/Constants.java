@@ -4,6 +4,7 @@ public class Constants {
     public static final String IMAGE = "image";
     public static final String SENT = "Sent";
     public static final String RECEIVED = "Received";
+    public static final String MESSAGE_TYPE = "MessageType";
 
     public class SocialType {
         public static final String FACEBOOK = "FACEBOOK";

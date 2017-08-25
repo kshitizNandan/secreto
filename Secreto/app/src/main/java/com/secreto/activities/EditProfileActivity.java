@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.secreto.R;
-import com.secreto.base_activities.BaseActivityWithActionBar;
 import com.secreto.base_activities.ImagePickerActivity;
 import com.secreto.common.Common;
 import com.secreto.data.DataManager;
@@ -152,7 +151,7 @@ public class EditProfileActivity extends ImagePickerActivity {
         String name = etName.getText().toString();
         String mobile = etMobile.getText().toString();
         if (TextUtils.isEmpty(name)) {
-            Toast.makeText(this, R.string.name_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.nick_name_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
         } else if (!TextUtils.isEmpty(mobile)) {
             Toast.makeText(this, R.string.mobile_phone_number_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
         } else if (mobile.length() < 10) {

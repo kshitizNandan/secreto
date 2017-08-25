@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.secreto.R;
 import com.secreto.adapters.SentOrReceivedMessagesRecyclerAdapter;
 import com.secreto.common.Common;
+import com.secreto.common.Constants;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
 import com.secreto.responsemodel.BaseResponse;
@@ -30,9 +31,6 @@ import butterknife.OnClick;
 
 
 public class SentReceivedMessagesFragment extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
-    private String mParam1;
-    private View rootView;
     @BindView(R.id.llForOfflineScreen)
     LinearLayout llForOfflineScreen;
     @BindView(R.id.rlForLoadingScreen)
@@ -45,8 +43,8 @@ public class SentReceivedMessagesFragment extends Fragment {
     TextView tvEmptyText;
     @BindView(R.id.viewFlipper)
     ViewFlipper viewFlipper;
-    private String messageType = "Received";
     private int offset;
+    private String messageType;
     private SentOrReceivedMessagesRecyclerAdapter nAdapter;
     private ArrayList<Object> objectArrayList = new ArrayList<>();
 
@@ -54,22 +52,22 @@ public class SentReceivedMessagesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            messageType = getArguments().getString(Constants.MESSAGE_TYPE);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_sent_received_messages, container, false);
-        ButterKnife.bind(this,rootView);
+        View rootView = inflater.inflate(R.layout.fragment_sent_received_messages, container, false);
+        ButterKnife.bind(this, rootView);
         setRecyclerAdapter();
         return rootView;
     }
 
-    public static SentReceivedMessagesFragment newInstance(String param1) {
+    public static SentReceivedMessagesFragment newInstance(String messageType) {
         SentReceivedMessagesFragment fragment = new SentReceivedMessagesFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putString(Constants.MESSAGE_TYPE, messageType);
         fragment.setArguments(args);
         return fragment;
     }

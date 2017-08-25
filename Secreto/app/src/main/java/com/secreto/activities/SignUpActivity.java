@@ -41,6 +41,8 @@ public class SignUpActivity extends ImagePickerActivity {
     private static final String TAG = SignUpActivity.class.getSimpleName();
     @BindView(R.id.etName)
     EditText etName;
+    @BindView(R.id.etUserName)
+    EditText etUserName;
     @BindView(R.id.etEmail)
     EditText etEmail;
     @BindView(R.id.etPassword)
@@ -59,6 +61,8 @@ public class SignUpActivity extends ImagePickerActivity {
     TextInputLayout textInputLayoutName;
     @BindView(R.id.input_layout_email_editText)
     TextInputLayout textInputLayoutEmail;
+    @BindView(R.id.input_layout_userName_editText)
+    TextInputLayout textInputLayoutuserName;
     @BindView(R.id.input_layout_password_editText)
     TextInputLayout textInputLayoutPassword;
     @BindView(R.id.input_layout_confirmPass_editText)
@@ -120,6 +124,9 @@ public class SignUpActivity extends ImagePickerActivity {
                     case R.id.etName:
                         textInputLayoutName.setError("");
                         break;
+                    case R.id.etUserName:
+                        textInputLayoutuserName.setError("");
+                        break;
                     case R.id.etEmail:
                         textInputLayoutEmail.setError("");
                         break;
@@ -137,6 +144,7 @@ public class SignUpActivity extends ImagePickerActivity {
             }
         }
         etName.addTextChangedListener(new GenericTextWatcher(etName));
+        etUserName.addTextChangedListener(new GenericTextWatcher(etUserName));
         etEmail.addTextChangedListener(new GenericTextWatcher(etEmail));
         etPassword.addTextChangedListener(new GenericTextWatcher(etPassword));
         etConfirmPassword.addTextChangedListener(new GenericTextWatcher(etConfirmPassword));
@@ -151,12 +159,15 @@ public class SignUpActivity extends ImagePickerActivity {
     @OnClick(R.id.btnCreateAccount)
     void onClickCreateAccount() {
         String name = etName.getText().toString();
+        String userName = etUserName.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         String confirmPassword = etConfirmPassword.getText().toString().trim();
         String mobile = etMobile.getText().toString();
         if (TextUtils.isEmpty(name)) {
-            textInputLayoutName.setError(getString(R.string.name_can_not_be_left_blank));
+            textInputLayoutName.setError(getString(R.string.nick_name_can_not_be_left_blank));
+        } else if (TextUtils.isEmpty(userName)) {
+            textInputLayoutuserName.setError(getString(R.string.user_name_can_not_be_left_blank));
         } else if (TextUtils.isEmpty(email)) {
             textInputLayoutEmail.setError(getString(R.string.email_id_can_not_be_left_blank));
         } else if (!Common.isValidEmail(email)) {
@@ -172,7 +183,7 @@ public class SignUpActivity extends ImagePickerActivity {
         } else {
             if (Common.isOnline(this)) {
                 progressDialog.show();
-                DataManager.getInstance().signUp(name, email, password, mobile, new ResultListenerNG<UserResponse>() {
+                DataManager.getInstance().signUp(name,userName, email, password, mobile, new ResultListenerNG<UserResponse>() {
                     @Override
                     public void onSuccess(UserResponse response) {
                         Logger.d(TAG, "signUp onSuccess : " + response);

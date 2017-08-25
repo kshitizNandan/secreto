@@ -61,6 +61,21 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_userName_editText"
+                style="@style/DefaultTextInputLayoutStyle"
+                app:errorEnabled="true"
+                app:hintEnabled="true">
+
+                <com.secreto.widgets.CustomFontEditText
+                    android:id="@+id/etUserName"
+                    style="@style/DefaultEditTextStyle"
+                    android:hint="@string/user_name"
+                    android:imeOptions="actionNext"
+                    android:inputType="textEmailAddress" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_email_editText"
                 style="@style/DefaultTextInputLayoutStyle"
                 app:errorEnabled="true"
@@ -74,6 +89,7 @@
                     android:inputType="textEmailAddress" />
 
             </android.support.design.widget.TextInputLayout>
+
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_password_editText"

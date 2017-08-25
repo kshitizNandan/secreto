@@ -73,7 +73,7 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
         } else {
             if (Common.isOnline(this)) {
                 progressDialog.show();
-                String userId = "";
+                String userId = "79";
                 String messageClue = "";
                 DataManager.getInstance().sendMessage(userId, message, messageClue, new ResultListenerNG<BaseResponse>() {
                     @Override

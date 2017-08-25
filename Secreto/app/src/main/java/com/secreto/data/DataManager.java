@@ -65,9 +65,10 @@ public class DataManager {
         makeRequest(Request.Method.POST, URL_LOGIN, params, UserResponse.class, resultListenerNG);
     }
 
-    public void signUp(String name, String email, String password, String mobile, ResultListenerNG<UserResponse> resultListenerNG) {
+    public void signUp(String name, String userName, String email, String password, String mobile, ResultListenerNG<UserResponse> resultListenerNG) {
         HashMap<Object, Object> params = new HashMap<>();
         params.put(ApiConstants.NAME, name);
+        params.put(ApiConstants.USER_NAME, userName);
         params.put(ApiConstants.EMAIL, email);
         params.put(ApiConstants.PASSWORD, password);
         params.put(ApiConstants.CONTACT, mobile);
@@ -81,13 +82,14 @@ public class DataManager {
         params.put(ApiConstants.TYPE, Constants.IMAGE);
         makeMultipartRequest(URL_UPLOAD_IMAGE, params, MediaResponse.class, resultListenerNG, ApiConstants.FILE, file);
     }
-    public void sendMessage(String userId, String message, String messageClue, ResultListenerNG<BaseResponse> resultListenerNG) {
+
+    public void sendMessage(String toUserId, String message, String messageClue, ResultListenerNG<BaseResponse> resultListenerNG) {
         HashMap<Object, Object> params = new HashMap<>();
-        String fromUserId= SharedPreferenceManager.getUserId();
+        String userId = SharedPreferenceManager.getUserId();
         params.put(ApiConstants.USER_ID, userId);
         params.put(ApiConstants.MESSAGE, message);
         params.put(ApiConstants.MESSAGE_CLUE, messageClue);
-        params.put(ApiConstants.FROM_USER_ID, fromUserId);
+        params.put(ApiConstants.FROM_USER_ID, toUserId);
         makeRequest(Request.Method.POST, SEND_MESSAGE, params, BaseResponse.class, resultListenerNG);
     }
 
