@@ -1,9 +1,15 @@
 package com.secreto.activities;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +34,21 @@ public class HomeActivity extends BaseActivityWithActionBar {
     @BindView(R.id.iv_profileImg)
     NetworkImageView iv_profileImg;
     private HomeActivity mActivity;
+    @BindView(R.id.tabBar)
+    TabLayout tabBar;
+    @BindView(R.id.viewPager)
+    ViewPager viewPager;
+    private Fragment sentMessagesFragment, receivedMessagesFragment;
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+
+            }
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +56,7 @@ public class HomeActivity extends BaseActivityWithActionBar {
         ButterKnife.bind(this);
         setUserData();
         init();
+        initViews();
     }
 
     private void setUserData() {
@@ -50,6 +72,11 @@ public class HomeActivity extends BaseActivityWithActionBar {
 
     private void init() {
         mActivity = this;
+    }
+
+    private void initViews() {
+        viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
+        tabBar.setupWithViewPager(viewPager);
     }
 
 
@@ -107,6 +134,49 @@ public class HomeActivity extends BaseActivityWithActionBar {
         contentView.findViewById(R.id.tv_logout).setOnClickListener(listener);
         return true;
     }
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
 
+        ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    inProcessOrderFragment = MyOrdersFragment.newInstance(Constants.My_ORDER_TYPE.PROCESS);
+                    return inProcessOrderFragment;
+                case 1:
+                    completedOrderFragment = MyOrdersFragment.newInstance(Constants.My_ORDER_TYPE.COMPLETE);
+                    return completedOrderFragment;
+                case 2:
+                    cancelOrderFragment = MyOrdersFragment.newInstance(Constants.My_ORDER_TYPE.CANCEL);
+                    return cancelOrderFragment;
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            String title = "";
+            switch (position) {
+                case 0:
+                    title = getString(R.string.in_process);
+                    break;
+                case 1:
+                    title = getString(R.string.completed);
+                    break;
+                case 2:
+                    title = getString(R.string.cancel);
+                    break;
+            }
+            return title;
+        }
+    }
 }
 
