@@ -1,6 +1,5 @@
 package com.secreto.activities;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +16,7 @@ import android.view.Window;
 import android.widget.TextView;
 
 import com.secreto.R;
+import com.secreto.adapters.MyFragmentPagerAdapter;
 import com.secreto.base_activities.BaseActivityWithActionBar;
 import com.secreto.common.Constants;
 import com.secreto.common.SharedPreferenceManager;
@@ -25,6 +25,8 @@ import com.secreto.image.ImageCacheManager;
 import com.secreto.model.User;
 import com.secreto.utils.LoginLogoutHandler;
 import com.secreto.utils.NetworkImageView;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,7 +42,7 @@ public class HomeActivity extends BaseActivityWithActionBar {
     TabLayout tabBar;
     @BindView(R.id.viewPager)
     ViewPager viewPager;
-    private Fragment sentMessagesFragment, receivedMessagesFragment;
+    ArrayList<Fragment> fragmentArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +69,10 @@ public class HomeActivity extends BaseActivityWithActionBar {
     }
 
     private void initViews() {
-        viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
+        String[] titles = getResources().getStringArray(R.array.gender_types);
+        fragmentArrayList.add(SentReceivedMessagesFragment.newInstance(Constants.SENT));
+        fragmentArrayList.add(SentReceivedMessagesFragment.newInstance(Constants.RECEIVED));
+        viewPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentArrayList, titles));
         tabBar.setupWithViewPager(viewPager);
     }
 
@@ -131,43 +136,5 @@ public class HomeActivity extends BaseActivityWithActionBar {
         return true;
     }
 
-    private class ViewPagerAdapter extends FragmentPagerAdapter {
-
-        ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    sentMessagesFragment = SentReceivedMessagesFragment.newInstance(Constants.SENT);
-                    return sentMessagesFragment;
-                case 1:
-                    receivedMessagesFragment = SentReceivedMessagesFragment.newInstance(Constants.RECEIVED);
-                    return receivedMessagesFragment;
-            }
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            return 2;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            String title = "";
-            switch (position) {
-                case 0:
-                    title = getString(R.string.sent);
-                    break;
-                case 1:
-                    title = getString(R.string.received);
-                    break;
-            }
-            return title;
-        }
-    }
 }
 

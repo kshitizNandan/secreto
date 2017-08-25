@@ -4,8 +4,4 @@
     <string name="select_video">Select video</string>
     <string name="take_video">Take video</string>
     <string name="video_length_error">Video length error</string>
-    <string-array name="gender_types">
-        <item>MALE</item>
-        <item>FEMALE</item>
-    </string-array>
 </resources>
