@@ -42,7 +42,7 @@
                 style="@style/LoginEditStyle"
                 android:layout_marginTop="@dimen/dimen_size_4"
                 android:enabled="false"
-                android:hint="@string/email_id"
+                android:hint="@string/email_id_user_name"
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress" />
 

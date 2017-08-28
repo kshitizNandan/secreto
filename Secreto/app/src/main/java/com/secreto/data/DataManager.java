@@ -25,9 +25,10 @@ public class DataManager {
     private static final String URL_LOGIN = BASE_SERVER_ADDRESS + "login";
     private static final String URL_REGISTER = BASE_SERVER_ADDRESS + "register";
     private static final String URL_UPLOAD_IMAGE = BASE_SERVER_ADDRESS + "uploadImg";
-    private static final String SEND_MESSAGE = BASE_SERVER_ADDRESS + "message";
+    private static final String SEND_MESSAGE = BASE_SERVER_ADDRESS + "sendMessage";
 
     private static final String URL_GET_SENT_OR_RECEIVED_MSGS = BASE_SERVER_ADDRESS + "getSendOrReceivedMsgs";
+    private static final String URL_FIND_USER = BASE_SERVER_ADDRESS + "findUser";
 
     private static DataManager singleton;
 
@@ -89,7 +90,8 @@ public class DataManager {
         params.put(ApiConstants.USER_ID, userId);
         params.put(ApiConstants.MESSAGE, message);
         params.put(ApiConstants.MESSAGE_CLUE, messageClue);
-        params.put(ApiConstants.FROM_USER_ID, toUserId);
+        params.put(ApiConstants.TO_USER_ID, toUserId);
+        Logger.v(TAG, SEND_MESSAGE);
         makeRequest(Request.Method.POST, SEND_MESSAGE, params, BaseResponse.class, resultListenerNG);
     }
 
@@ -100,6 +102,13 @@ public class DataManager {
     public void getSendOrReceivedMsgs(String type, int offset, ResultListenerNG<SendOrReceivedMessageResponse> listenerNG) {
         String userId = SharedPreferenceManager.getUserObject().getUserId();
         String url = String.format(Locale.ENGLISH, URL_GET_SENT_OR_RECEIVED_MSGS + "?userId=%s&type=%s&offset=%d", userId, type, offset);
+        Logger.v(TAG, url);
         makeRequest(Request.Method.GET, url, null, SendOrReceivedMessageResponse.class, listenerNG);
+    }
+
+    public void findUser(String userName, ResultListenerNG<UserResponse> resultListenerNG) {
+        HashMap<Object, Object> params = new HashMap<>();
+        params.put(ApiConstants.USER_NAME, userName);
+        makeRequest(Request.Method.POST, URL_FIND_USER, params, UserResponse.class, resultListenerNG);
     }
 }

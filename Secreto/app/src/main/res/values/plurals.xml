@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="hour_plural">
+        <item quantity="one">%1$s hour</item>
+        <item quantity="other">%1$s hours</item>
+    </plurals>
+    <plurals name="minute_plural">
+        <item quantity="one">%1$s minute</item>
+        <item quantity="other">%1$s minutes</item>
+    </plurals>
+</resources>

@@ -1,7 +1,9 @@
 package com.secreto.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -36,20 +38,22 @@ public class SentReceivedMessagesFragment extends Fragment {
     @BindView(R.id.rlForLoadingScreen)
     RelativeLayout rlForLoadingScreen;
     @BindView(R.id.svMain)
-    LinearLayout svMain;
+    RelativeLayout svMain;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.tvEmptyText)
     TextView tvEmptyText;
     @BindView(R.id.viewFlipper)
     ViewFlipper viewFlipper;
+    @BindView(R.id.swipeRefresh)
+    SwipeRefreshLayout swipeRefresh;
     private int offset;
     private String messageType;
     private SentOrReceivedMessagesRecyclerAdapter nAdapter;
     private ArrayList<Object> objectArrayList = new ArrayList<>();
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             messageType = getArguments().getString(Constants.MESSAGE_TYPE);
@@ -61,6 +65,7 @@ public class SentReceivedMessagesFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_sent_received_messages, container, false);
         ButterKnife.bind(this, rootView);
         setRecyclerAdapter();
+        init();
         return rootView;
     }
 
@@ -70,6 +75,16 @@ public class SentReceivedMessagesFragment extends Fragment {
         args.putString(Constants.MESSAGE_TYPE, messageType);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    private void init() {
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                offset = 0;
+                getSendOrReceivedMsgApiCall();
+            }
+        });
     }
 
     private void setRecyclerAdapter() {
@@ -84,21 +99,31 @@ public class SentReceivedMessagesFragment extends Fragment {
         getSendOrReceivedMsgApiCall();
     }
 
-    private void getSendOrReceivedMsgApiCall() {
+    public void getSendOrReceivedMsgApiCall() {
         if (Common.isOnline(getActivity())) {
-            setLoadingLayout();
+            if (!swipeRefresh.isRefreshing())
+                setLoadingLayout();
+            tvEmptyText.setVisibility(View.GONE);
             DataManager.getInstance().getSendOrReceivedMsgs(messageType, offset, new ResultListenerNG<SendOrReceivedMessageResponse>() {
                 @Override
                 public void onSuccess(SendOrReceivedMessageResponse response) {
+                    if (offset == 0) {
+                        objectArrayList.clear();
+                    }
                     if (response.getMessageArrayList() != null && !response.getMessageArrayList().isEmpty()) {
                         objectArrayList.addAll(response.getMessageArrayList());
                         nAdapter.notifyDataSetChanged();
+                    } else {
+                        tvEmptyText.setText(response.getMessage());
+                        tvEmptyText.setVisibility(View.VISIBLE);
                     }
                     setMainLayout();
+                    swipeRefresh.setRefreshing(false);
                 }
 
                 @Override
                 public void onError(VolleyError error) {
+                    swipeRefresh.setRefreshing(false);
                     BaseResponse baseResponse = Common.getStatusMessage(error);
                     if (baseResponse == null || TextUtils.isEmpty(baseResponse.getMessage())) {
                         setOfflineLayout(getString(R.string.something_went_wrong));

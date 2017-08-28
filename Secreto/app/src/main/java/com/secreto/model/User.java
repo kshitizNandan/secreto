@@ -11,65 +11,48 @@ public class User extends UserMedia implements Serializable {
     private String userId;
     @SerializedName("name")
     private String name;
+    @SerializedName("userName")
+    private String userName;
     @SerializedName("email")
-    private String emailId;
+    private String email;
+    @SerializedName("contact")
+    private String contact;
     @SerializedName("password")
     private String password;
-    @SerializedName("contact")
-    private String contactNumber;
     @SerializedName("userStatus")
-    private String status;
+    private String userStatus;
+    @SerializedName("createdDate")
+    private String createdDate;
 
     public String getUserId() {
         return userId;
-    }
-
-    public String getEmailId() {
-        return emailId;
-    }
-
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getContact() {
+        return contact;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getUserStatus() {
+        return userStatus;
     }
 
-    public String getContactNumber() {
-        return contactNumber;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId='" + userId + '\'' +
-                ", emailId='" + emailId + '\'' +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", contactNumber='" + contactNumber + '\'' +
-                ", status='" + status + '\'' +
-                '}';
+    public String getCreatedDate() {
+        return createdDate;
     }
 }

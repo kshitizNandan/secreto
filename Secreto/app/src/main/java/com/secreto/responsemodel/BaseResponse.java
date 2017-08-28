@@ -19,20 +19,11 @@ public class BaseResponse implements Serializable {
         return message;
     }
 
-    public int getStatusCode() {
-        return statusCode;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
-    }
-
-    @Override
-    public String toString() {
-        return "BaseResponse{" +
-                "status='" + status + '\'' +
-                ", message='" + message + '\'' +
-                ", statusCode=" + statusCode +
-                '}';
     }
 }

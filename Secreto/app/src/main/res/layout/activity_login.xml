@@ -28,16 +28,16 @@
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_email_editText"
             style="@style/DefaultTextInputLayoutStyle"
-            android:layout_marginTop="@dimen/dimen_size_20"
+            android:layout_marginTop="@dimen/dimen_size_30"
             app:errorEnabled="true"
             app:hintEnabled="true">
 
             <com.secreto.widgets.CustomFontEditText
                 android:id="@+id/etEmail"
                 style="@style/DefaultEditTextStyle"
-                android:hint="@string/email_id"
+                android:hint="@string/email_id_user_name"
                 android:imeOptions="actionNext"
-                android:inputType="textEmailAddress" />
+                android:inputType="textPersonName" />
 
         </android.support.design.widget.TextInputLayout>
 

@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.secreto.R;
 import com.secreto.adapters.MyFragmentPagerAdapter;
 import com.secreto.base_activities.BaseActivityWithActionBar;
+import com.secreto.common.Common;
 import com.secreto.common.Constants;
 import com.secreto.common.SharedPreferenceManager;
 import com.secreto.fragments.SentReceivedMessagesFragment;
@@ -38,6 +39,7 @@ import butterknife.OnLongClick;
 
 public class HomeActivity extends BaseActivityWithActionBar {
 
+    private static final int RC_SEND_MESSAGE = 200;
     @BindView(R.id.iv_profileImg)
     NetworkImageView iv_profileImg;
     private HomeActivity mActivity;
@@ -48,6 +50,7 @@ public class HomeActivity extends BaseActivityWithActionBar {
     @BindView(R.id.fabComposeMessage)
     FloatingActionButton fabComposeMessage;
     ArrayList<Fragment> fragmentArrayList = new ArrayList<>();
+    private boolean exitFlag = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,15 +78,17 @@ public class HomeActivity extends BaseActivityWithActionBar {
 
     private void initViews() {
         String[] titles = getResources().getStringArray(R.array.message_types);
-        fragmentArrayList.add(SentReceivedMessagesFragment.newInstance(Constants.SENT));
         fragmentArrayList.add(SentReceivedMessagesFragment.newInstance(Constants.RECEIVED));
+        fragmentArrayList.add(SentReceivedMessagesFragment.newInstance(Constants.SENT));
         viewPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentArrayList, titles));
         tabBar.setupWithViewPager(viewPager);
         // fab compose Click
         fabComposeMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateMessageActivity.startActivity(HomeActivity.this);
+                Intent intent = new Intent(mActivity, FindUserActivity.class);
+                startActivityForResult(intent, RC_SEND_MESSAGE);
+                overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
             }
         });
     }
@@ -149,5 +154,28 @@ public class HomeActivity extends BaseActivityWithActionBar {
         return true;
     }
 
+
+    @Override
+    public void onBackPressed() {
+        if (exitFlag) {
+            Toast.makeText(mActivity, getString(R.string.back_pressagain_to_exit), Toast.LENGTH_SHORT).show();
+            exitFlag = false;
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        if (!fragmentArrayList.isEmpty()) {
+//            for (Fragment fragment : fragmentArrayList) {
+//                if (fragment instanceof SentReceivedMessagesFragment) {
+//                    SentReceivedMessagesFragment fragment1 = (SentReceivedMessagesFragment) fragment;
+//                    fragment1.getSendOrReceivedMsgApiCall();
+//                }
+//            }
+//        }
+//    }
 }
 

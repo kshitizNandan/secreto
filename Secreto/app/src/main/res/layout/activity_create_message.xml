@@ -45,8 +45,8 @@
                 android:hint="@string/leave_a_message"
                 android:imeOptions="actionNext"
                 android:inputType="textMultiLine|textCapSentences"
-                android:maxLines="15"
-                android:minLines="10" />
+                android:lines="5"
+                android:maxLines="5" />
 
             <com.secreto.widgets.CustomFontButton
                 android:id="@+id/tvSend"

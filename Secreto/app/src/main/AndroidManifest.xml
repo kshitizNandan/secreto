@@ -22,7 +22,7 @@
         <!-- for File Uri Exposed Error -->
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.secreto"
+            android:authorities="com.secreto.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -71,6 +71,7 @@
             android:windowSoftInputMode="adjustPan|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -101,6 +102,11 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.CreateMessageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activities.FindUserActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />

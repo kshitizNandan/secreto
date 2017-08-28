@@ -9,31 +9,37 @@
 
     <include layout="@layout/home_toolbar" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabBar"
             style="@style/TabStyle" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_size_1"
+            android:background="@color/gray" />
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/tabBar">
+            android:layout_height="match_parent">
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabComposeMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_margin="@dimen/dimen_size_10"
+                app:srcCompat="@android:drawable/ic_dialog_email" />
         </RelativeLayout>
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabComposeMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="@dimen/dimen_size_10"
-            app:srcCompat="@android:drawable/ic_dialog_email" />
-    </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

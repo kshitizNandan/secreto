@@ -10,6 +10,6 @@ public class ApiConstants {
     public static final String TYPE = "type";
     public static final String MESSAGE = "message";
     public static final String MESSAGE_CLUE = "messageClue";
-    public static final String FROM_USER_ID = "fromUserId";
+    public static final String TO_USER_ID = "toUserId";
     public static final String USER_NAME = "userName";
 }

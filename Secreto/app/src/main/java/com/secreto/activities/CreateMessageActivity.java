@@ -2,6 +2,7 @@ package com.secreto.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -16,9 +17,13 @@ import com.android.volley.VolleyError;
 import com.secreto.R;
 import com.secreto.base_activities.BaseActivityWithActionBar;
 import com.secreto.common.Common;
+import com.secreto.common.Constants;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
+import com.secreto.image.ImageCacheManager;
+import com.secreto.model.User;
 import com.secreto.responsemodel.BaseResponse;
+import com.secreto.utils.CustomProgressDialog;
 import com.secreto.utils.Logger;
 import com.secreto.utils.NetworkImageView;
 
@@ -27,14 +32,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class CreateMessageActivity extends BaseActivityWithActionBar {
-    private static final String TAG = CreateMessageActivity.class.getSimpleName();
     @BindView(R.id.iv_profileImg)
     NetworkImageView iv_profileImg;
     @BindView(R.id.tvUserName)
     TextView tvUserName;
     @BindView(R.id.etMessage)
     EditText etMessage;
-    private ProgressDialog progressDialog;
+    private CustomProgressDialog progressDialog;
+    private String userId;
+    private Activity mActivity;
 
     @Override
 
@@ -46,9 +52,15 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
     }
 
     private void init() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(getString(R.string.please_wait));
-        progressDialog.setCancelable(false);
+        mActivity = this;
+        progressDialog = new CustomProgressDialog(this);
+        iv_profileImg.setDefaultImageResId(R.drawable.default_user);
+        User user = (User) getIntent().getSerializableExtra(Constants.USER);
+        if (user != null) {
+            this.userId = user.getUserId();
+            tvUserName.setText(user.getName());
+            iv_profileImg.setImageUrl(user.getProfile_pic(), ImageCacheManager.getInstance().getImageLoader());
+        }
     }
 
     private void initView() {
@@ -60,10 +72,6 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
         return R.layout.activity_create_message;
     }
 
-    public static void startActivity(Activity activity) {
-        Intent intent = new Intent(activity, CreateMessageActivity.class);
-        activity.startActivity(intent);
-    }
 
     @OnClick(R.id.tvSend)
     void sendMessage() {
@@ -73,14 +81,18 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
         } else {
             if (Common.isOnline(this)) {
                 progressDialog.show();
-                String userId = "79";
                 String messageClue = "";
                 DataManager.getInstance().sendMessage(userId, message, messageClue, new ResultListenerNG<BaseResponse>() {
                     @Override
                     public void onSuccess(BaseResponse response) {
                         progressDialog.hide();
-                        Logger.d(TAG, "Contact Us onSuccess : " + response);
-                        finish();
+                        Common.showAlertDialog(mActivity, response.getMessage(), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                onBackPress();
+                            }
+                        });
                     }
 
                     @Override
@@ -98,5 +110,11 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
                 Toast.makeText(this, R.string.check_your_internet_connection, Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    protected void onBackPress() {
+        finish();
+        overridePendingTransition(R.anim.no_animation, R.anim.out_from_bottom);
     }
 }

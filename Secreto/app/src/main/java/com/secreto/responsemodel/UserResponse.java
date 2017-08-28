@@ -16,11 +16,4 @@ public class UserResponse extends BaseResponse implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
-
-    @Override
-    public String toString() {
-        return "UserResponse{" +
-                "user=" + user +
-                '}';
-    }
 }

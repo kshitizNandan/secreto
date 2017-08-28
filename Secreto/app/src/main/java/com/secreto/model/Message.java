@@ -13,12 +13,14 @@ public class Message implements Serializable {
     private String messageId;
     @SerializedName("userId")
     private String userId;
-    @SerializedName("fromUserId")
-    private String fromUserId;
+    @SerializedName("toUserId")
+    private String toUserId;
     @SerializedName("message")
     private String message;
     @SerializedName("messageClue")
     private String messageClue;
+    @SerializedName("createdDate")
+    private String createdDate;
 
     public String getMessageId() {
         return messageId;
@@ -28,8 +30,12 @@ public class Message implements Serializable {
         return userId;
     }
 
-    public String getFromUserId() {
-        return fromUserId;
+    public String getToUserId() {
+        return toUserId;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
     }
 
     public String getMessage() {

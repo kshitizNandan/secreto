@@ -13,7 +13,13 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
 import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 
@@ -45,6 +51,19 @@ public class Common {
 
 
     public static BaseResponse getStatusMessage(VolleyError error) {
+        if (error instanceof TimeoutError) {
+            Logger.e(TAG, "TimeoutError");
+        } else if (error instanceof NoConnectionError) {
+            Logger.e(TAG, "NoConnectionError");
+        } else if (error instanceof AuthFailureError) {
+            Logger.e(TAG, "AuthFailureError");
+        } else if (error instanceof ServerError) {
+            Logger.e(TAG, "ServerError");
+        } else if (error instanceof NetworkError) {
+            Logger.e(TAG, "NetworkError");
+        } else if (error instanceof ParseError) {
+            Logger.e(TAG, "ParseError");
+        }
         if (error != null && error.networkResponse != null) {
             try {
                 NetworkResponse response = error.networkResponse;
@@ -52,9 +71,7 @@ public class Common {
                 BaseResponse statusCode = new Gson().fromJson(json, BaseResponse.class);
                 statusCode.setStatusCode(response.statusCode);
                 return statusCode;
-            } catch (UnsupportedEncodingException e) {
-                Logger.e(TAG, "Exception : " + e);
-            } catch (JsonSyntaxException e) {
+            } catch (Exception e) {
                 Logger.e(TAG, "Exception : " + e);
             }
         }

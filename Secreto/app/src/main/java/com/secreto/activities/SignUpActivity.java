@@ -183,7 +183,7 @@ public class SignUpActivity extends ImagePickerActivity {
         } else {
             if (Common.isOnline(this)) {
                 progressDialog.show();
-                DataManager.getInstance().signUp(name,userName, email, password, mobile, new ResultListenerNG<UserResponse>() {
+                DataManager.getInstance().signUp(name, userName, email, password, mobile, new ResultListenerNG<UserResponse>() {
                     @Override
                     public void onSuccess(UserResponse response) {
                         Logger.d(TAG, "signUp onSuccess : " + response);
@@ -293,6 +293,7 @@ public class SignUpActivity extends ImagePickerActivity {
         Intent homeIntent = new Intent(this, HomeActivity.class);
         homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(homeIntent);
+        Common.hideKeyboard(this, etMobile);
     }
 
 }
