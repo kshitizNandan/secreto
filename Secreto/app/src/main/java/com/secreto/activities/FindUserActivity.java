@@ -15,6 +15,7 @@ import com.secreto.R;
 import com.secreto.base_activities.BaseActivityWithActionBar;
 import com.secreto.common.Common;
 import com.secreto.common.Constants;
+import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
 import com.secreto.mediatorClasses.TextWatcherMediator;
@@ -78,6 +79,8 @@ public class FindUserActivity extends BaseActivityWithActionBar {
         String userName = etUserName.getText().toString().trim();
         if (TextUtils.isEmpty(userName)) {
             input_layout_userName_editText.setError(getString(R.string.user_name_can_not_be_left_blank));
+        } else if (userName.equalsIgnoreCase(SharedPreferenceManager.getUserObject().getName()) || userName.equalsIgnoreCase(SharedPreferenceManager.getUserObject().getEmail())) {
+            input_layout_userName_editText.setError(getString(R.string.you_can_not_send_message_to_yourself));
         } else {
             if (Common.isOnline(mActivity)) {
                 progressDialog.show();
