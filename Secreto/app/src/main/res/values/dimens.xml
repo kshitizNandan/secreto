@@ -95,5 +95,6 @@
     <dimen name="dimen_size_45">45dp</dimen>
     <dimen name="dimen_size_282">282dp</dimen>
     <dimen name="dimen_size_174">80dp</dimen>
+    <dimen name="text_size_40">40sp</dimen>
 
 </resources>
