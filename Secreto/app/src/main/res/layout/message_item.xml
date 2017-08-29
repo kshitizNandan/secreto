@@ -36,8 +36,8 @@
                 android:layout_alignRight="@+id/tv_message"
                 android:gravity="bottom"
                 android:text="time"
-                android:textColor="@color/dark_gray"
-                android:textSize="@dimen/text_size_16" />
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/text_size_12" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
