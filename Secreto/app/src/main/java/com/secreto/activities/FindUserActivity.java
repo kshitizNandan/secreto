@@ -95,6 +95,7 @@ public class FindUserActivity extends BaseActivityWithActionBar {
                             overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
                             finish();
                         } else {
+
                             input_layout_userName_editText.setError(response.getMessage());
                         }
                     }

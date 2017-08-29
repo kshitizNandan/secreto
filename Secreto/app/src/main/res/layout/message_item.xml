@@ -30,10 +30,11 @@
             <com.secreto.widgets.CustomFontTextView
                 android:id="@+id/tv_time"
                 style="@style/DefaultTextViewStyle"
-                android:layout_width="wrap_content"
                 android:layout_alignBottom="@+id/tv_message"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_alignRight="@+id/tv_message"
+                android:layout_alignEnd="@+id/tv_message"
                 android:gravity="bottom"
                 android:text="time"
                 android:textColor="@color/colorPrimaryDark"
