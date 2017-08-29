@@ -39,8 +39,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         Animation anim = AnimationUtils.loadAnimation(this, R.anim.alpha);
         anim.reset();
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.lLMain);
-        linearLayout .clearAnimation();
-        linearLayout .startAnimation(anim);
+        linearLayout.clearAnimation();
+        linearLayout.startAnimation(anim);
 
         anim = AnimationUtils.loadAnimation(this, R.anim.translate);
         anim.reset();
@@ -57,6 +57,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
                 }
                 startActivity(intent);
+                overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
                 finish();
             }
         }, SPLASH_TIME_OUT);
