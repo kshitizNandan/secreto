@@ -19,16 +19,11 @@ import com.secreto.common.SharedPreferenceManager;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
-
-    protected AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
-    protected AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.0f);
-
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         Window window = getWindow();
         window.setFormat(PixelFormat.RGBA_8888);
     }
-
     /**
      * Called when the activity is first created.
      */
@@ -71,11 +66,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
             }
         });
-        fadeIn.setDuration(3000);
-        fadeIn.setFillAfter(true);
-        fadeOut.setDuration(3000);
-        fadeOut.setFillAfter(true);
-        fadeOut.setStartOffset(4200 + fadeIn.getStartOffset());
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -89,6 +79,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
                 finish();
             }
-        }, 3000);
+        }, 4000);
     }
 }

@@ -88,7 +88,6 @@ public class SentReceivedMessagesFragment extends Fragment {
     }
 
     private void setRecyclerAdapter() {
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         nAdapter = new SentOrReceivedMessagesRecyclerAdapter(objectArrayList);
         recyclerView.setAdapter(nAdapter);
         getSendOrReceivedMsgApiCall();
