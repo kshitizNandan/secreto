@@ -2,9 +2,9 @@
 <ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/viewFlipper"
-    android:background="@color/colorPrimary"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     android:orientation="vertical">
 
     <include layout="@layout/loading_screen_without_text" />
@@ -25,7 +25,6 @@
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerView"
-                    android:layout_marginBottom="@dimen/dimen_size_10"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layoutManager="LinearLayoutManager" />
