@@ -35,7 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FindUserActivity extends BaseActivityWithActionBar implements View.OnClickListener, SearchView.OnQueryTextListener, SearchManager.OnDismissListener {
+public class FindUserActivity extends BaseActivityWithActionBar implements View.OnClickListener, SearchView.OnQueryTextListener,  SearchView.OnCloseListener {
 
     private static final int RC_SEND_MESSAGE = 200;
     @BindView(R.id.viewFlipper)
@@ -46,7 +46,6 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
     EditText etEmail;
     @BindView(R.id.recycler_view_search)
     RecyclerView recyclerViewSearch;
-    private boolean flipFlag;
 
     private SearchUserAdapter searchAdapter;
     private ArrayList<Object> items = new ArrayList<>();
@@ -72,7 +71,8 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
         SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setOnQueryTextListener(this);
-        searchManager.setOnDismissListener(this);
+        searchView.setOnSearchClickListener(this);
+        searchView.setOnCloseListener(this);
         return true;
     }
 
@@ -135,6 +135,11 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
 
     @Override
     public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.menu_search:
+                viewFlipper.setDisplayedChild(1);
+                break;
+        }
     }
 
     @Override
@@ -144,17 +149,13 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if (!flipFlag) {
-            viewFlipper.setDisplayedChild(1);
-            flipFlag = true;
-        }
         return true;
     }
 
 
     @Override
-    public void onDismiss() {
-        flipFlag = false;
+    public boolean onClose() {
         viewFlipper.setDisplayedChild(0);
+        return false;
     }
 }
