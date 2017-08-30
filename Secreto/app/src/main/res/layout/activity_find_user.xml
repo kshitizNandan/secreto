@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,69 +9,48 @@
 
     <include layout="@layout/toolbar" />
 
-    <LinearLayout
-        android:visibility="gone"
-        android:id="@+id/llParentForSearch"
+    <ViewFlipper
+        android:id="@+id/viewFlipper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dimen_size_20"
+            android:paddingLeft="@dimen/dimen_size_44"
+            android:paddingRight="@dimen/dimen_size_44"
+            android:paddingTop="@dimen/dimen_size_20">
 
-            <LinearLayout
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
+                android:layout_height="@dimen/dimen_size_174"
+                android:src="@drawable/logo" />
 
-                <ImageView
-                    android:id="@+id/imgSearch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:padding="@dimen/dimen_size_10"
-                    android:src="@drawable/search" />
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_email_editText"
+                style="@style/DefaultTextInputLayoutStyle"
+                android:layout_marginTop="@dimen/dimen_size_30"
+                app:errorEnabled="true"
+                app:hintEnabled="true">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                <com.secreto.widgets.CustomFontEditText
+                    android:id="@+id/etEmail"
+                    style="@style/DefaultEditTextStyle"
+                    android:hint="@string/email_id_user_name"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPersonName" />
 
-                    <com.secreto.widgets.CustomFontEditText
-                        android:id="@+id/etSearch"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@android:color/transparent"
-                        android:hint="@string/text_search"
-                        android:imeOptions="actionSearch"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:padding="@dimen/dimen_size_10"
-                        android:textColor="@android:color/white"
-                        android:textColorHint="@android:color/white"
-                        android:textSize="@dimen/text_size_18" />
+            </android.support.design.widget.TextInputLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_size_3"
-                        android:background="@android:color/white" />
-                </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/imgSearchCross"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:padding="@dimen/dimen_size_10"
-                    android:src="@drawable/crossd" />
-            </LinearLayout>
+            <com.secreto.widgets.CustomFontButton
+                android:id="@+id/btnSubmit"
+                style="@style/DefaultButtonStyle"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:text="@string/submit" />
         </LinearLayout>
 
         <RelativeLayout
@@ -83,5 +63,5 @@
                 android:layout_height="match_parent"
                 android:scrollbars="vertical" />
         </RelativeLayout>
-    </LinearLayout>
+    </ViewFlipper>
 </LinearLayout>

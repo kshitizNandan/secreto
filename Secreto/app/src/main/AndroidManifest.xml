@@ -107,7 +107,9 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.FindUserActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize">
             <!-- to identify this activity as "searchable" -->
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
