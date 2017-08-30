@@ -6,11 +6,6 @@
     android:orientation="vertical"
     tools:context="com.secreto.activities.FindUserActivity">
 
-    <android.support.design.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
-
         <LinearLayout
             android:id="@+id/llParentForSearch"
             android:layout_width="match_parent"
@@ -86,5 +81,4 @@
                     android:scrollbars="vertical" />
             </RelativeLayout>
         </LinearLayout>
-    </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>
