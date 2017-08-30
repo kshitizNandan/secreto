@@ -7,7 +7,7 @@
             android:id="@+id/nav_notifications"
             android:title="@string/notifications" />
         <item
-            android:id="@+id/nav_languages"
+            android:id="@+id/nav_ediProfile"
             android:title="@string/edit_profile" />
     </group>
 

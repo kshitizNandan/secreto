@@ -24,6 +24,7 @@ public class SettingsActivity extends BaseActivityWithActionBar {
     @BindView(R.id.navigation_view)
     NavigationView navigation_view;
     private SettingsActivity mActivity;
+    private View headerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,26 +40,34 @@ public class SettingsActivity extends BaseActivityWithActionBar {
         mActivity = this;
     }
 
-    private void loadNavHeader() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        resetUserData();
+    }
+
+    private void resetUserData() {
         User user = SharedPreferenceManager.getUserObject();
         if (user != null) {
-            View headerView = navigation_view.getHeaderView(0);
             ((TextView) headerView.findViewById(R.id.tv_name)).setText(user.getName());
             if (!TextUtils.isEmpty(user.getProfile_pic())) {
                 ((NetworkImageView) headerView.findViewById(R.id.iv_profileImg)).setImageUrl(user.getProfile_pic(), ImageCacheManager.getInstance().getImageLoader());
             } else {
                 ((NetworkImageView) headerView.findViewById(R.id.iv_profileImg)).setDefaultImageResId(R.drawable.default_user);
             }
-            headerView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent settingsActivityIntent = new Intent(mActivity, EditProfileActivity.class);
-                    startActivity(settingsActivityIntent);
-                    overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
-                }
-            });
         }
     }
+
+    private void loadNavHeader() {
+        headerView = navigation_view.getHeaderView(0);
+        headerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
 
     private void handleNavigationItemClick() {
         navigation_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -67,6 +76,11 @@ public class SettingsActivity extends BaseActivityWithActionBar {
                 switch (item.getItemId()) {
                     case R.id.nav_logout:
                         LoginLogoutHandler.logoutUser(mActivity);
+                        break;
+                    case R.id.nav_ediProfile:
+                        Intent settingsActivityIntent = new Intent(mActivity, EditProfileActivity.class);
+                        startActivity(settingsActivityIntent);
+                        overridePendingTransition(R.anim.in_from_right_animation, R.anim.no_animation);
                         break;
                 }
                 return false;

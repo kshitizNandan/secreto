@@ -163,7 +163,7 @@ public class SignUpActivity extends ImagePickerActivity {
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         String confirmPassword = etConfirmPassword.getText().toString().trim();
-        String mobile = etMobile.getText().toString();
+        String mobile = etMobile.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
             textInputLayoutName.setError(getString(R.string.nick_name_can_not_be_left_blank));
         } else if (TextUtils.isEmpty(userName)) {
@@ -178,6 +178,8 @@ public class SignUpActivity extends ImagePickerActivity {
             textInputLayoutconfirmPass.setError(getString(R.string.confirm_password_can_not_be_left_blank));
         } else if (!TextUtils.equals(password, confirmPassword)) {
             textInputLayoutconfirmPass.setError(getString(R.string.password_and_confirm_password_does_not_match));
+        } else if (!TextUtils.isEmpty(mobile) && mobile.length() < 10) {
+            textInputLayoutMobile.setError(getString(R.string.mobile_phone_number_should_be_of_10_digits));
         } else if (!cbTermsOfUse.isChecked()) {
             Toast.makeText(this, R.string.please_agree_to_terms_of_use, Toast.LENGTH_SHORT).show();
         } else {

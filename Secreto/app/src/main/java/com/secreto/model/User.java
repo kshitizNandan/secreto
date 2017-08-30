@@ -11,6 +11,8 @@ public class User extends UserMedia implements Serializable {
     private String userId;
     @SerializedName("name")
     private String name;
+    @SerializedName("gender")
+    private String gender;
     @SerializedName("userName")
     private String userName;
     @SerializedName("email")
@@ -50,6 +52,10 @@ public class User extends UserMedia implements Serializable {
 
     public String getUserStatus() {
         return userStatus;
+    }
+
+    public String getGender() {
+        return gender;
     }
 
     public String getCreatedDate() {

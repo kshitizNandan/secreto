@@ -5,11 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -21,7 +18,6 @@ import android.widget.Toast;
 import com.secreto.R;
 import com.secreto.adapters.MyFragmentPagerAdapter;
 import com.secreto.base_activities.BaseActivityWithActionBar;
-import com.secreto.common.Common;
 import com.secreto.common.Constants;
 import com.secreto.common.SharedPreferenceManager;
 import com.secreto.fragments.SentReceivedMessagesFragment;
@@ -56,12 +52,17 @@ public class HomeActivity extends BaseActivityWithActionBar {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        setUserData();
         init();
         initViews();
     }
 
-    private void setUserData() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        resetUserData();
+    }
+
+    private void resetUserData() {
         User user = SharedPreferenceManager.getUserObject();
         if (user != null) {
             if (!TextUtils.isEmpty(user.getProfile_pic())) {

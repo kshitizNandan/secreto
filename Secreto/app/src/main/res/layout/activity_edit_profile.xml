@@ -59,6 +59,24 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_gender_editText"
+                style="@style/DefaultTextInputLayoutStyle"
+                app:errorEnabled="true"
+                app:hintEnabled="true">
+
+                <com.secreto.widgets.CustomFontEditText
+                    android:id="@+id/etGender"
+                    style="@style/DefaultEditTextStyle"
+                    android:layout_marginTop="@dimen/dimen_size_20"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/gender"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_userName_editText"
                 style="@style/DefaultTextInputLayoutStyle"
                 app:errorEnabled="true"
@@ -111,14 +129,16 @@
             </android.support.design.widget.TextInputLayout>
 
             <com.secreto.widgets.CustomFontTextView
+                android:id="@+id/tvChangePass"
                 style="@style/DefaultTextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="left"
                 android:padding="@dimen/dimen_size_5"
                 android:text="@string/change_password" />
 
             <com.secreto.widgets.CustomFontButton
-                android:id="@+id/btnCreateAccount"
+                android:id="@+id/btnUpdateAccount"
                 style="@style/DefaultButtonStyle"
                 android:layout_marginTop="@dimen/dimen_size_10"
                 android:text="@string/update" />

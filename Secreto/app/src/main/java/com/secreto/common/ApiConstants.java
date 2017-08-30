@@ -12,4 +12,5 @@ public class ApiConstants {
     public static final String MESSAGE_CLUE = "messageClue";
     public static final String TO_USER_ID = "toUserId";
     public static final String USER_NAME = "userName";
+    public static final String GENDER = "gender";
 }

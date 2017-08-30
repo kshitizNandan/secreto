@@ -2,13 +2,16 @@ package com.secreto.activities;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.design.widget.TextInputLayout;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,13 +19,19 @@ import com.android.volley.VolleyError;
 import com.secreto.R;
 import com.secreto.base_activities.ImagePickerActivity;
 import com.secreto.common.Common;
+import com.secreto.common.Constants;
+import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
+import com.secreto.image.ImageCacheManager;
 import com.secreto.mediatorClasses.TextWatcherMediator;
+import com.secreto.model.User;
 import com.secreto.responsemodel.BaseResponse;
+import com.secreto.responsemodel.MediaResponse;
 import com.secreto.responsemodel.UserResponse;
 import com.secreto.utils.CustomProgressDialog;
 import com.secreto.utils.Logger;
+import com.secreto.utils.NetworkImageView;
 
 import java.io.File;
 
@@ -38,16 +47,32 @@ public class EditProfileActivity extends ImagePickerActivity {
     EditText etName;
     @BindView(R.id.etMobile)
     EditText etMobile;
-    @BindView(R.id.tvUpdate)
-    TextView tvUpdate;
+    @BindView(R.id.btnUpdateAccount)
+    TextView btnUpdateAccount;
+    @BindView(R.id.etUserName)
+    EditText etUserName;
+    @BindView(R.id.etEmail)
+    EditText etEmail;
+    @BindView(R.id.iv_profileImg)
+    NetworkImageView iv_profileImg;
+    @BindView(R.id.input_layout_name_editText)
+    TextInputLayout textInputLayoutName;
+    @BindView(R.id.input_layout_mobile_editText)
+    TextInputLayout textInputLayoutMobile;
+    @BindView(R.id.etGender)
+    EditText etGender;
     CustomProgressDialog progressDialog;
     EditProfileActivity mActivity;
+    private String newPassword;
+    private File photoFile;
+    private int genderSelection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         init();
+        InitializeData();
     }
 
     private void init() {
@@ -55,10 +80,28 @@ public class EditProfileActivity extends ImagePickerActivity {
         mActivity = this;
     }
 
+    private void InitializeData() {
+        User user = SharedPreferenceManager.getUserObject();
+        if (user != null) {
+            etName.setText(user.getName());
+            etMobile.setText(user.getContact());
+            etUserName.setText(user.getUserName());
+            etEmail.setText(user.getEmail());
+            if (!TextUtils.isEmpty(user.getProfile_pic())) {
+                iv_profileImg.setImageUrl(user.getProfile_pic(), ImageCacheManager.getInstance().getImageLoader());
+            } else {
+                iv_profileImg.setDefaultImageResId(R.drawable.default_user);
+            }
+        }
+    }
+
 
     @Override
     protected void onImageSet(File photoFile) {
-
+        if (photoFile != null && photoFile.exists()) {
+            this.photoFile = photoFile;
+            iv_profileImg.setImageUrl(photoFile.getAbsolutePath(), ImageCacheManager.getInstance().getImageLoader());
+        }
     }
 
     @Override
@@ -69,6 +112,27 @@ public class EditProfileActivity extends ImagePickerActivity {
     @Override
     public int getLayoutResource() {
         return R.layout.activity_edit_profile;
+    }
+
+    @OnClick(R.id.etGender)
+    void genderSelctionDialog() {
+        final CharSequence[] charSequences = getResources().getStringArray(R.array.gender_types);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mActivity)
+                .setTitle(getString(R.string.select_gender)).
+                        setSingleChoiceItems(charSequences, genderSelection, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, final int selectedItem) {
+                                genderSelection = selectedItem;
+                                etGender.setText(charSequences[selectedItem]);
+                                dialog.dismiss();
+                            }
+
+                        }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        dialogBuilder.show();
     }
 
     @OnClick(R.id.tvChangePass)
@@ -105,7 +169,7 @@ public class EditProfileActivity extends ImagePickerActivity {
                             } else if (!newPass.equalsIgnoreCase(confirmPass)) {
                                 input_layout_confirmPass.setError(getString(R.string.pass_confirm_pass_validation));
                             } else {
-                                //   changePasswordApiCall(oldPass, newPass, dialog);
+                                newPassword = newPass;
                             }
                             break;
                         case R.id.iv_close:
@@ -146,29 +210,29 @@ public class EditProfileActivity extends ImagePickerActivity {
         }
     }
 
-    @OnClick(R.id.tvUpdate)
+    @OnClick(R.id.btnUpdateAccount)
     void updateProfile() {
         String name = etName.getText().toString();
-        String mobile = etMobile.getText().toString();
+        String mobile = etMobile.getText().toString().trim();
+        String gender = etGender.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
-            Toast.makeText(this, R.string.nick_name_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
-        } else if (!TextUtils.isEmpty(mobile)) {
-            Toast.makeText(this, R.string.mobile_phone_number_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
-        } else if (mobile.length() < 10) {
-            Toast.makeText(this, R.string.mobile_phone_number_should_be_of_10_digits, Toast.LENGTH_SHORT).show();
+            textInputLayoutName.setError(getString(R.string.nick_name_can_not_be_left_blank));
+        } else if (!TextUtils.isEmpty(mobile) && mobile.length() < 10) {
+            textInputLayoutName.setError(getString(R.string.mobile_phone_number_should_be_of_10_digits));
         } else {
             if (Common.isOnline(this)) {
                 progressDialog.show();
-                DataManager.getInstance().updateProfile(name, mobile, new ResultListenerNG<UserResponse>() {
+                DataManager.getInstance().updateProfile(name, mobile, gender, newPassword, new ResultListenerNG<UserResponse>() {
                     @Override
                     public void onSuccess(UserResponse response) {
                         Logger.d(TAG, "Profile update onSuccess : " + response);
                         progressDialog.dismiss();
-                        /*if (photoFile != null && photoFile.exists()) {
+                        if (photoFile != null && photoFile.exists()) {
                             uploadImageApiCall(response.getUser());
                         } else {
-                            showSuccessDialog(response.getMessage(), response.getUser());
-                        }*/
+                            SharedPreferenceManager.setUserObject(response.getUser());
+                            Common.showAlertDialog(mActivity, response.getMessage(), null);
+                        }
                     }
 
                     @Override
@@ -187,6 +251,39 @@ public class EditProfileActivity extends ImagePickerActivity {
             } else {
                 Toast.makeText(this, R.string.check_your_internet_connection, Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private void uploadImageApiCall(final User user) {
+        if (Common.isOnline(this)) {
+            progressDialog.show();
+            DataManager.getInstance().uploadImage(photoFile, user.getUserId(), new ResultListenerNG<MediaResponse>() {
+                @Override
+                public void onSuccess(MediaResponse response) {
+                    Logger.d(TAG, "Image Upload onSuccess : " + response);
+                    progressDialog.dismiss();
+                    if (!TextUtils.isEmpty(response.getMedia())) {
+                        user.setProfile_pic(response.getMedia());
+                        SharedPreferenceManager.setUserObject(user);
+                    }
+                    Common.showAlertDialog(mActivity, response.getMessage(), null);
+                }
+
+                @Override
+                public void onError(VolleyError error) {
+                    progressDialog.dismiss();
+                    BaseResponse baseResponse = Common.getStatusMessage(error);
+                    if (baseResponse == null || TextUtils.isEmpty(baseResponse.getMessage())) {
+                        Logger.e(TAG, "Image upload error : " + error.getMessage());
+                        Toast.makeText(mActivity, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Logger.e(TAG, "Image Upload error : " + baseResponse.getMessage());
+                        Toast.makeText(mActivity, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(this, R.string.check_your_internet_connection, Toast.LENGTH_SHORT).show();
         }
     }
 

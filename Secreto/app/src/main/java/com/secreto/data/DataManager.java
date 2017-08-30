@@ -1,5 +1,7 @@
 package com.secreto.data;
 
+import android.text.TextUtils;
+
 import com.android.volley.Request;
 import com.secreto.common.ApiConstants;
 import com.secreto.common.Constants;
@@ -29,6 +31,7 @@ public class DataManager {
 
     private static final String URL_GET_SENT_OR_RECEIVED_MSGS = BASE_SERVER_ADDRESS + "getSendOrReceivedMsgs";
     private static final String URL_FIND_USER = BASE_SERVER_ADDRESS + "findUser";
+    private static final String URL_UPDATE_PROFILE = BASE_SERVER_ADDRESS + "updateProfile";
 
     private static DataManager singleton;
 
@@ -95,8 +98,14 @@ public class DataManager {
         makeRequest(Request.Method.POST, SEND_MESSAGE, params, BaseResponse.class, resultListenerNG);
     }
 
-    public void updateProfile(String name, String mobile, ResultListenerNG<UserResponse> resultListenerNG) {
-
+    public void updateProfile(String name, String mobile, String gender, String newPass, ResultListenerNG<UserResponse> resultListenerNG) {
+        HashMap<Object, Object> params = new HashMap<>();
+        if (!TextUtils.isEmpty(newPass))
+            params.put(ApiConstants.PASSWORD, newPass);
+        params.put(ApiConstants.NAME, name);
+        params.put(ApiConstants.CONTACT, mobile);
+        params.put(ApiConstants.GENDER, gender);
+        makeRequest(Request.Method.POST, URL_UPDATE_PROFILE, params, UserResponse.class, resultListenerNG);
     }
 
     public void getSendOrReceivedMsgs(String type, int offset, ResultListenerNG<SendOrReceivedMessageResponse> listenerNG) {
