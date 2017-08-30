@@ -12,64 +12,115 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fillViewport="true"
+        android:orientation="vertical"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical"
+            android:paddingBottom="@dimen/dimen_size_20"
             android:paddingLeft="@dimen/dimen_size_44"
-            android:paddingRight="@dimen/dimen_size_44">
+            android:paddingRight="@dimen/dimen_size_44"
+            android:paddingTop="@dimen/dimen_size_20">
 
             <com.secreto.utils.NetworkImageView
                 android:id="@+id/iv_profileImg"
                 android:layout_width="@dimen/dimen_size_80"
                 android:layout_height="@dimen/dimen_size_80"
-                android:layout_centerInParent="true"
                 app:roundedCorner="true"
                 app:roundedCornerDP="40" />
 
-            <com.secreto.widgets.CustomFontEditText
-                android:id="@+id/etName"
-                style="@style/LoginEditStyle"
-                android:layout_marginTop="@dimen/dimen_size_4"
-                android:hint="@string/name"
-                android:imeOptions="actionNext"
-                android:inputType="textCapSentences" />
-
-            <com.secreto.widgets.CustomFontEditText
-                android:id="@+id/etEmail"
-                style="@style/LoginEditStyle"
-                android:layout_marginTop="@dimen/dimen_size_4"
-                android:enabled="false"
-                android:hint="@string/email_id_user_name"
-                android:imeOptions="actionNext"
-                android:inputType="textEmailAddress" />
-
-            <com.secreto.widgets.CustomFontEditText
-                android:id="@+id/etMobile"
-                style="@style/LoginEditStyle"
-                android:layout_marginTop="@dimen/dimen_size_4"
-                android:hint="@string/contact_number"
-                android:imeOptions="actionDone"
-                android:inputType="phone"
-                android:maxLength="10" />
-
             <com.secreto.widgets.CustomFontTextView
-                android:id="@+id/tvChangePass"
+                style="@style/DefaultTextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_size_12"
                 android:padding="@dimen/dimen_size_5"
-                android:text="@string/change_password"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/text_size_14"
-                app:fontStyle="fontRegular" />
+                android:text="@string/browse" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_name_editText"
+                style="@style/DefaultTextInputLayoutStyle"
+                android:layout_marginTop="@dimen/dimen_size_20"
+                app:errorEnabled="true"
+                app:hintEnabled="true">
+
+                <com.secreto.widgets.CustomFontEditText
+                    android:id="@+id/etName"
+                    style="@style/DefaultEditTextStyle"
+                    android:layout_marginTop="@dimen/dimen_size_20"
+                    android:hint="@string/name"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_userName_editText"
+                style="@style/DefaultTextInputLayoutStyle"
+                app:errorEnabled="true"
+                app:hintEnabled="true">
+
+                <com.secreto.widgets.CustomFontEditText
+                    android:id="@+id/etUserName"
+                    style="@style/DefaultEditTextStyle"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/user_name"
+                    android:imeOptions="actionNext"
+                    android:inputType="textEmailAddress"
+                    android:textIsSelectable="false" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_email_editText"
+                style="@style/DefaultTextInputLayoutStyle"
+                app:errorEnabled="true"
+                app:hintEnabled="true">
+
+                <com.secreto.widgets.CustomFontEditText
+                    android:id="@+id/etEmail"
+                    style="@style/DefaultEditTextStyle"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/email_id"
+                    android:imeOptions="actionNext"
+                    android:inputType="textEmailAddress" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_mobile_editText"
+                style="@style/DefaultTextInputLayoutStyle"
+                app:errorEnabled="true"
+                app:hintEnabled="true">
+
+                <com.secreto.widgets.CustomFontEditText
+                    android:id="@+id/etMobile"
+                    style="@style/DefaultEditTextStyle"
+                    android:hint="@string/contact_number"
+                    android:imeOptions="actionDone"
+                    android:inputType="phone"
+                    android:maxLength="10" />
+            </android.support.design.widget.TextInputLayout>
+
+            <com.secreto.widgets.CustomFontTextView
+                style="@style/DefaultTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen_size_5"
+                android:text="@string/change_password" />
 
             <com.secreto.widgets.CustomFontButton
-                android:id="@+id/tvUpdate"
+                android:id="@+id/btnCreateAccount"
                 style="@style/DefaultButtonStyle"
-                android:layout_marginTop="@dimen/dimen_size_12"
+                android:layout_marginTop="@dimen/dimen_size_10"
                 android:text="@string/update" />
         </LinearLayout>
     </ScrollView>

@@ -24,6 +24,7 @@
     <!-- LoginActivity -->
 
     <string name="email_id_user_name">Email Id/User Name</string>
+    <string name="email_id">Email Id</string>
     <string name="sign_in">Sign In</string>
     <string name="password">Password</string>
     <string name="forgot_password_q">Forgot Password?</string>
@@ -40,7 +41,8 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="contact_number">Contact Number(optional)</string>
+    <string name="contact_number_optional">Contact Number(optional)</string>
+    <string name="contact_number">Contact Number</string>
     <string name="first_name_can_not_be_left_blank">First Name can not be left blank.</string>
     <string name="entered_first_name_is_invalid">Entered First Name  is invalid.</string>
     <string name="last_name_can_not_be_left_blank">Last Name can not be left blank.</string>

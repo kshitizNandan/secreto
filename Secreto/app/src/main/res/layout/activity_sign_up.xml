@@ -84,7 +84,7 @@
                 <com.secreto.widgets.CustomFontEditText
                     android:id="@+id/etEmail"
                     style="@style/DefaultEditTextStyle"
-                    android:hint="@string/email_id_user_name"
+                    android:hint="@string/email_id"
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress" />
 
@@ -128,7 +128,7 @@
                 <com.secreto.widgets.CustomFontEditText
                     android:id="@+id/etMobile"
                     style="@style/DefaultEditTextStyle"
-                    android:hint="@string/contact_number"
+                    android:hint="@string/contact_number_optional"
                     android:imeOptions="actionDone"
                     android:inputType="phone"
                     android:maxLength="10" />
