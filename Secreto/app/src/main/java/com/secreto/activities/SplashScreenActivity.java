@@ -19,11 +19,9 @@ import com.secreto.common.SharedPreferenceManager;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
-    private final int SPLASH_TIME_OUT = 2000;
-    private final int TIME_OUT_DURATION = 2500;
 
-    protected AlphaAnimation fadeIn = new AlphaAnimation(0.0f , 1.0f ) ;
-    protected AlphaAnimation fadeOut = new AlphaAnimation( 1.0f , 0.0f ) ;
+    protected AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
+    protected AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.0f);
 
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -50,16 +48,34 @@ public class SplashScreenActivity extends AppCompatActivity {
         anim = AnimationUtils.loadAnimation(this, R.anim.translate);
         anim.reset();
         ImageView iv = (ImageView) findViewById(R.id.imgLogo);
-        final TextView tvAppName = (TextView) findViewById(R.id.tvAppName);
         iv.clearAnimation();
         iv.startAnimation(anim);
-        tvAppName.startAnimation(fadeIn);
-        tvAppName.startAnimation(fadeOut);
-        fadeIn.setDuration(TIME_OUT_DURATION);
+        final TextView tvAppName = (TextView) findViewById(R.id.tvAppName);
+        anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                tvAppName.setVisibility(View.VISIBLE);
+                Animation anim = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.alpha);
+                anim.reset();
+                tvAppName.setAnimation(anim);
+                tvAppName.startAnimation(anim);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        fadeIn.setDuration(3000);
         fadeIn.setFillAfter(true);
-        fadeOut.setDuration(TIME_OUT_DURATION);
+        fadeOut.setDuration(3000);
         fadeOut.setFillAfter(true);
-        fadeOut.setStartOffset(4200+fadeIn.getStartOffset());
+        fadeOut.setStartOffset(4200 + fadeIn.getStartOffset());
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -73,6 +89,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
                 finish();
             }
-        }, SPLASH_TIME_OUT);
+        }, 3000);
     }
 }

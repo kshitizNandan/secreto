@@ -28,6 +28,7 @@ public class MyApplication extends Application {
     // Fonts
     public static Typeface fontHelveticaBold;
     public static Typeface fontHelveticaRegular;
+    public static Typeface fontKaushanRegular;
 
     // For Image Loader Cache
     private static int MEM_CACHE_SIZE = 100; // Number of "screens" to cache.
@@ -37,7 +38,6 @@ public class MyApplication extends Application {
     public static synchronized MyApplication getInstance() {
         return singleton;
     }
-
 
     @Override
     public void onCreate() {
@@ -52,9 +52,9 @@ public class MyApplication extends Application {
     }
 
     private void preloadTypefaces() {
-        Logger.d(TAG, "preloadTypefaces");
         fontHelveticaBold = Typefaces.get(getApplicationContext(), Typefaces.FONT_HELVETICA_BOLD);
         fontHelveticaRegular = Typefaces.get(getApplicationContext(), Typefaces.FONT_HELVETICA_REGULAR);
+        fontKaushanRegular = Typefaces.get(getApplicationContext(), Typefaces.FONT_KAUSHAN_REGULAR);
     }
 
     private void printHashKey() {
@@ -73,11 +73,12 @@ public class MyApplication extends Application {
             e.printStackTrace();
         }
     }
+
     private void createImageCache() {
         final int mem_imagecache_size = getScreenSizeScale() * MEM_CACHE_SIZE;
-
         ImageCacheManager.getInstance().init(this, this.getPackageCodePath(), mem_imagecache_size, MEM_IMAGECACHE_COMPRESS_FORMAT, MEM_IMAGECACHE_QUALITY);
     }
+
     /**
      * Get the screen pixel count
      */
