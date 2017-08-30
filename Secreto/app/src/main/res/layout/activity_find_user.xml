@@ -1,44 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.secreto.activities.FindUserActivity">
 
-    <include layout="@layout/toolbar" />
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
-    <com.secreto.widgets.CustomFontTextView
-        android:id="@+id/tvUserName"
-        style="@style/DefaultTextViewStyle"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/dimen_size_30"
-        android:text="@string/find_user" />
+        <LinearLayout
+            android:id="@+id/llParentForSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/input_layout_userName_editText"
-        style="@style/DefaultTextInputLayoutStyle"
-        android:layout_marginLeft="@dimen/dimen_size_20"
-        android:layout_marginRight="@dimen/dimen_size_20"
-        android:layout_marginTop="@dimen/dimen_size_20"
-        app:errorEnabled="true"
-        app:hintEnabled="true">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimary"
+                android:orientation="vertical">
 
-        <com.secreto.widgets.CustomFontEditText
-            android:id="@+id/etUserName"
-            style="@style/DefaultEditTextStyle"
-            android:hint="@string/email_id_user_name"
-            android:imeOptions="actionDone"
-            android:inputType="textEmailAddress" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
 
-    </android.support.design.widget.TextInputLayout>
+                    <ImageView
+                        android:id="@+id/imgSearch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/dimen_size_10"
+                        android:src="@drawable/search" />
 
-    <com.secreto.widgets.CustomFontButton
-        android:id="@+id/btnNext"
-        style="@style/DefaultButtonStyle"
-        android:layout_marginLeft="@dimen/dimen_size_20"
-        android:layout_marginRight="@dimen/dimen_size_20"
-        android:layout_marginTop="@dimen/dimen_size_20"
-        android:text="@string/next" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <com.secreto.widgets.CustomFontEditText
+                            android:id="@+id/etSearch"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@android:color/transparent"
+                            android:hint="@string/text_search"
+                            android:imeOptions="actionSearch"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:padding="@dimen/dimen_size_10"
+                            android:textColor="@android:color/white"
+                            android:textColorHint="@android:color/white"
+                            android:textSize="@dimen/text_size_18" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dimen_size_3"
+                            android:background="@android:color/white" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/imgSearchCross"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/dimen_size_10"
+                        android:src="@drawable/crossd" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical" />
+            </RelativeLayout>
+        </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>
