@@ -20,7 +20,7 @@
         android:maxLines="1"
         android:textColor="@android:color/white"
         android:textSize="@dimen/text_size_18"
-        app:fontStyle="fontBold" />
+        app:fontStyle="StylishfontRegular" />
 
 </android.support.v7.widget.Toolbar>
 

@@ -47,6 +47,9 @@ public class CustomFontTextView extends AppCompatTextView {
             case 2:
                 setTypeface(MyApplication.fontHelveticaRegular);
                 break;
+            case 3:
+                setTypeface(MyApplication.fontKaushanRegular);
+                break;
             default:
                 setTypeface(MyApplication.fontHelveticaRegular);
                 break;
