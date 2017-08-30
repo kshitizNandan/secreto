@@ -1,15 +1,10 @@
 package com.secreto.activities;
 
-import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
@@ -18,13 +13,12 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.secreto.R;
 import com.secreto.adapters.SearchUserAdapter;
-import com.secreto.adapters.SentOrReceivedMessagesRecyclerAdapter;
+import com.secreto.base_activities.BaseActivityWithActionBar;
 import com.secreto.common.Common;
 import com.secreto.common.Constants;
 import com.secreto.common.SharedPreferenceManager;
@@ -36,12 +30,11 @@ import com.secreto.responsemodel.UserResponse;
 import com.secreto.utils.CustomProgressDialog;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FindUserActivity extends ActionBarActivity implements View.OnClickListener {
+public class FindUserActivity extends BaseActivityWithActionBar implements View.OnClickListener, SearchView.OnQueryTextListener, SearchManager.OnCancelListener {
 
     private static final int RC_SEND_MESSAGE = 200;
     @BindView(R.id.etSearch)
@@ -61,12 +54,16 @@ public class FindUserActivity extends ActionBarActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_find_user);
         ButterKnife.bind(this);
         init();
-        setTextWatcher();
         findUserApiCall();
     }
+
+    @Override
+    public int getLayoutResource() {
+        return R.layout.activity_find_user;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -79,20 +76,13 @@ public class FindUserActivity extends ActionBarActivity implements View.OnClickL
                 (SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
-
+        searchView.setOnQueryTextListener(this);
+        searchManager.setOnCancelListener(this);
         return true;
     }
-    private void setTextWatcher() {
-        edtSearch.addTextChangedListener(new TextWatcherMediator(edtSearch) {
-            @Override
-            public void onTextChanged(CharSequence s, View view) {
-                findUserApiCall();
-            }
-        });
-    }
+
 
     private void init() {
-        progressDialog = new CustomProgressDialog(this);
         mActivity = this;
         recyclerViewSearch.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         searchAdapter = new SearchUserAdapter(items, this);
@@ -151,6 +141,21 @@ public class FindUserActivity extends ActionBarActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
+
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
+
+    @Override
+    public void onCancel() {
 
     }
 }

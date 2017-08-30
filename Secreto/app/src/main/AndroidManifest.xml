@@ -107,17 +107,10 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.FindUserActivity"
-            android:theme="@style/Theme.MyCompatTheme"
-            android:value=".activities.SearchResultsActivity"/>
-        <activity
-            android:name=".activities.SearchResultsActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.MyCompatTheme">
-
+            android:theme="@style/AppTheme.NoActionBar">
             <!-- to identify this activity as "searchable" -->
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
-                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
             <meta-data
@@ -125,5 +118,4 @@
                 android:resource="@xml/searchable" />
         </activity>
     </application>
-
 </manifest>

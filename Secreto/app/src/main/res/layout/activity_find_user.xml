@@ -6,79 +6,82 @@
     android:orientation="vertical"
     tools:context="com.secreto.activities.FindUserActivity">
 
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/llParentForSearch"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <LinearLayout
-            android:id="@+id/llParentForSearch"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorPrimary"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imgSearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/dimen_size_10"
+                    android:src="@drawable/search" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:orientation="horizontal">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:id="@+id/imgSearch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:padding="@dimen/dimen_size_10"
-                        android:src="@drawable/search" />
-
-                    <LinearLayout
+                    <com.secreto.widgets.CustomFontEditText
+                        android:id="@+id/etSearch"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <com.secreto.widgets.CustomFontEditText
-                            android:id="@+id/etSearch"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="@android:color/transparent"
-                            android:hint="@string/text_search"
-                            android:imeOptions="actionSearch"
-                            android:inputType="text"
-                            android:maxLines="1"
-                            android:padding="@dimen/dimen_size_10"
-                            android:textColor="@android:color/white"
-                            android:textColorHint="@android:color/white"
-                            android:textSize="@dimen/text_size_18" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/dimen_size_3"
-                            android:background="@android:color/white" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/imgSearchCross"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/text_search"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:maxLines="1"
                         android:padding="@dimen/dimen_size_10"
-                        android:src="@drawable/crossd" />
+                        android:textColor="@android:color/white"
+                        android:textColorHint="@android:color/white"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_size_3"
+                        android:background="@android:color/white" />
                 </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imgSearchCross"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/dimen_size_10"
+                    android:src="@drawable/crossd" />
             </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view_search"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scrollbars="vertical" />
-            </RelativeLayout>
         </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical" />
+        </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>
