@@ -168,6 +168,8 @@ public class SignUpActivity extends ImagePickerActivity {
             textInputLayoutName.setError(getString(R.string.nick_name_can_not_be_left_blank));
         } else if (TextUtils.isEmpty(userName)) {
             textInputLayoutuserName.setError(getString(R.string.user_name_can_not_be_left_blank));
+        } else if (userName.equalsIgnoreCase(name)) {
+            textInputLayoutuserName.setError(getString(R.string.user_name_can_not_be_same_as_nick_name));
         } else if (TextUtils.isEmpty(email)) {
             textInputLayoutEmail.setError(getString(R.string.email_id_can_not_be_left_blank));
         } else if (!Common.isValidEmail(email)) {

@@ -32,6 +32,7 @@
     <string name="dont_have_an_account"><![CDATA[<xml><blue-regular>Don\'t have an account? </blue-regular><dark-blue-bold><u>SIGN UP</u></dark-blue-bold></xml>]]></string>
     <string name="password_can_not_be_left_blank">Password can not be left blank.</string>
     <string name="user_name_can_not_be_left_blank">User name can not be left blank</string>
+    <string name="user_name_can_not_be_same_as_nick_name">User name can not be same as nick name</string>
     <string name="email_id_can_not_be_left_blank">Email id/User Name can not be left blank</string>
     <string name="invalid_email_id_format">Invalid email format</string>
     <string name="logout">Logout</string>
@@ -112,5 +113,5 @@
     <string name="select_gender">Select Gender</string>
     <string name="submit">Submit</string>
     <string name="user_details_updated_successfully">User details successfully updated</string>
-    <string name="find_by">Nick Name/User Name/Email</string>
+    <string name="search">Search</string>
 </resources>
