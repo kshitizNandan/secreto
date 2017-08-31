@@ -58,6 +58,8 @@
             android:layout_height="match_parent">
 
             <android.support.v7.widget.RecyclerView
+                app:layoutManager="LinearLayoutManager"
+                tools:listitem="@layout/search_user_item"
                 android:id="@+id/recycler_view_search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
