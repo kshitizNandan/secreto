@@ -34,6 +34,7 @@ public class DataManager {
     private static final String URL_FIND_USER = BASE_SERVER_ADDRESS + "findUser";
     private static final String URL_UPDATE_PROFILE = BASE_SERVER_ADDRESS + "updateProfile";
     private static final String URL_GET_ALL_USERS = BASE_SERVER_ADDRESS + "getAllUsers";
+    private static final String URL_CHANGE_PASS = BASE_SERVER_ADDRESS + "changePassword";
 
 
     private static DataManager singleton;
@@ -131,4 +132,12 @@ public class DataManager {
         makeRequest(Request.Method.GET, url, null, AllUserResponse.class, listenerNG);
     }
 
+    public void changePassword(String currentPassword, String newPassword, ResultListenerNG<UserResponse> resultListenerNG) {
+        String userId = SharedPreferenceManager.getUserObject().getUserId();
+        HashMap<Object, Object> params = new HashMap<>();
+        params.put(ApiConstants.CURRENT_PASS, currentPassword);
+        params.put(ApiConstants.NEW_PASS, newPassword);
+        params.put(ApiConstants.USER_ID, userId);
+        makeRequest(Request.Method.POST, URL_CHANGE_PASS, params, UserResponse.class, resultListenerNG);
+    }
 }

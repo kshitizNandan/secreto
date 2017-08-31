@@ -169,6 +169,7 @@ public class EditProfileActivity extends ImagePickerActivity {
                             } else if (!newPass.equalsIgnoreCase(confirmPass)) {
                                 input_layout_confirmPass.setError(getString(R.string.pass_confirm_pass_validation));
                             } else {
+                                changePasswordApiCall(oldPass, newPass, dialog);
                             }
                             break;
                         case R.id.iv_close:
@@ -235,7 +236,12 @@ public class EditProfileActivity extends ImagePickerActivity {
                             uploadImageApiCall(response.getUser());
                         } else {
                             SharedPreferenceManager.setUserObject(response.getUser());
-                            Common.showAlertDialog(mActivity, response.getMessage(), null);
+                            Common.showAlertDialog(mActivity, response.getMessage(), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    onBackPress();
+                                }
+                            });
                         }
                     }
 
@@ -258,6 +264,38 @@ public class EditProfileActivity extends ImagePickerActivity {
         }
     }
 
+    private void changePasswordApiCall(String oldPass, String newPass, final Dialog dialog) {
+        if (Common.isOnline(this)) {
+            progressDialog.show();
+            DataManager.getInstance().changePassword(oldPass, newPass, new ResultListenerNG<UserResponse>() {
+                @Override
+                public void onSuccess(UserResponse response) {
+                    progressDialog.dismiss();
+                    Common.showAlertDialog(mActivity, response.getMessage(), null);
+                    if (response.getUser() != null)
+                        SharedPreferenceManager.setUserObject(response.getUser());
+                    if (dialog != null)
+                        dialog.dismiss();
+                }
+
+                @Override
+                public void onError(VolleyError error) {
+                    progressDialog.dismiss();
+                    BaseResponse baseResponse = Common.getStatusMessage(error);
+                    if (baseResponse == null || TextUtils.isEmpty(baseResponse.getMessage())) {
+                        Logger.e(TAG, "change password error : " + error.getMessage());
+                        Toast.makeText(mActivity, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Logger.e(TAG, "change password error : " + baseResponse.getMessage());
+                        Toast.makeText(mActivity, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(this, R.string.check_your_internet_connection, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void uploadImageApiCall(final User user) {
         if (Common.isOnline(this)) {
             progressDialog.show();
@@ -270,7 +308,12 @@ public class EditProfileActivity extends ImagePickerActivity {
                         user.setProfile_pic(response.getMedia());
                         SharedPreferenceManager.setUserObject(user);
                     }
-                    Common.showAlertDialog(mActivity, getString(R.string.user_details_updated_successfully), null);
+                    Common.showAlertDialog(mActivity, getString(R.string.user_details_updated_successfully), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            onBackPress();
+                        }
+                    });
                 }
 
                 @Override
