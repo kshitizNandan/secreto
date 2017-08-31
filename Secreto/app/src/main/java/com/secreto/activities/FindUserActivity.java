@@ -91,7 +91,6 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
         progressDialog = new CustomProgressDialog(this);
         mActivity = this;
         searchAdapter = new SearchUserAdapter(items, this);
-        recyclerViewSearch.addItemDecoration(new DividerItemDecoration(mActivity, DividerItemDecoration.VERTICAL));
         recyclerViewSearch.setAdapter(searchAdapter);
     }
 
