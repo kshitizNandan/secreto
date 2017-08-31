@@ -15,8 +15,10 @@ import com.secreto.responsemodel.MediaResponse;
 import com.secreto.responsemodel.SendOrReceivedMessageResponse;
 import com.secreto.responsemodel.UserResponse;
 import com.secreto.utils.Logger;
+import com.secreto.utils.QueryBuilder;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -115,9 +117,13 @@ public class DataManager {
 
     public void getSendOrReceivedMsgs(String type, int offset, ResultListenerNG<SendOrReceivedMessageResponse> listenerNG) {
         String userId = SharedPreferenceManager.getUserObject().getUserId();
-        String url = String.format(Locale.ENGLISH, URL_GET_SENT_OR_RECEIVED_MSGS + "?userId=%s&type=%s&offset=%d", userId, type, offset);
-        Logger.v(TAG, url);
-        makeRequest(Request.Method.GET, url, null, SendOrReceivedMessageResponse.class, listenerNG);
+        HashMap<Object, Object> params = new HashMap<>();
+        params.put(ApiConstants.USER_ID, userId);
+        params.put(ApiConstants.OFFSET, offset);
+        params.put(ApiConstants.TYPE, type);
+        String query = QueryBuilder.buildQuery(URL_GET_SENT_OR_RECEIVED_MSGS, params);
+        Logger.v(TAG, query);
+        makeRequest(Request.Method.GET, query, null, SendOrReceivedMessageResponse.class, listenerNG);
     }
 
     public void findUser(String userName, ResultListenerNG<UserResponse> resultListenerNG) {
@@ -126,10 +132,13 @@ public class DataManager {
         makeRequest(Request.Method.POST, URL_FIND_USER, params, UserResponse.class, resultListenerNG);
     }
 
-    public void getAllUsers(String name, int offset, ResultListenerNG<AllUserResponse> listenerNG) {
-        String url = String.format(Locale.ENGLISH, URL_GET_ALL_USERS + "?name=%s&offset=%d", name, offset);
-        Logger.v(TAG, url);
-        makeRequest(Request.Method.GET, url, null, AllUserResponse.class, listenerNG);
+    public void getAllUsers(String keyword, int offset, ResultListenerNG<AllUserResponse> listenerNG) {
+        HashMap<Object, Object> params = new HashMap<>();
+        params.put(ApiConstants.KEYWORD, keyword);
+        params.put(ApiConstants.OFFSET, offset);
+        String query = QueryBuilder.buildQuery(URL_GET_ALL_USERS, params);
+        Logger.v(TAG, query);
+        makeRequest(Request.Method.GET, query, null, AllUserResponse.class, listenerNG);
     }
 
     public void changePassword(String currentPassword, String newPassword, ResultListenerNG<UserResponse> resultListenerNG) {

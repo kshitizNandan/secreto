@@ -135,9 +135,9 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
         }
     }
 
-    private void getAllUsersApi(String name) {
+    private void getAllUsersApi(String keyword) {
         if (Common.isOnline(mActivity)) {
-            DataManager.getInstance().getAllUsers(name, offset, new ResultListenerNG<AllUserResponse>() {
+            DataManager.getInstance().getAllUsers(keyword, offset, new ResultListenerNG<AllUserResponse>() {
                 @Override
                 public void onSuccess(AllUserResponse response) {
                     if (response.getUsers() != null) {
