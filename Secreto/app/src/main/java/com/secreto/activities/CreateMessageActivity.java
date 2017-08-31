@@ -90,6 +90,7 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
+                                setResult(RESULT_OK);
                                 onBackPress();
                             }
                         });
