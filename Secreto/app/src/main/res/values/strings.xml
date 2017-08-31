@@ -112,4 +112,5 @@
     <string name="select_gender">Select Gender</string>
     <string name="submit">Submit</string>
     <string name="user_details_updated_successfully">User details successfully updated</string>
+    <string name="find_by">Nick Name/User Name/Email</string>
 </resources>

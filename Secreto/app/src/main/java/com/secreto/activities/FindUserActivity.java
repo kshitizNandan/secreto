@@ -55,6 +55,7 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
     private FindUserActivity mActivity;
     private ProgressDialog progressDialog;
     private int offset = 0;
+    private MenuItem menuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +78,7 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
         searchView.setOnQueryTextListener(this);
         searchView.setOnSearchClickListener(this);
 
-        MenuItem menuItem = menu.findItem(R.id.menu_search);
+        menuItem = menu.findItem(R.id.menu_search);
         if (menuItem != null) {
             MenuItemCompat.setOnActionExpandListener(menuItem, this);
             MenuItemCompat.setActionView(menuItem, searchView);
@@ -90,6 +91,7 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
         progressDialog = new CustomProgressDialog(this);
         mActivity = this;
         searchAdapter = new SearchUserAdapter(items, this);
+        recyclerViewSearch.addItemDecoration(new DividerItemDecoration(mActivity, DividerItemDecoration.VERTICAL));
         recyclerViewSearch.setAdapter(searchAdapter);
     }
 
@@ -180,7 +182,6 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
                     intent.putExtra(Constants.USER, user);
                     startActivityForResult(intent, RC_SEND_MESSAGE);
                     overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
-                    finish();
                 }
         }
     }
@@ -209,5 +210,20 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
     public boolean onMenuItemActionCollapse(MenuItem item) {
         viewFlipper.setDisplayedChild(0);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case RC_SEND_MESSAGE:
+                    finish();
+                    break;
+            }
+        } else {
+            if (menuItem != null)
+                menuItem.collapseActionView();
+        }
     }
 }
