@@ -1,8 +1,8 @@
 package com.secreto.utils;
 
-import android.support.compat.BuildConfig;
 import android.util.Log;
 
+import com.secreto.BuildConfig;
 import com.secreto.R;
 import com.secreto.common.MyApplication;
 

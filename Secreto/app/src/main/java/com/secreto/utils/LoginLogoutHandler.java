@@ -16,7 +16,6 @@ public class LoginLogoutHandler {
 
     public static void storeUserIntoPrefs(User userObject) {
         SharedPreferenceManager.setUserObject(userObject);
-        SharedPreferenceManager.setUserId(userObject.getUserId());
     }
 
     public static void logoutUser(final Context context) {

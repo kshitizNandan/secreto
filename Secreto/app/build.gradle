@@ -1,16 +1,17 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "26.0.0"
+    compileSdkVersion Integer.parseInt(COMPILE_SDK_VERSION)
+    buildToolsVersion BUILD_TOOLS_VERSION
     defaultConfig {
-        applicationId "com.secreto"
-        minSdkVersion 15
-        targetSdkVersion 25
-        versionCode Integer.parseInt(myVersionCode)
-        versionName myVersionName
+        applicationId APPLICATION_ID
+        minSdkVersion MIN_SDK_VERSION
+        targetSdkVersion TARGET_SDK_VERSION
+        versionCode Integer.parseInt(VERSION_CODE)
+        versionName VERSION_NAME
         buildConfigField "String", "BASE_SERVER_ADDRESS", "\"${BASE_SERVER_ADDRESS}\""
         buildConfigField "String", "BASE_APP_URL", "\"${BASE_APP_URL}\""
+
     }
 
     signingConfigs {
@@ -28,10 +29,12 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            buildConfigField "Boolean", "DEBUG_MODE", "true"
         }
 
         release {
             minifyEnabled false
+            buildConfigField "Boolean", "DEBUG_MODE", "false"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }

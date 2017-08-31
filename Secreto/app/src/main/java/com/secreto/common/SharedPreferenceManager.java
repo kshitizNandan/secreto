@@ -30,14 +30,6 @@ public class SharedPreferenceManager {
         sharedPreference.edit().putString(USER_OBJECT, json).apply();
     }
 
-    public static String getUserId() {
-        return sharedPreference.getString(USER_ID, "");
-    }
-
-    public static void setUserId(String userId) {
-        sharedPreference.edit().putString(USER_ID, userId).apply();
-    }
-
     public static String getFcmToken() {
         return sharedPreference.getString(PUSH_NOTIFICATION_TOKEN, "");
     }

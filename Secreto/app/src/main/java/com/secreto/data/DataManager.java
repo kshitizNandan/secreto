@@ -89,7 +89,7 @@ public class DataManager {
 
     public void sendMessage(String toUserId, String message, String messageClue, ResultListenerNG<BaseResponse> resultListenerNG) {
         HashMap<Object, Object> params = new HashMap<>();
-        String userId = SharedPreferenceManager.getUserId();
+        String userId = SharedPreferenceManager.getUserObject().getUserId();
         params.put(ApiConstants.USER_ID, userId);
         params.put(ApiConstants.MESSAGE, message);
         params.put(ApiConstants.MESSAGE_CLUE, messageClue);
@@ -98,13 +98,14 @@ public class DataManager {
         makeRequest(Request.Method.POST, SEND_MESSAGE, params, BaseResponse.class, resultListenerNG);
     }
 
-    public void updateProfile(String name, String mobile, String gender, String newPass, ResultListenerNG<UserResponse> resultListenerNG) {
+    public void updateProfile(String name, String mobile, String gender, ResultListenerNG<UserResponse> resultListenerNG) {
         HashMap<Object, Object> params = new HashMap<>();
-        if (!TextUtils.isEmpty(newPass))
-            params.put(ApiConstants.PASSWORD, newPass);
+        String userId = SharedPreferenceManager.getUserObject().getUserId();
         params.put(ApiConstants.NAME, name);
         params.put(ApiConstants.CONTACT, mobile);
         params.put(ApiConstants.GENDER, gender);
+        params.put(ApiConstants.USER_ID, userId);
+        Logger.v(TAG, URL_UPDATE_PROFILE);
         makeRequest(Request.Method.POST, URL_UPDATE_PROFILE, params, UserResponse.class, resultListenerNG);
     }
 

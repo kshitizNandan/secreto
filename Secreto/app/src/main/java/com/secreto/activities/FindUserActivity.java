@@ -6,11 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -35,7 +37,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FindUserActivity extends BaseActivityWithActionBar implements View.OnClickListener, SearchView.OnQueryTextListener,  SearchView.OnCloseListener {
+public class FindUserActivity extends BaseActivityWithActionBar implements View.OnClickListener, SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
 
     private static final int RC_SEND_MESSAGE = 200;
     @BindView(R.id.viewFlipper)
@@ -72,7 +74,12 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setOnQueryTextListener(this);
         searchView.setOnSearchClickListener(this);
-        searchView.setOnCloseListener(this);
+
+        MenuItem menuItem = menu.findItem(R.id.menu_search);
+        if (menuItem != null) {
+            MenuItemCompat.setOnActionExpandListener(menuItem, this);
+            MenuItemCompat.setActionView(menuItem, searchView);
+        }
         return true;
     }
 
@@ -154,8 +161,13 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
 
 
     @Override
-    public boolean onClose() {
+    public boolean onMenuItemActionExpand(MenuItem item) {
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemActionCollapse(MenuItem item) {
         viewFlipper.setDisplayedChild(0);
-        return false;
+        return true;
     }
 }

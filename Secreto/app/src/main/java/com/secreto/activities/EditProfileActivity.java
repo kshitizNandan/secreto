@@ -63,7 +63,6 @@ public class EditProfileActivity extends ImagePickerActivity {
     EditText etGender;
     CustomProgressDialog progressDialog;
     EditProfileActivity mActivity;
-    private String newPassword;
     private File photoFile;
     private int genderSelection;
 
@@ -84,6 +83,7 @@ public class EditProfileActivity extends ImagePickerActivity {
         User user = SharedPreferenceManager.getUserObject();
         if (user != null) {
             etName.setText(user.getName());
+            etGender.setText(user.getGender());
             etMobile.setText(user.getContact());
             etUserName.setText(user.getUserName());
             etEmail.setText(user.getEmail());
@@ -169,7 +169,6 @@ public class EditProfileActivity extends ImagePickerActivity {
                             } else if (!newPass.equalsIgnoreCase(confirmPass)) {
                                 input_layout_confirmPass.setError(getString(R.string.pass_confirm_pass_validation));
                             } else {
-                                newPassword = newPass;
                             }
                             break;
                         case R.id.iv_close:
@@ -210,6 +209,11 @@ public class EditProfileActivity extends ImagePickerActivity {
         }
     }
 
+    @OnClick(R.id.iv_profileImg)
+    void onProfileImgClick() {
+        showTakeImagePopup();
+    }
+
     @OnClick(R.id.btnUpdateAccount)
     void updateProfile() {
         String name = etName.getText().toString();
@@ -222,7 +226,7 @@ public class EditProfileActivity extends ImagePickerActivity {
         } else {
             if (Common.isOnline(this)) {
                 progressDialog.show();
-                DataManager.getInstance().updateProfile(name, mobile, gender, newPassword, new ResultListenerNG<UserResponse>() {
+                DataManager.getInstance().updateProfile(name, mobile, gender, new ResultListenerNG<UserResponse>() {
                     @Override
                     public void onSuccess(UserResponse response) {
                         Logger.d(TAG, "Profile update onSuccess : " + response);
@@ -240,10 +244,10 @@ public class EditProfileActivity extends ImagePickerActivity {
                         progressDialog.dismiss();
                         BaseResponse baseResponse = Common.getStatusMessage(error);
                         if (baseResponse == null || TextUtils.isEmpty(baseResponse.getMessage())) {
-                            Logger.e(TAG, "signUp error : " + error.getMessage());
+                            Logger.e(TAG, "Profile update error : " + error.getMessage());
                             Toast.makeText(mActivity, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
                         } else {
-                            Logger.e(TAG, "signUp error : " + baseResponse.getMessage());
+                            Logger.e(TAG, "Profile update error : " + baseResponse.getMessage());
                             Toast.makeText(mActivity, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -266,7 +270,7 @@ public class EditProfileActivity extends ImagePickerActivity {
                         user.setProfile_pic(response.getMedia());
                         SharedPreferenceManager.setUserObject(user);
                     }
-                    Common.showAlertDialog(mActivity, response.getMessage(), null);
+                    Common.showAlertDialog(mActivity, getString(R.string.user_details_updated_successfully), null);
                 }
 
                 @Override
