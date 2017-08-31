@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
@@ -27,6 +26,7 @@ import com.secreto.common.Constants;
 import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
+import com.secreto.mediatorClasses.TextWatcherMediator;
 import com.secreto.model.User;
 import com.secreto.responsemodel.AllUserResponse;
 import com.secreto.responsemodel.BaseResponse;
@@ -62,6 +62,7 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         init();
+        setTextWatcher();
     }
 
     @Override
@@ -86,12 +87,22 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
         return true;
     }
 
-
     private void init() {
         progressDialog = new CustomProgressDialog(this);
         mActivity = this;
         searchAdapter = new SearchUserAdapter(items, this);
         recyclerViewSearch.setAdapter(searchAdapter);
+    }
+
+    private void setTextWatcher() {
+        etEmail.addTextChangedListener(new TextWatcherMediator(etEmail) {
+            @Override
+            public void onTextChanged(CharSequence s, View view) {
+                if (!TextUtils.isEmpty(s.toString())) {
+                    textInputLayoutEmail.setError("");
+                }
+            }
+        });
     }
 
     @OnClick(R.id.btnSubmit)
@@ -174,7 +185,7 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
             case R.id.menu_search:
                 viewFlipper.setDisplayedChild(1);
                 break;
-            case R.id.lLFindUser:
+            case R.id.rLFindUser:
                 if (view.getTag() != null && view.getTag() instanceof User) {
                     User user = (User) view.getTag();
                     Intent intent = new Intent(mActivity, CreateMessageActivity.class);
@@ -224,5 +235,12 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
             if (menuItem != null)
                 menuItem.collapseActionView();
         }
+    }
+
+    @Override
+    protected void onBackPress() {
+        super.onBackPress();
+        Common.hideKeyboard(mActivity, etEmail);
+        overridePendingTransition(R.anim.no_animation, R.anim.out_from_right_animation);
     }
 }

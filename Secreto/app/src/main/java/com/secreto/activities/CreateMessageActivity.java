@@ -116,6 +116,7 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
     @Override
     protected void onBackPress() {
         finish();
-        overridePendingTransition(R.anim.no_animation, R.anim.out_from_bottom);
+        Common.hideKeyboard(mActivity, etMessage);
+        overridePendingTransition(R.anim.no_animation, R.anim.out_from_right_animation);
     }
 }

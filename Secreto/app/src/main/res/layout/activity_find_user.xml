@@ -9,61 +9,69 @@
 
     <include layout="@layout/toolbar" />
 
+
     <ViewFlipper
         android:id="@+id/viewFlipper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/dimen_size_20"
-            android:paddingLeft="@dimen/dimen_size_44"
-            android:paddingRight="@dimen/dimen_size_44"
-            android:paddingTop="@dimen/dimen_size_20">
+            android:layout_gravity="center"
+            android:fillViewport="true">
 
-            <ImageView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_size_174"
-                android:src="@drawable/logo" />
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dimen_size_20"
+                android:paddingLeft="@dimen/dimen_size_44"
+                android:paddingRight="@dimen/dimen_size_44"
+                android:paddingTop="@dimen/dimen_size_20">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_email_editText"
-                style="@style/DefaultTextInputLayoutStyle"
-                android:layout_marginTop="@dimen/dimen_size_30"
-                app:errorEnabled="true"
-                app:hintEnabled="true">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_size_174"
+                    android:src="@drawable/logo" />
 
-                <com.secreto.widgets.CustomFontEditText
-                    android:id="@+id/etEmail"
-                    style="@style/DefaultEditTextStyle"
-                    android:hint="@string/email_id_user_name"
-                    android:imeOptions="actionNext"
-                    android:inputType="textPersonName" />
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_email_editText"
+                    style="@style/DefaultTextInputLayoutStyle"
+                    android:layout_marginTop="@dimen/dimen_size_30"
+                    app:errorEnabled="true"
+                    app:hintEnabled="true">
 
-            </android.support.design.widget.TextInputLayout>
+                    <com.secreto.widgets.CustomFontEditText
+                        android:id="@+id/etEmail"
+                        style="@style/DefaultEditTextStyle"
+                        android:hint="@string/email_id_user_name"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPersonName" />
 
-            <com.secreto.widgets.CustomFontButton
-                android:id="@+id/btnSubmit"
-                style="@style/DefaultButtonStyle"
-                android:layout_marginTop="@dimen/dimen_size_10"
-                android:text="@string/submit" />
-        </LinearLayout>
+                </android.support.design.widget.TextInputLayout>
+
+                <com.secreto.widgets.CustomFontButton
+                    android:id="@+id/btnSubmit"
+                    style="@style/DefaultButtonStyle"
+                    android:layout_marginTop="@dimen/dimen_size_10"
+                    android:text="@string/submit" />
+            </LinearLayout>
+        </ScrollView>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <android.support.v7.widget.RecyclerView
-                app:layoutManager="LinearLayoutManager"
-                tools:listitem="@layout/search_user_item"
                 android:id="@+id/recycler_view_search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"
+                app:layoutManager="LinearLayoutManager"
+                tools:listitem="@layout/search_user_item" />
         </RelativeLayout>
     </ViewFlipper>
 </LinearLayout>

@@ -89,7 +89,7 @@ public class HomeActivity extends BaseActivityWithActionBar {
             public void onClick(View view) {
                 Intent intent = new Intent(mActivity, FindUserActivity.class);
                 startActivityForResult(intent, RC_SEND_MESSAGE);
-                overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
+                overridePendingTransition(R.anim.in_from_right_animation, R.anim.no_animation);
             }
         });
     }
