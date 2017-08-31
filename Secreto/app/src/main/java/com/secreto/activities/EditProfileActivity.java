@@ -295,7 +295,7 @@ public class EditProfileActivity extends ImagePickerActivity {
                                 public void onClick(DialogInterface dialog, int which) {
                                     onBackPress();
                                 }
-                            });
+                            }, false);
                         }
                     }
 
@@ -325,7 +325,7 @@ public class EditProfileActivity extends ImagePickerActivity {
                 @Override
                 public void onSuccess(UserResponse response) {
                     progressDialog.dismiss();
-                    Common.showAlertDialog(mActivity, response.getMessage(), null);
+                    Common.showAlertDialog(mActivity, response.getMessage(), null, false);
                     if (response.getUser() != null)
                         SharedPreferenceManager.setUserObject(response.getUser());
                     if (dialog != null)
@@ -367,7 +367,7 @@ public class EditProfileActivity extends ImagePickerActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             onBackPress();
                         }
-                    });
+                    }, false);
                 }
 
                 @Override

@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,9 +39,14 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
     TextView tvUserName;
     @BindView(R.id.etMessage)
     EditText etMessage;
+    @BindView(R.id.allowCheckBox)
+    CheckBox allowCheckBox;
+    @BindView(R.id.etClue)
+    EditText etClue;
     private CustomProgressDialog progressDialog;
     private String userId;
     private Activity mActivity;
+    private String canReply = "No";
 
     @Override
 
@@ -49,10 +55,21 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
         ButterKnife.bind(this);
         init();
         initView();
+        allowCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    canReply = "YES";
+                } else {
+                    canReply = "NO";
+                }
+            }
+        });
     }
 
     private void init() {
         mActivity = this;
+
         progressDialog = new CustomProgressDialog(this);
         iv_profileImg.setDefaultImageResId(R.drawable.default_user);
         User user = (User) getIntent().getSerializableExtra(Constants.USER);
@@ -61,9 +78,11 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
             tvUserName.setText(user.getName());
             iv_profileImg.setImageUrl(user.getProfile_pic(), ImageCacheManager.getInstance().getImageLoader());
         }
+        allowCheckBox.setText(String.format(getString(R.string.allow_to_get_reply), user.getName()));
     }
 
     private void initView() {
+
         iv_profileImg.setDefaultImageResId(R.drawable.default_user);
     }
 
@@ -81,8 +100,8 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
         } else {
             if (Common.isOnline(this)) {
                 progressDialog.show();
-                String messageClue = "";
-                DataManager.getInstance().sendMessage(userId, message, messageClue, new ResultListenerNG<BaseResponse>() {
+                String messageClue = etClue.getText().toString();
+                DataManager.getInstance().sendMessage(userId, message, messageClue, canReply, new ResultListenerNG<BaseResponse>() {
                     @Override
                     public void onSuccess(BaseResponse response) {
                         progressDialog.hide();
@@ -93,7 +112,7 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
                                 setResult(RESULT_OK);
                                 onBackPress();
                             }
-                        });
+                        }, false);
                     }
 
                     @Override

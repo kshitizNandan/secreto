@@ -117,4 +117,6 @@
     <string name="status">Status</string>
     <string name="my_profile">My Profile</string>
     <string name="please_enter_cool_status">Please enter cool status</string>
+    <string name="give_hint_for_your_identity">Guess me if you can (OPTIONAL)</string>
+    <string name="allow_to_get_reply">Allow to get reply from %1$s</string>
 </resources>

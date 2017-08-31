@@ -18,4 +18,5 @@ public class ApiConstants {
     public static final String KEYWORD = "keyword";
     public static final String OFFSET = "offset";
     public static final String CAPTION = "caption";
+    public static final String CAN_REPLY = "canReply";
 }

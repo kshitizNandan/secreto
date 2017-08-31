@@ -37,6 +37,18 @@
                 android:text="userName" />
 
             <com.secreto.widgets.CustomFontEditText
+                android:id="@+id/etClue"
+                style="@style/LoginEditStyle"
+                android:layout_marginTop="@dimen/dimen_size_20"
+                android:background="@drawable/red_rectangle_with_white_background"
+                android:gravity="top"
+                android:hint="@string/give_hint_for_your_identity"
+                android:imeOptions="actionNext"
+                android:inputType="textMultiLine|textCapSentences"
+                android:lines="1"
+                android:maxLines="2" />
+
+            <com.secreto.widgets.CustomFontEditText
                 android:id="@+id/etMessage"
                 style="@style/LoginEditStyle"
                 android:layout_marginTop="@dimen/dimen_size_20"
@@ -47,6 +59,11 @@
                 android:inputType="textMultiLine|textCapSentences"
                 android:lines="5"
                 android:maxLines="5" />
+
+            <com.secreto.widgets.CustomFontCheckBox
+                android:id="@+id/allowCheckBox"
+                style="@style/DefaultTextViewStyle"
+                android:text="@string/allow_to_get_reply" />
 
             <com.secreto.widgets.CustomFontButton
                 android:id="@+id/tvSend"

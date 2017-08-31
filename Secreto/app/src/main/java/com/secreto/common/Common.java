@@ -133,18 +133,20 @@ public class Common {
         return numberFormat.format(aDouble);
     }
 
-    public static void showAlertDialog(Context context, String message, final DialogInterface.OnClickListener onClickListener) {
-        new AlertDialog.Builder(context)
-                .setTitle(context.getString(R.string.alert))
+    public static void showAlertDialog(Context context, String message, final DialogInterface.OnClickListener onClickListener, boolean isShowCancelBtn) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(context.getString(R.string.app_name))
                 .setMessage(message)
-                .setPositiveButton(context.getString(R.string.ok), onClickListener)
-                .setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .show();
+                .setPositiveButton(context.getString(R.string.ok), onClickListener);
+        if (isShowCancelBtn) {
+            builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+        }
+        builder.show();
 
     }
 }
