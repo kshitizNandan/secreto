@@ -95,7 +95,7 @@
     <string name="next">Next</string>
     <string name="back_pressagain_to_exit">BACK PRESS again to exit from application</string>
 
-   <!-- Time -->
+    <!-- Time -->
     <string name="monday">Mon</string>
     <string name="tuesday">Tue</string>
     <string name="wednesday">Wed</string>
@@ -114,4 +114,7 @@
     <string name="submit">Submit</string>
     <string name="user_details_updated_successfully">User details successfully updated</string>
     <string name="search">Search</string>
+    <string name="status">Status</string>
+    <string name="my_profile">My Profile</string>
+    <string name="please_enter_cool_status">Please enter cool status</string>
 </resources>

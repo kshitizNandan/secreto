@@ -9,10 +9,12 @@
 
     <include layout="@layout/toolbar" />
 
+
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:headerLayout="@layout/account_settings_nav_header"
         app:menu="@menu/account_settings_menu" />
+
 </LinearLayout>

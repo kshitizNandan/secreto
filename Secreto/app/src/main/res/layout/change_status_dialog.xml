@@ -59,7 +59,7 @@
             android:orientation="vertical">
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_oldPass"
+                android:id="@+id/input_layout_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_size_10"
@@ -67,62 +67,18 @@
                 app:errorEnabled="true">
 
                 <com.secreto.widgets.CustomFontEditText
-                    android:id="@+id/et_oldPass"
+                    android:id="@+id/et_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/current_password"
-                    android:imeOptions="actionNext"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:textColor="@color/dark_gray"
-                    android:textColorHint="@color/gray"
-                    android:textSize="@dimen/text_size_14"
-                    app:fontStyle="fontRegular" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_newPass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_size_10"
-                android:textColorHint="@color/gray"
-                app:errorEnabled="true">
-
-                <com.secreto.widgets.CustomFontEditText
-                    android:id="@+id/et_newPass"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/new_password"
-                    android:imeOptions="actionNext"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:textColor="@color/dark_gray"
-                    android:textColorHint="@color/gray"
-                    android:textSize="@dimen/text_size_14"
-                    app:fontStyle="fontRegular" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_confirmPass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_size_10"
-                android:textColorHint="@color/gray"
-                app:errorEnabled="true">
-
-                <com.secreto.widgets.CustomFontEditText
-                    android:id="@+id/et_confirmPass"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/confirm_password"
+                    android:hint="@string/status"
                     android:imeOptions="actionDone"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
+                    android:inputType="text"
                     android:textColor="@color/dark_gray"
                     android:textColorHint="@color/gray"
                     android:textSize="@dimen/text_size_14"
                     app:fontStyle="fontRegular" />
             </android.support.design.widget.TextInputLayout>
+
 
             <LinearLayout
                 android:id="@+id/btnLayout"

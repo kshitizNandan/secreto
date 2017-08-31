@@ -13,8 +13,9 @@ public class ApiConstants {
     public static final String TO_USER_ID = "toUserId";
     public static final String USER_NAME = "userName";
     public static final String GENDER = "gender";
-    public static final String CURRENT_PASS ="currentPassword" ;
-    public static final String NEW_PASS ="newPassword" ;
+    public static final String CURRENT_PASS = "currentPassword";
+    public static final String NEW_PASS = "newPassword";
     public static final String KEYWORD = "keyword";
     public static final String OFFSET = "offset";
+    public static final String CAPTION = "caption";
 }

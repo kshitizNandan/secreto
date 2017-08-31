@@ -61,6 +61,9 @@ public class EditProfileActivity extends ImagePickerActivity {
     TextInputLayout textInputLayoutMobile;
     @BindView(R.id.etGender)
     EditText etGender;
+    @BindView(R.id.tv_status)
+    TextView tv_status;
+    private String status;
     CustomProgressDialog progressDialog;
     EditProfileActivity mActivity;
     private File photoFile;
@@ -87,6 +90,7 @@ public class EditProfileActivity extends ImagePickerActivity {
             etMobile.setText(user.getContact());
             etUserName.setText(user.getUserName());
             etEmail.setText(user.getEmail());
+            tv_status.setText(user.getCaption());
             if (!TextUtils.isEmpty(user.getProfile_pic())) {
                 iv_profileImg.setImageUrl(user.getProfile_pic(), ImageCacheManager.getInstance().getImageLoader());
             } else {
@@ -133,6 +137,56 @@ public class EditProfileActivity extends ImagePickerActivity {
                     }
                 });
         dialogBuilder.show();
+    }
+
+    @OnClick(R.id.tv_status)
+    void changeStatusPopup() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View contentView = inflater.inflate(R.layout.change_status_dialog, null);
+        final EditText et_status = (EditText) contentView.findViewById(R.id.et_status);
+        et_status.setText(!TextUtils.isEmpty(tv_status.getText()) ? tv_status.getText().toString() : "");
+        final TextInputLayout input_layout_status = (TextInputLayout) contentView.findViewById(R.id.input_layout_status);
+        final Dialog dialog = new Dialog(this, R.style.dialog_style);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(contentView);
+        if (dialog.getWindow() != null) {
+            dialog.setCancelable(true);
+            dialog.show();
+            View.OnClickListener onClickListener = new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    switch (v.getId()) {
+                        case R.id.btn_ok:
+                            String status = et_status.getText().toString().trim();
+                            if (TextUtils.isEmpty(status)) {
+                                input_layout_status.setError(getString(R.string.please_enter_cool_status));
+                            } else {
+                                dialog.dismiss();
+                                tv_status.setText(status);
+                                mActivity.status = status;
+                            }
+                            break;
+                        case R.id.iv_close:
+                        case R.id.btn_cancel:
+                            dialog.dismiss();
+                            break;
+                    }
+                }
+            };
+            contentView.findViewById(R.id.btn_cancel).setOnClickListener(onClickListener);
+            contentView.findViewById(R.id.btn_ok).setOnClickListener(onClickListener);
+            contentView.findViewById(R.id.iv_close).setOnClickListener(onClickListener);
+
+            et_status.addTextChangedListener(new TextWatcherMediator(et_status) {
+                @Override
+                public void onTextChanged(CharSequence s, View view) {
+                    if (!TextUtils.isEmpty(s.toString())) {
+                        input_layout_status.setError("");
+                    }
+                }
+            });
+        }
     }
 
     @OnClick(R.id.tvChangePass)
@@ -227,7 +281,7 @@ public class EditProfileActivity extends ImagePickerActivity {
         } else {
             if (Common.isOnline(this)) {
                 progressDialog.show();
-                DataManager.getInstance().updateProfile(name, mobile, gender, new ResultListenerNG<UserResponse>() {
+                DataManager.getInstance().updateProfile(name, mobile, gender, status, new ResultListenerNG<UserResponse>() {
                     @Override
                     public void onSuccess(UserResponse response) {
                         Logger.d(TAG, "Profile update onSuccess : " + response);
@@ -347,6 +401,7 @@ public class EditProfileActivity extends ImagePickerActivity {
     @Override
     protected void onBackPress() {
         finish();
+        Common.hideKeyboard(mActivity, etEmail);
         overridePendingTransition(R.anim.no_animation, R.anim.out_from_right_animation);
     }
 }

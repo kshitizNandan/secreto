@@ -131,6 +131,7 @@ public class HomeActivity extends BaseActivityWithActionBar {
         User user = SharedPreferenceManager.getUserObject();
         if (user != null) {
             ((TextView) contentView.findViewById(R.id.tv_name)).setText(user.getName());
+            ((TextView) contentView.findViewById(R.id.tv_status)).setText(user.getCaption());
             if (!TextUtils.isEmpty(user.getProfile_pic())) {
                 ((NetworkImageView) contentView.findViewById(R.id.iv_profileImg)).setImageUrl(user.getProfile_pic(), ImageCacheManager.getInstance().getImageLoader());
             } else {

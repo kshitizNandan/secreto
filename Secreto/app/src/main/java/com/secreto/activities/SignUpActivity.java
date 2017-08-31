@@ -1,14 +1,19 @@
 package com.secreto.activities;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -51,6 +56,8 @@ public class SignUpActivity extends ImagePickerActivity {
     EditText etConfirmPassword;
     @BindView(R.id.etMobile)
     EditText etMobile;
+    @BindView(R.id.tv_status)
+    TextView tv_status;
     @BindView(R.id.cbTermsOfUse)
     CheckBox cbTermsOfUse;
     @BindView(R.id.tvTermsOfUse)
@@ -72,6 +79,9 @@ public class SignUpActivity extends ImagePickerActivity {
     private CustomProgressDialog progressDialog;
     private AlertDialog registrationSuccessDialog;
     private File photoFile;
+    private String status;
+    private SignUpActivity mActivity;
+
 
     @Override
     public int getLayoutResource() {
@@ -92,13 +102,14 @@ public class SignUpActivity extends ImagePickerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        initView();
+        init();
         setTextWatcher();
     }
 
-    private void initView() {
+    private void init() {
         iv_profileImg.setDefaultImageResId(R.drawable.default_user);
         progressDialog = new CustomProgressDialog(this);
+        mActivity= this;
         tvTermsOfUse.setTermsAndPrivacyClickedListener(new TermsAndPrivacyClickedListener() {
             @Override
             public void onClickTerms(View view) {
@@ -151,6 +162,56 @@ public class SignUpActivity extends ImagePickerActivity {
         etMobile.addTextChangedListener(new GenericTextWatcher(etMobile));
     }
 
+    @OnClick(R.id.tv_status)
+    void changeStatusPopup() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View contentView = inflater.inflate(R.layout.change_status_dialog, null);
+        final EditText et_status = (EditText) contentView.findViewById(R.id.et_status);
+        et_status.setText(!TextUtils.isEmpty(tv_status.getText()) ? tv_status.getText().toString() : "");
+        final TextInputLayout input_layout_status = (TextInputLayout) contentView.findViewById(R.id.input_layout_status);
+        final Dialog dialog = new Dialog(this, R.style.dialog_style);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(contentView);
+        if (dialog.getWindow() != null) {
+            dialog.setCancelable(true);
+            dialog.show();
+            View.OnClickListener onClickListener = new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    switch (v.getId()) {
+                        case R.id.btn_ok:
+                            String status = et_status.getText().toString().trim();
+                            if (TextUtils.isEmpty(status)) {
+                                input_layout_status.setError(getString(R.string.please_enter_cool_status));
+                            } else {
+                                dialog.dismiss();
+                                tv_status.setText(status);
+                                mActivity.status = status;
+                            }
+                            break;
+                        case R.id.iv_close:
+                        case R.id.btn_cancel:
+                            dialog.dismiss();
+                            break;
+                    }
+                }
+            };
+            contentView.findViewById(R.id.btn_cancel).setOnClickListener(onClickListener);
+            contentView.findViewById(R.id.btn_ok).setOnClickListener(onClickListener);
+            contentView.findViewById(R.id.iv_close).setOnClickListener(onClickListener);
+
+            et_status.addTextChangedListener(new TextWatcherMediator(et_status) {
+                @Override
+                public void onTextChanged(CharSequence s, View view) {
+                    if (!TextUtils.isEmpty(s.toString())) {
+                        input_layout_status.setError("");
+                    }
+                }
+            });
+        }
+    }
+
     @OnClick(R.id.iv_profileImg)
     void onProfileImgClick() {
         showTakeImagePopup();
@@ -185,7 +246,7 @@ public class SignUpActivity extends ImagePickerActivity {
         } else {
             if (Common.isOnline(this)) {
                 progressDialog.show();
-                DataManager.getInstance().signUp(name, userName, email, password, mobile, new ResultListenerNG<UserResponse>() {
+                DataManager.getInstance().signUp(name, userName, email, password, mobile,status, new ResultListenerNG<UserResponse>() {
                     @Override
                     public void onSuccess(UserResponse response) {
                         Logger.d(TAG, "signUp onSuccess : " + response);

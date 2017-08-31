@@ -75,13 +75,14 @@ public class DataManager {
         makeRequest(Request.Method.POST, URL_LOGIN, params, UserResponse.class, resultListenerNG);
     }
 
-    public void signUp(String name, String userName, String email, String password, String mobile, ResultListenerNG<UserResponse> resultListenerNG) {
+    public void signUp(String name, String userName, String email, String password, String mobile, String status, ResultListenerNG<UserResponse> resultListenerNG) {
         HashMap<Object, Object> params = new HashMap<>();
         params.put(ApiConstants.NAME, name);
         params.put(ApiConstants.USER_NAME, userName);
         params.put(ApiConstants.EMAIL, email);
         params.put(ApiConstants.PASSWORD, password);
         params.put(ApiConstants.CONTACT, mobile);
+        params.put(ApiConstants.CAPTION, status);
         makeRequest(Request.Method.POST, URL_REGISTER, params, UserResponse.class, resultListenerNG);
     }
 
@@ -104,12 +105,13 @@ public class DataManager {
         makeRequest(Request.Method.POST, SEND_MESSAGE, params, BaseResponse.class, resultListenerNG);
     }
 
-    public void updateProfile(String name, String mobile, String gender, ResultListenerNG<UserResponse> resultListenerNG) {
+    public void updateProfile(String name, String mobile, String gender, String status, ResultListenerNG<UserResponse> resultListenerNG) {
         HashMap<Object, Object> params = new HashMap<>();
         String userId = SharedPreferenceManager.getUserObject().getUserId();
         params.put(ApiConstants.NAME, name);
         params.put(ApiConstants.CONTACT, mobile);
         params.put(ApiConstants.GENDER, gender);
+        params.put(ApiConstants.CAPTION, status);
         params.put(ApiConstants.USER_ID, userId);
         Logger.v(TAG, URL_UPDATE_PROFILE);
         makeRequest(Request.Method.POST, URL_UPDATE_PROFILE, params, UserResponse.class, resultListenerNG);

@@ -28,19 +28,36 @@
             android:paddingRight="@dimen/dimen_size_44"
             android:paddingTop="@dimen/dimen_size_20">
 
-            <com.secreto.utils.NetworkImageView
-                android:id="@+id/iv_profileImg"
-                android:layout_width="@dimen/dimen_size_80"
-                android:layout_height="@dimen/dimen_size_80"
-                app:roundedCorner="true"
-                app:roundedCornerDP="40" />
-
-            <com.secreto.widgets.CustomFontTextView
-                style="@style/DefaultTextViewStyle"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <com.secreto.utils.NetworkImageView
+                    android:id="@+id/iv_profileImg"
+                    android:layout_width="@dimen/dimen_size_80"
+                    android:layout_height="@dimen/dimen_size_80"
+                    app:roundedCorner="true"
+                    app:roundedCornerDP="40" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/iv_profileImg"
+                    android:layout_alignRight="@+id/iv_profileImg"
+                    android:src="@drawable/edit" />
+            </RelativeLayout>
+
+            <com.secreto.widgets.CustomFontTextView
+                android:id="@+id/tv_status"
+                style="@style/DefaultTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_10"
                 android:padding="@dimen/dimen_size_5"
-                android:text="@string/browse" />
+                android:text="@string/status"
+                android:textSize="@dimen/text_size_16"
+                app:fontStyle="StylishfontRegular" />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_name_editText"
