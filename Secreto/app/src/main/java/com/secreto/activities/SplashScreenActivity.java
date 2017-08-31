@@ -16,17 +16,10 @@ import android.widget.TextView;
 
 import com.secreto.R;
 import com.secreto.common.SharedPreferenceManager;
+import com.secreto.mediatorClasses.AnimationMediator;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        Window window = getWindow();
-        window.setFormat(PixelFormat.RGBA_8888);
-    }
-    /**
-     * Called when the activity is first created.
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,12 +39,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         iv.clearAnimation();
         iv.startAnimation(anim);
         final TextView tvAppName = (TextView) findViewById(R.id.tvAppName);
-        anim.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
+        anim.setAnimationListener(new AnimationMediator() {
             @Override
             public void onAnimationEnd(Animation animation) {
                 tvAppName.setVisibility(View.VISIBLE);
@@ -59,11 +47,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                 anim.reset();
                 tvAppName.setAnimation(anim);
                 tvAppName.startAnimation(anim);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
             }
         });
         new Handler().postDelayed(new Runnable() {
