@@ -39,8 +39,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class FindUserActivity extends BaseActivityWithActionBar implements View.OnClickListener, SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
-public class FindUserActivity extends BaseActivityWithActionBar implements View.OnClickListener, SearchView.OnQueryTextListener, SearchView.OnCloseListener {
-
     private static final int RC_SEND_MESSAGE = 200;
     @BindView(R.id.viewFlipper)
     ViewFlipper viewFlipper;
