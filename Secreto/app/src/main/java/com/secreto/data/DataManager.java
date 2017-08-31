@@ -9,6 +9,7 @@ import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.volley.MultipartRequest;
 import com.secreto.data.volley.RequestManagerApi;
 import com.secreto.data.volley.ResultListenerNG;
+import com.secreto.responsemodel.AllUserResponse;
 import com.secreto.responsemodel.BaseResponse;
 import com.secreto.responsemodel.MediaResponse;
 import com.secreto.responsemodel.SendOrReceivedMessageResponse;
@@ -32,6 +33,8 @@ public class DataManager {
     private static final String URL_GET_SENT_OR_RECEIVED_MSGS = BASE_SERVER_ADDRESS + "getSendOrReceivedMsgs";
     private static final String URL_FIND_USER = BASE_SERVER_ADDRESS + "findUser";
     private static final String URL_UPDATE_PROFILE = BASE_SERVER_ADDRESS + "updateProfile";
+    private static final String URL_GET_ALL_USERS = BASE_SERVER_ADDRESS + "getAllUsers";
+
 
     private static DataManager singleton;
 
@@ -120,4 +123,11 @@ public class DataManager {
         params.put(ApiConstants.USER_NAME, userName);
         makeRequest(Request.Method.POST, URL_FIND_USER, params, UserResponse.class, resultListenerNG);
     }
+
+    public void getAllUsers(String name, int offset, ResultListenerNG<AllUserResponse> listenerNG) {
+        String url = String.format(Locale.ENGLISH, URL_GET_ALL_USERS + "?name=%s&offset=%d", name, offset);
+        Logger.v(TAG, url);
+        makeRequest(Request.Method.GET, url, null, AllUserResponse.class, listenerNG);
+    }
+
 }

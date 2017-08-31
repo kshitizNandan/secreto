@@ -25,6 +25,7 @@ import com.secreto.common.Constants;
 import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
+import com.secreto.responsemodel.AllUserResponse;
 import com.secreto.responsemodel.BaseResponse;
 import com.secreto.responsemodel.UserResponse;
 import com.secreto.utils.CustomProgressDialog;
@@ -35,7 +36,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FindUserActivity extends BaseActivityWithActionBar implements View.OnClickListener, SearchView.OnQueryTextListener,  SearchView.OnCloseListener {
+public class FindUserActivity extends BaseActivityWithActionBar implements View.OnClickListener, SearchView.OnQueryTextListener, SearchView.OnCloseListener {
 
     private static final int RC_SEND_MESSAGE = 200;
     @BindView(R.id.viewFlipper)
@@ -51,6 +52,7 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
     private ArrayList<Object> items = new ArrayList<>();
     private FindUserActivity mActivity;
     private ProgressDialog progressDialog;
+    private int offset = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,11 +102,6 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
                     public void onSuccess(UserResponse response) {
                         progressDialog.dismiss();
                         if (response.getUser() != null) {
-                            if (items != null) {
-                                items.clear();
-                            }
-                            items.add(response.getUser());
-                            searchAdapter.notifyDataSetChanged();
                             Intent intent = new Intent(mActivity, CreateMessageActivity.class);
                             intent.putExtra(Constants.USER, response.getUser());
                             startActivityForResult(intent, RC_SEND_MESSAGE);
@@ -132,6 +129,37 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
         }
     }
 
+    private void getAllUsersApi(String name) {
+        if (Common.isOnline(mActivity)) {
+            DataManager.getInstance().getAllUsers(name, offset, new ResultListenerNG<AllUserResponse>() {
+                @Override
+                public void onSuccess(AllUserResponse response) {
+                    if (response.getUsers() != null) {
+                        if (items != null) {
+                            items.clear();
+                        }
+                        items.addAll(response.getUsers());
+                    } else {
+                        textInputLayoutEmail.setError(response.getMessage());
+                    }
+                    searchAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onError(VolleyError error) {
+                    progressDialog.dismiss();
+                    BaseResponse baseResponse = Common.getStatusMessage(error);
+                    if (baseResponse == null || TextUtils.isEmpty(baseResponse.getMessage())) {
+                        Toast.makeText(mActivity, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(mActivity, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(this, R.string.check_your_internet_connection, Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     public void onClick(View view) {
@@ -144,11 +172,15 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+        if (!query.isEmpty())
+            getAllUsersApi(query);
         return true;
     }
 
     @Override
-    public boolean onQueryTextChange(String newText) {
+    public boolean onQueryTextChange(String query) {
+        if (!query.isEmpty())
+            getAllUsersApi(query);
         return true;
     }
 
