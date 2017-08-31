@@ -27,6 +27,7 @@ import com.secreto.common.Constants;
 import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
+import com.secreto.model.User;
 import com.secreto.responsemodel.AllUserResponse;
 import com.secreto.responsemodel.BaseResponse;
 import com.secreto.responsemodel.UserResponse;
@@ -88,7 +89,6 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
     private void init() {
         progressDialog = new CustomProgressDialog(this);
         mActivity = this;
-        recyclerViewSearch.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         searchAdapter = new SearchUserAdapter(items, this);
         recyclerViewSearch.setAdapter(searchAdapter);
     }
@@ -173,6 +173,15 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
             case R.id.menu_search:
                 viewFlipper.setDisplayedChild(1);
                 break;
+            case R.id.lLFindUser:
+                if (view.getTag() != null && view.getTag() instanceof User) {
+                    User user = (User) view.getTag();
+                    Intent intent = new Intent(mActivity, CreateMessageActivity.class);
+                    intent.putExtra(Constants.USER, user);
+                    startActivityForResult(intent, RC_SEND_MESSAGE);
+                    overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
+                    finish();
+                }
         }
     }
 
