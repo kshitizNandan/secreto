@@ -72,6 +72,7 @@ public class DataManager {
         HashMap<Object, Object> params = new HashMap<>();
         params.put(ApiConstants.EMAIL, email);
         params.put(ApiConstants.PASSWORD, password);
+        params.put(ApiConstants.DEVICE_TOKEN, SharedPreferenceManager.getFcmToken());
         makeRequest(Request.Method.POST, URL_LOGIN, params, UserResponse.class, resultListenerNG);
     }
 
@@ -83,6 +84,7 @@ public class DataManager {
         params.put(ApiConstants.PASSWORD, password);
         params.put(ApiConstants.CONTACT, mobile);
         params.put(ApiConstants.CAPTION, status);
+        params.put(ApiConstants.DEVICE_TOKEN, SharedPreferenceManager.getFcmToken());
         makeRequest(Request.Method.POST, URL_REGISTER, params, UserResponse.class, resultListenerNG);
     }
 
@@ -94,7 +96,7 @@ public class DataManager {
         makeMultipartRequest(URL_UPLOAD_IMAGE, params, MediaResponse.class, resultListenerNG, ApiConstants.FILE, file);
     }
 
-    public void sendMessage(String toUserId, String message, String messageClue,String canReply, ResultListenerNG<BaseResponse> resultListenerNG) {
+    public void sendMessage(String toUserId, String message, String messageClue, String canReply, ResultListenerNG<BaseResponse> resultListenerNG) {
         HashMap<Object, Object> params = new HashMap<>();
         String userId = SharedPreferenceManager.getUserObject().getUserId();
         params.put(ApiConstants.USER_ID, userId);
@@ -152,5 +154,13 @@ public class DataManager {
         params.put(ApiConstants.NEW_PASS, newPassword);
         params.put(ApiConstants.USER_ID, userId);
         makeRequest(Request.Method.POST, URL_CHANGE_PASS, params, UserResponse.class, resultListenerNG);
+    }
+
+    public void logoutApiCall(ResultListenerNG<BaseResponse> resultListenerNG) {
+        String userId = SharedPreferenceManager.getUserObject().getUserId();
+        HashMap<Object, Object> params = new HashMap<>();
+        params.put(ApiConstants.DEVICE_TOKEN, SharedPreferenceManager.getFcmToken());
+        params.put(ApiConstants.USER_ID, userId);
+        makeRequest(Request.Method.POST, URL_CHANGE_PASS, params, BaseResponse.class, resultListenerNG);
     }
 }
