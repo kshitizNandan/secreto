@@ -16,12 +16,14 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.android.volley.VolleyError;
+import com.paginate.Paginate;
 import com.secreto.R;
 import com.secreto.adapters.SentOrReceivedMessagesRecyclerAdapter;
 import com.secreto.common.Common;
 import com.secreto.common.Constants;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
+import com.secreto.paginate.CustomLoadingListItemCreator;
 import com.secreto.responsemodel.BaseResponse;
 import com.secreto.responsemodel.SendOrReceivedMessageResponse;
 
@@ -32,7 +34,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class SentReceivedMessagesFragment extends Fragment {
+public class SentReceivedMessagesFragment extends Fragment implements Paginate.Callbacks {
     @BindView(R.id.llForOfflineScreen)
     LinearLayout llForOfflineScreen;
     @BindView(R.id.rlForLoadingScreen)
@@ -47,7 +49,8 @@ public class SentReceivedMessagesFragment extends Fragment {
     ViewFlipper viewFlipper;
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout swipeRefresh;
-    private int offset;
+    private int offset = 0;
+    private boolean loading = false;
     private String messageType;
     private SentOrReceivedMessagesRecyclerAdapter nAdapter;
     private ArrayList<Object> objectArrayList = new ArrayList<>();
@@ -90,7 +93,10 @@ public class SentReceivedMessagesFragment extends Fragment {
     private void setRecyclerAdapter() {
         nAdapter = new SentOrReceivedMessagesRecyclerAdapter(objectArrayList);
         recyclerView.setAdapter(nAdapter);
-        getSendOrReceivedMsgApiCall();
+        Paginate.with(recyclerView, this)
+                .setLoadingTriggerThreshold(2)
+                .addLoadingListItem(true)
+                .setLoadingListItemCreator(new CustomLoadingListItemCreator(true)).build();
     }
 
     @OnClick(R.id.tvRetry)
@@ -100,6 +106,13 @@ public class SentReceivedMessagesFragment extends Fragment {
 
     public void getSendOrReceivedMsgApiCall() {
         if (Common.isOnline(getActivity())) {
+            if (offset == -1) {
+                return;
+            }
+            loading = true;
+            if (offset == 0) {
+                setLoadingLayout();
+            }
             if (!swipeRefresh.isRefreshing())
                 setLoadingLayout();
             tvEmptyText.setVisibility(View.GONE);
@@ -109,6 +122,8 @@ public class SentReceivedMessagesFragment extends Fragment {
                     if (offset == 0) {
                         objectArrayList.clear();
                     }
+                    offset = response.getOffset();
+                    loading = false;
                     if (response.getMessageArrayList() != null && !response.getMessageArrayList().isEmpty()) {
                         objectArrayList.addAll(response.getMessageArrayList());
                         nAdapter.notifyDataSetChanged();
@@ -122,6 +137,7 @@ public class SentReceivedMessagesFragment extends Fragment {
 
                 @Override
                 public void onError(VolleyError error) {
+                    loading = false;
                     swipeRefresh.setRefreshing(false);
                     BaseResponse baseResponse = Common.getStatusMessage(error);
                     if (baseResponse == null || TextUtils.isEmpty(baseResponse.getMessage())) {
@@ -149,4 +165,22 @@ public class SentReceivedMessagesFragment extends Fragment {
     private void setMainLayout() {
         viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(svMain));
     }
+
+    @Override
+    public void onLoadMore() {
+        if (!loading) {
+            getSendOrReceivedMsgApiCall();
+        }
+    }
+
+    @Override
+    public boolean isLoading() {
+        return loading;
+    }
+
+    @Override
+    public boolean hasLoadedAllItems() {
+        return offset == -1;
+    }
+
 }

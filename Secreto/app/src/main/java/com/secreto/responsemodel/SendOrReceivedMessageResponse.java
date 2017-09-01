@@ -12,6 +12,12 @@ import java.util.ArrayList;
 public class SendOrReceivedMessageResponse extends BaseResponse {
     @SerializedName("list")
     private ArrayList<Message> messageArrayList;
+    @SerializedName("offset")
+    private int offset;
+
+    public int getOffset() {
+        return offset;
+    }
 
     public ArrayList<Message> getMessageArrayList() {
         return messageArrayList;
