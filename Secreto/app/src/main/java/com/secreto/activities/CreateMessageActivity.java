@@ -34,6 +34,7 @@ import butterknife.OnClick;
 
 public class CreateMessageActivity extends BaseActivityWithActionBar {
     @BindView(R.id.iv_profileImg)
+            
     NetworkImageView iv_profileImg;
     @BindView(R.id.tvUserName)
     TextView tvUserName;
