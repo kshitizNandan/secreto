@@ -85,7 +85,11 @@ public class LoginActivity extends BaseActivityWithActionBar {
                     public void onSuccess(UserResponse response) {
                         Logger.d(TAG, "login onSuccess : " + response);
                         progressDialog.dismiss();
-                        goToHomeScreen(response.getUser());
+                        if (response.getUser() != null) {
+                            goToHomeScreen(response.getUser());
+                        }else{
+                            Toast.makeText(LoginActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
