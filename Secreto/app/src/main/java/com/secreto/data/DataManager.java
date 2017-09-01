@@ -37,6 +37,7 @@ public class DataManager {
     private static final String URL_UPDATE_PROFILE = BASE_SERVER_ADDRESS + "updateProfile";
     private static final String URL_GET_ALL_USERS = BASE_SERVER_ADDRESS + "getAllUsers";
     private static final String URL_CHANGE_PASS = BASE_SERVER_ADDRESS + "changePassword";
+    private static final String URL_LOGOUT = BASE_SERVER_ADDRESS + "logout";
 
 
     private static DataManager singleton;
@@ -161,6 +162,6 @@ public class DataManager {
         HashMap<Object, Object> params = new HashMap<>();
         params.put(ApiConstants.DEVICE_TOKEN, SharedPreferenceManager.getFcmToken());
         params.put(ApiConstants.USER_ID, userId);
-        makeRequest(Request.Method.POST, URL_CHANGE_PASS, params, BaseResponse.class, resultListenerNG);
+        makeRequest(Request.Method.POST, URL_LOGOUT, params, BaseResponse.class, resultListenerNG);
     }
 }
