@@ -51,8 +51,8 @@ public class SentReceivedMessagesFragment extends Fragment {
     SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.rl_progressBar)
     RelativeLayout rl_progressBar;
-    private int offset = 0;
-    private boolean isLoading = false;
+    private int offset;
+    private boolean isLoading;
     private String messageType;
     private SentOrReceivedMessagesRecyclerAdapter nAdapter;
     private ArrayList<Object> objectArrayList = new ArrayList<>();
@@ -84,6 +84,7 @@ public class SentReceivedMessagesFragment extends Fragment {
     }
 
     private void init() {
+        swipeRefresh.setColorSchemeResources(R.color.colorPrimaryDark);
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -98,6 +99,8 @@ public class SentReceivedMessagesFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         nAdapter = new SentOrReceivedMessagesRecyclerAdapter(objectArrayList);
         recyclerView.setAdapter(nAdapter);
+
+        // Load More
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

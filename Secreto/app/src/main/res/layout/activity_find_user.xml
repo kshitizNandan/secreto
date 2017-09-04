@@ -9,7 +9,6 @@
 
     <include layout="@layout/toolbar" />
 
-
     <ViewFlipper
         android:id="@+id/viewFlipper"
         android:layout_width="match_parent"
@@ -69,9 +68,39 @@
                 android:id="@+id/recycler_view_search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_above="@+id/rl_progressBar"
                 android:scrollbars="vertical"
                 app:layoutManager="LinearLayoutManager"
                 tools:listitem="@layout/search_user_item" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="@dimen/dimen_size_30"
+                android:layout_height="@dimen/dimen_size_30"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dimen_size_20"
+                android:visibility="gone" />
+
+            <com.secreto.widgets.CustomFontTextView
+                android:id="@+id/tvEmptyText"
+                style="@style/EmptyTextStyle"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:paddingBottom="@dimen/dimen_size_10"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/rl_progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:visibility="gone">
+
+                <ProgressBar
+                    android:layout_width="@dimen/dimen_size_30"
+                    android:layout_height="@dimen/dimen_size_30"
+                    android:layout_centerInParent="true" />
+            </RelativeLayout>
         </RelativeLayout>
     </ViewFlipper>
 </LinearLayout>

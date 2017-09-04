@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
@@ -14,6 +15,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -49,13 +53,21 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
     EditText etEmail;
     @BindView(R.id.recycler_view_search)
     RecyclerView recyclerViewSearch;
+    @BindView(R.id.rl_progressBar)
+    RelativeLayout rl_progressBar;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+    @BindView(R.id.tvEmptyText)
+    TextView tvEmptyText;
 
     private SearchUserAdapter searchAdapter;
     private ArrayList<Object> items = new ArrayList<>();
     private FindUserActivity mActivity;
     private ProgressDialog progressDialog;
-    private int offset = 0;
     private MenuItem menuItem;
+    private int offset;
+    private boolean isLoading;
+    private String keyword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,8 +102,32 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
     private void init() {
         progressDialog = new CustomProgressDialog(this);
         mActivity = this;
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
+        recyclerViewSearch.setLayoutManager(linearLayoutManager);
         searchAdapter = new SearchUserAdapter(items, this);
         recyclerViewSearch.setAdapter(searchAdapter);
+
+        // Load More
+        recyclerViewSearch.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount, totalItemCount, pastVisibleItems;
+                if (dy > 0) {
+                    visibleItemCount = linearLayoutManager.getChildCount();
+                    totalItemCount = linearLayoutManager.getItemCount();
+                    pastVisibleItems = linearLayoutManager.findFirstVisibleItemPosition();
+                    if (!isLoading) {
+                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                            isLoading = true;
+                            if (offset != -1) {
+                                getAllUsersApi();
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void setTextWatcher() {
@@ -147,25 +183,39 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
         }
     }
 
-    private void getAllUsersApi(String keyword) {
+    private void getAllUsersApi() {
         if (Common.isOnline(mActivity)) {
+            if (isLoading) {
+                rl_progressBar.setVisibility(View.VISIBLE);
+            } else {
+                offset = 0;
+                progressBar.setVisibility(View.VISIBLE);
+            }
+            tvEmptyText.setVisibility(View.GONE);
             DataManager.getInstance().getAllUsers(keyword, offset, new ResultListenerNG<AllUserResponse>() {
                 @Override
                 public void onSuccess(AllUserResponse response) {
-                    if (response.getUsers() != null) {
-                        if (items != null) {
-                            items.clear();
-                        }
+                    if (offset == 0) {
+                        items.clear();
+                    }
+                    offset = response.getOffset();
+                    if (response.getUsers() != null && !response.getUsers().isEmpty()) {
                         items.addAll(response.getUsers());
                     } else {
-                        textInputLayoutEmail.setError(response.getMessage());
+                        tvEmptyText.setText(getString(R.string.no_users_not_found));
+                        tvEmptyText.setVisibility(View.VISIBLE);
                     }
                     searchAdapter.notifyDataSetChanged();
+                    isLoading = false;
+                    rl_progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
                 }
 
                 @Override
                 public void onError(VolleyError error) {
-                    progressDialog.dismiss();
+                    isLoading = false;
+                    rl_progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
                     BaseResponse baseResponse = Common.getStatusMessage(error);
                     if (baseResponse == null || TextUtils.isEmpty(baseResponse.getMessage())) {
                         Toast.makeText(mActivity, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
@@ -198,21 +248,27 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+        this.keyword = query;
         if (!query.isEmpty())
-            getAllUsersApi(query);
+            getAllUsersApi();
         return true;
     }
 
     @Override
     public boolean onQueryTextChange(String query) {
+        this.keyword = query;
         if (!query.isEmpty())
-            getAllUsersApi(query);
+            getAllUsersApi();
         return true;
     }
 
 
     @Override
     public boolean onMenuItemActionExpand(MenuItem item) {
+        if (items != null && items.isEmpty()) {
+            tvEmptyText.setText(getString(R.string.search_user_message));
+            tvEmptyText.setVisibility(View.VISIBLE);
+        }
         return true;
     }
 

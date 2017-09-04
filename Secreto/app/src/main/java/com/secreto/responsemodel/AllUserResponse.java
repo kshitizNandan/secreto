@@ -14,9 +14,15 @@ import java.util.Stack;
 public class AllUserResponse extends BaseResponse implements Serializable {
     @SerializedName("list")
     private ArrayList<User> users;
+    @SerializedName("offset")
+    private int offset;
 
     public ArrayList<User> getUsers() {
         return users;
+    }
+
+    public int getOffset() {
+        return offset;
     }
 
     public void setUsers(ArrayList<User> users) {
