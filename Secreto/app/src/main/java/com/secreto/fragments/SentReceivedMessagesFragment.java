@@ -163,11 +163,11 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
                     offset = response.getOffset();
                     if (response.getMessageArrayList() != null && !response.getMessageArrayList().isEmpty()) {
                         objectArrayList.addAll(response.getMessageArrayList());
-                        nAdapter.notifyDataSetChanged();
                     } else {
                         tvEmptyText.setText(response.getMessage());
                         tvEmptyText.setVisibility(View.VISIBLE);
                     }
+                    nAdapter.notifyDataSetChanged();
                     setMainLayout();
                     swipeRefresh.setRefreshing(false);
                     isLoading = false;

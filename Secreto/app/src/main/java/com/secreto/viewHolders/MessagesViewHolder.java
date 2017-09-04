@@ -58,7 +58,7 @@ public class MessagesViewHolder extends BaseViewHolder {
         if (response.getUser() != null) {
             User user = response.getUser();
             img_reply.setTag(user);
-            if (!TextUtils.equals(SharedPreferenceManager.getUserObject().getUserId(), user.getUserId())) {
+            if (TextUtils.equals(SharedPreferenceManager.getUserObject().getUserId(), user.getUserId())) {
                 img_reply.setVisibility(View.GONE);
                 tv_clue.setVisibility(View.VISIBLE);
                 tv_clue.setText(user.getName());

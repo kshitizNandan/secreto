@@ -30,6 +30,7 @@
                 android:id="@+id/tv_name"
                 style="@style/DefaultTextViewStyle"
                 android:layout_marginTop="@dimen/dimen_size_10"
+                android:gravity="left"
                 android:text="name"
                 android:textColor="@color/dark_gray"
                 android:textSize="@dimen/text_size_18"
@@ -39,6 +40,7 @@
                 android:id="@+id/tv_status"
                 style="@style/DefaultTextViewStyle"
                 android:layout_marginTop="@dimen/dimen_size_5"
+                android:gravity="left"
                 android:text="status"
                 android:textColor="@color/half_black"
                 android:textSize="@dimen/text_size_18" />

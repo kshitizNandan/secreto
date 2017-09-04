@@ -32,11 +32,12 @@
                 <com.secreto.widgets.CustomFontTextView
                     android:id="@+id/tvEmptyText"
                     style="@style/EmptyTextStyle"
-                    app:layoutManager="LinearLayoutManager"
                     android:layout_centerInParent="true"
                     android:gravity="center"
                     android:paddingBottom="@dimen/dimen_size_10"
-                    android:visibility="gone" />
+                    android:textColor="@android:color/white"
+                    android:visibility="gone"
+                    app:layoutManager="LinearLayoutManager" />
 
                 <RelativeLayout
                     android:id="@+id/rl_progressBar"
