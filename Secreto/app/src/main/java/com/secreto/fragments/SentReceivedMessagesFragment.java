@@ -106,7 +106,7 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
     private void setRecyclerAdapter() {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-        nAdapter = new SentOrReceivedMessagesRecyclerAdapter(objectArrayList, this);
+        nAdapter = new SentOrReceivedMessagesRecyclerAdapter(objectArrayList, this,messageType);
         recyclerView.setAdapter(nAdapter);
 
         // Load More
