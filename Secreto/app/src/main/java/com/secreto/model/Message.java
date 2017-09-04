@@ -21,6 +21,12 @@ public class Message implements Serializable {
     private String messageClue;
     @SerializedName("createdDate")
     private String createdDate;
+    @SerializedName("canReply")
+    private String canReply;
+
+    public String getCanReply() {
+        return canReply;
+    }
 
     public String getMessageId() {
         return messageId;
