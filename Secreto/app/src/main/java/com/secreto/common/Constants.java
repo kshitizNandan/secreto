@@ -7,6 +7,7 @@ public class Constants {
     public static final String RECEIVED = "Received";
     public static final String MESSAGE_TYPE = "MessageType";
     public static final String USER = "user";
+    public static final String REFRESH_LIST_BROADCAST = "RefreshList";
 
     public class SocialType {
         public static final String FACEBOOK = "FACEBOOK";

@@ -9,12 +9,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.secreto.R;
 import com.secreto.activities.HomeActivity;
+import com.secreto.common.Constants;
 import com.secreto.common.MyApplication;
 
 import org.json.JSONObject;
@@ -27,11 +30,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        JSONObject jsonObject = new JSONObject(remoteMessage.getData());
-        checkNotifyAppForBackForeground(jsonObject.optString("alert"), jsonObject.optString("type"));
+        RemoteMessage.Notification notification = remoteMessage.getNotification();
+        checkNotifyAppForBackForeground(notification);
     }
 
-    private void checkNotifyAppForBackForeground(String message, String type) {
+    private void checkNotifyAppForBackForeground(RemoteMessage.Notification notification) {
         ActivityManager am = (ActivityManager) MyApplication.getInstance().getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
         Log.d("current task :", "CURRENT Activity ::" + taskInfo.get(0).topActivity.getClass().getSimpleName());
@@ -43,22 +46,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String classNameTag = HomeActivity.class.getName();
             Log.v(TAG, "classNameTag-->" + classNameTag);
             if (className.equalsIgnoreCase(classNameTag)) {
-                showNotification(message, type);
+                sendBroadcastMessage();
             } else {
-                showNotification(message, type);
+                showNotification(notification);
             }
         } else {
-            showNotification(message, type);
+            showNotification(notification);
         }
     }
 
 
-    private void showNotification(String message, String type) {
+    private void showNotification(RemoteMessage.Notification notification) {
         NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.cancelAll();
         Intent intent = new Intent(this, HomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-
         PendingIntent contentIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -68,10 +70,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher))
-//                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(getString(R.string.app_name))
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
-                .setContentText(message);
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(!TextUtils.isEmpty(notification.getBody()) ? notification.getBody() : ""))
+                .setContentText(!TextUtils.isEmpty(notification.getBody()) ? notification.getBody() : "");
 
         mBuilder.setContentIntent(contentIntent);
         mBuilder.setAutoCancel(true);
@@ -81,13 +82,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //        sendBroadcastMessage(type);
     }
 
-//    // Send Broadcast to My Events
-//    private void sendBroadcastMessage(String type) {
-//        Intent intent = new Intent(Constants.REFRESH_LIST_BROADCAST);
-//        intent.putExtra(Constants.NOTIFICATION_TYPE, type);
-//        intent.putExtra(Constants.USER_ID, toUserId);
-//        intent.putExtra(Constants.EVENT_ID, eventId);
-//        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-//    }
+    // Send Broadcast to My Events
+    private void sendBroadcastMessage() {
+        Intent intent = new Intent(Constants.REFRESH_LIST_BROADCAST);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
 
 }

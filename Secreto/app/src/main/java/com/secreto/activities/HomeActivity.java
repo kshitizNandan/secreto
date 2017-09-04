@@ -1,12 +1,15 @@
 package com.secreto.activities;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -52,6 +55,8 @@ public class HomeActivity extends BaseActivityWithActionBar {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter(Constants.REFRESH_LIST_BROADCAST));
         init();
         initViews();
     }
@@ -165,6 +170,27 @@ public class HomeActivity extends BaseActivityWithActionBar {
         } else {
             super.onBackPressed();
         }
+    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (!fragmentArrayList.isEmpty()) {
+                for (Fragment fragment : fragmentArrayList) {
+                    if (fragment instanceof SentReceivedMessagesFragment) {
+                        SentReceivedMessagesFragment fragment1 = (SentReceivedMessagesFragment) fragment;
+                        fragment1.refreshList();
+                    }
+                }
+            }
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+
     }
 
 //    @Override

@@ -101,6 +101,11 @@ public class SentReceivedMessagesFragment extends Fragment implements Paginate.C
 
     @OnClick(R.id.tvRetry)
     void onClickRetry() {
+        refreshList();
+    }
+
+    public void refreshList() {
+        offset = 0;
         getSendOrReceivedMsgApiCall();
     }
 
