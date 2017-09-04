@@ -6,7 +6,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.secreto.R;
+import com.secreto.common.SharedPreferenceManager;
 import com.secreto.model.Message;
+import com.secreto.model.MessageAndUserResponse;
+import com.secreto.model.User;
 import com.secreto.utils.DateFormatter;
 
 import butterknife.BindView;
@@ -35,21 +38,31 @@ public class MessagesViewHolder extends BaseViewHolder {
 
     @Override
     public void onBindView(Object object, int position) {
-        Message message = (Message) object;
-        if (message.getCanReply().equalsIgnoreCase("YES")) {
-            img_reply.setVisibility(View.VISIBLE);
-        } else {
-            img_reply.setVisibility(View.GONE);
+        MessageAndUserResponse response = (MessageAndUserResponse) object;
+        if (response.getMessage() != null) {
+            Message message = response.getMessage();
+            if (message.getCanReply().equalsIgnoreCase("YES")) {
+                img_reply.setVisibility(View.VISIBLE);
+            } else {
+                img_reply.setVisibility(View.GONE);
+            }
+            if (!TextUtils.isEmpty(message.getMessageClue())) {
+                tv_clue.setVisibility(View.VISIBLE);
+                tv_clue.setText(message.getMessageClue());
+            } else {
+                tv_clue.setVisibility(View.GONE);
+            }
+            tv_message.setText(message.getMessage());
+            tv_time.setText(DateFormatter.getTimeString(message.getCreatedDate()));
         }
-        if (!TextUtils.isEmpty(message.getMessageClue())) {
-            tv_clue.setVisibility(View.VISIBLE);
-            tv_clue.setText(message.getMessageClue());
-        } else {
-            tv_clue.setVisibility(View.GONE);
+        if (response.getUser() != null) {
+            User user = response.getUser();
+            img_reply.setTag(user);
+            if (!TextUtils.equals(SharedPreferenceManager.getUserObject().getUserId(), user.getUserId())) {
+                img_reply.setVisibility(View.GONE);
+                tv_clue.setVisibility(View.VISIBLE);
+                tv_clue.setText(user.getName());
+            }
         }
-
-        img_reply.setTag(message);
-        tv_message.setText(message.getMessage());
-        tv_time.setText(DateFormatter.getTimeString(message.getCreatedDate()));
     }
 }

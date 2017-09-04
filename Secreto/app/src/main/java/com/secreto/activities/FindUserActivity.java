@@ -90,7 +90,6 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setOnQueryTextListener(this);
         searchView.setOnSearchClickListener(this);
-
         menuItem = menu.findItem(R.id.menu_search);
         if (menuItem != null) {
             MenuItemCompat.setOnActionExpandListener(menuItem, this);

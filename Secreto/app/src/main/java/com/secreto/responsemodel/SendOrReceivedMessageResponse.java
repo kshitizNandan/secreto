@@ -2,6 +2,7 @@ package com.secreto.responsemodel;
 
 import com.google.gson.annotations.SerializedName;
 import com.secreto.model.Message;
+import com.secreto.model.MessageAndUserResponse;
 
 import java.util.ArrayList;
 
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 
 public class SendOrReceivedMessageResponse extends BaseResponse {
     @SerializedName("list")
-    private ArrayList<Message> messageArrayList;
+    private ArrayList<MessageAndUserResponse> messageArrayList;
     @SerializedName("offset")
     private int offset;
 
@@ -19,7 +20,7 @@ public class SendOrReceivedMessageResponse extends BaseResponse {
         return offset;
     }
 
-    public ArrayList<Message> getMessageArrayList() {
+    public ArrayList<MessageAndUserResponse> getMessageArrayList() {
         return messageArrayList;
     }
 }

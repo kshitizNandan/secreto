@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.secreto.R;
 import com.secreto.model.Message;
+import com.secreto.model.MessageAndUserResponse;
 import com.secreto.viewHolders.BaseViewHolder;
 import com.secreto.viewHolders.MessagesViewHolder;
 
@@ -50,7 +51,7 @@ public class SentOrReceivedMessagesRecyclerAdapter extends RecyclerView.Adapter<
 
     @Override
     public int getItemViewType(int position) {
-        if (objectList.get(position) instanceof Message) {
+        if (objectList.get(position) instanceof MessageAndUserResponse) {
             return MESSAGE;
         }
         return -1;

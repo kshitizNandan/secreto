@@ -38,7 +38,7 @@ import butterknife.OnLongClick;
 
 public class HomeActivity extends BaseActivityWithActionBar {
 
-    private static final int RC_SEND_MESSAGE = 200;
+    public static final int RC_SEND_MESSAGE = 200;
     @BindView(R.id.iv_profileImg)
     NetworkImageView iv_profileImg;
     private HomeActivity mActivity;

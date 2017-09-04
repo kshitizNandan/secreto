@@ -1,5 +1,6 @@
 package com.secreto.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,12 +22,15 @@ import android.widget.ViewFlipper;
 import com.android.volley.VolleyError;
 import com.paginate.Paginate;
 import com.secreto.R;
+import com.secreto.activities.CreateMessageActivity;
+import com.secreto.activities.FindUserActivity;
 import com.secreto.adapters.SentOrReceivedMessagesRecyclerAdapter;
 import com.secreto.common.Common;
 import com.secreto.common.Constants;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
 import com.secreto.model.Message;
+import com.secreto.model.User;
 import com.secreto.responsemodel.BaseResponse;
 import com.secreto.responsemodel.SendOrReceivedMessageResponse;
 
@@ -35,6 +39,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.secreto.activities.HomeActivity.RC_SEND_MESSAGE;
 
 
 public class SentReceivedMessagesFragment extends Fragment implements View.OnClickListener {
@@ -205,8 +211,13 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_reply:
-                if(view.getTag()!=null &&view.getTag() instanceof Message){
-                    Toast.makeText(getActivity(), "gdggd", Toast.LENGTH_SHORT).show();
+                if (view.getTag() != null && view.getTag() instanceof User) {
+                    User user = (User) view.getTag();
+                    Intent intent = new Intent(getActivity(), CreateMessageActivity.class);
+                    intent.putExtra(Constants.USER, user);
+                    getActivity().startActivityForResult(intent, RC_SEND_MESSAGE);
+                    getActivity().overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
+
                 }
                 break;
         }

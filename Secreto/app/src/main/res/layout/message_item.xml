@@ -54,7 +54,8 @@
                     style="@style/DefaultTextViewStyle"
                     android:gravity="left"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/text_size_12" />
+                    android:textSize="@dimen/text_size_12"
+                    app:fontStyle="fontBold" />
 
                 <com.secreto.widgets.CustomFontTextView
                     android:id="@+id/tv_time"
