@@ -3,6 +3,7 @@ package com.secreto.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.android.volley.VolleyError;
@@ -24,6 +26,7 @@ import com.secreto.common.Common;
 import com.secreto.common.Constants;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
+import com.secreto.model.Message;
 import com.secreto.responsemodel.BaseResponse;
 import com.secreto.responsemodel.SendOrReceivedMessageResponse;
 
@@ -34,7 +37,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class SentReceivedMessagesFragment extends Fragment {
+public class SentReceivedMessagesFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.llForOfflineScreen)
     LinearLayout llForOfflineScreen;
     @BindView(R.id.rlForLoadingScreen)
@@ -97,7 +100,7 @@ public class SentReceivedMessagesFragment extends Fragment {
     private void setRecyclerAdapter() {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-        nAdapter = new SentOrReceivedMessagesRecyclerAdapter(objectArrayList);
+        nAdapter = new SentOrReceivedMessagesRecyclerAdapter(objectArrayList, this);
         recyclerView.setAdapter(nAdapter);
 
         // Load More
@@ -198,4 +201,14 @@ public class SentReceivedMessagesFragment extends Fragment {
     }
 
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.img_reply:
+                if(view.getTag()!=null &&view.getTag() instanceof Message){
+                    Toast.makeText(getActivity(), "gdggd", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
 }
