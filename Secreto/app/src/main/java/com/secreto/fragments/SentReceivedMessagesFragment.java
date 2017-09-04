@@ -4,13 +4,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -23,7 +24,6 @@ import com.secreto.common.Common;
 import com.secreto.common.Constants;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
-import com.secreto.paginate.CustomLoadingListItemCreator;
 import com.secreto.responsemodel.BaseResponse;
 import com.secreto.responsemodel.SendOrReceivedMessageResponse;
 
@@ -34,7 +34,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class SentReceivedMessagesFragment extends Fragment implements Paginate.Callbacks {
+public class SentReceivedMessagesFragment extends Fragment {
     @BindView(R.id.llForOfflineScreen)
     LinearLayout llForOfflineScreen;
     @BindView(R.id.rlForLoadingScreen)
@@ -49,8 +49,10 @@ public class SentReceivedMessagesFragment extends Fragment implements Paginate.C
     ViewFlipper viewFlipper;
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.rl_progressBar)
+    RelativeLayout rl_progressBar;
     private int offset = 0;
-    private boolean loading = false;
+    private boolean isLoading = false;
     private String messageType;
     private SentOrReceivedMessagesRecyclerAdapter nAdapter;
     private ArrayList<Object> objectArrayList = new ArrayList<>();
@@ -69,6 +71,7 @@ public class SentReceivedMessagesFragment extends Fragment implements Paginate.C
         ButterKnife.bind(this, rootView);
         setRecyclerAdapter();
         init();
+        getSendOrReceivedMsgApiCall();
         return rootView;
     }
 
@@ -91,12 +94,31 @@ public class SentReceivedMessagesFragment extends Fragment implements Paginate.C
     }
 
     private void setRecyclerAdapter() {
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(linearLayoutManager);
         nAdapter = new SentOrReceivedMessagesRecyclerAdapter(objectArrayList);
         recyclerView.setAdapter(nAdapter);
-        Paginate.with(recyclerView, this)
-                .setLoadingTriggerThreshold(2)
-                .addLoadingListItem(true)
-                .setLoadingListItemCreator(new CustomLoadingListItemCreator(true)).build();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount, totalItemCount, pastVisibleItems;
+                if (dy > 0) {
+                    visibleItemCount = linearLayoutManager.getChildCount();
+                    totalItemCount = linearLayoutManager.getItemCount();
+                    pastVisibleItems = linearLayoutManager.findFirstVisibleItemPosition();
+                    if (!isLoading) {
+                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                            isLoading = true;
+                            if (offset != -1) {
+                                getSendOrReceivedMsgApiCall();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
     }
 
     @OnClick(R.id.tvRetry)
@@ -114,12 +136,11 @@ public class SentReceivedMessagesFragment extends Fragment implements Paginate.C
             if (offset == -1) {
                 return;
             }
-            loading = true;
-            if (offset == 0) {
+            if (isLoading) {
+                rl_progressBar.setVisibility(View.VISIBLE);
+            } else if (!swipeRefresh.isRefreshing()) {
                 setLoadingLayout();
             }
-            if (!swipeRefresh.isRefreshing())
-                setLoadingLayout();
             tvEmptyText.setVisibility(View.GONE);
             DataManager.getInstance().getSendOrReceivedMsgs(messageType, offset, new ResultListenerNG<SendOrReceivedMessageResponse>() {
                 @Override
@@ -128,7 +149,6 @@ public class SentReceivedMessagesFragment extends Fragment implements Paginate.C
                         objectArrayList.clear();
                     }
                     offset = response.getOffset();
-                    loading = false;
                     if (response.getMessageArrayList() != null && !response.getMessageArrayList().isEmpty()) {
                         objectArrayList.addAll(response.getMessageArrayList());
                         nAdapter.notifyDataSetChanged();
@@ -138,12 +158,15 @@ public class SentReceivedMessagesFragment extends Fragment implements Paginate.C
                     }
                     setMainLayout();
                     swipeRefresh.setRefreshing(false);
+                    isLoading = false;
+                    rl_progressBar.setVisibility(View.GONE);
                 }
 
                 @Override
                 public void onError(VolleyError error) {
-                    loading = false;
+                    isLoading = false;
                     swipeRefresh.setRefreshing(false);
+                    rl_progressBar.setVisibility(View.GONE);
                     BaseResponse baseResponse = Common.getStatusMessage(error);
                     if (baseResponse == null || TextUtils.isEmpty(baseResponse.getMessage())) {
                         setOfflineLayout(getString(R.string.something_went_wrong));
@@ -171,21 +194,5 @@ public class SentReceivedMessagesFragment extends Fragment implements Paginate.C
         viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(svMain));
     }
 
-    @Override
-    public void onLoadMore() {
-        if (!loading) {
-            getSendOrReceivedMsgApiCall();
-        }
-    }
-
-    @Override
-    public boolean isLoading() {
-        return loading;
-    }
-
-    @Override
-    public boolean hasLoadedAllItems() {
-        return offset == -1;
-    }
 
 }

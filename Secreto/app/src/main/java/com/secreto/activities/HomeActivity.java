@@ -175,16 +175,20 @@ public class HomeActivity extends BaseActivityWithActionBar {
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (!fragmentArrayList.isEmpty()) {
-                for (Fragment fragment : fragmentArrayList) {
-                    if (fragment instanceof SentReceivedMessagesFragment) {
-                        SentReceivedMessagesFragment fragment1 = (SentReceivedMessagesFragment) fragment;
-                        fragment1.refreshList();
-                    }
+            refreshSentOrReceivedMessageList();
+        }
+    };
+
+    private void refreshSentOrReceivedMessageList() {
+        if (!fragmentArrayList.isEmpty()) {
+            for (Fragment fragment : fragmentArrayList) {
+                if (fragment instanceof SentReceivedMessagesFragment) {
+                    SentReceivedMessagesFragment fragment1 = (SentReceivedMessagesFragment) fragment;
+                    fragment1.refreshList();
                 }
             }
         }
-    };
+    }
 
     @Override
     protected void onDestroy() {
@@ -193,17 +197,16 @@ public class HomeActivity extends BaseActivityWithActionBar {
 
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        if (!fragmentArrayList.isEmpty()) {
-//            for (Fragment fragment : fragmentArrayList) {
-//                if (fragment instanceof SentReceivedMessagesFragment) {
-//                    SentReceivedMessagesFragment fragment1 = (SentReceivedMessagesFragment) fragment;
-//                    fragment1.getSendOrReceivedMsgApiCall();
-//                }
-//            }
-//        }
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case RC_SEND_MESSAGE:
+                    refreshSentOrReceivedMessageList();
+                    break;
+            }
+        }
+    }
 }
 
