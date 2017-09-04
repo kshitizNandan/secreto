@@ -1,5 +1,6 @@
 package com.secreto.viewHolders;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +21,8 @@ public class MessagesViewHolder extends BaseViewHolder {
     TextView tv_message;
     @BindView(R.id.tv_time)
     TextView tv_time;
+    @BindView(R.id.tv_clue)
+    TextView tv_clue;
     @BindView(R.id.img_reply)
     ImageView img_reply;
 
@@ -38,6 +41,13 @@ public class MessagesViewHolder extends BaseViewHolder {
         } else {
             img_reply.setVisibility(View.GONE);
         }
+        if (!TextUtils.isEmpty(message.getMessageClue())) {
+            tv_clue.setVisibility(View.VISIBLE);
+            tv_clue.setText(message.getMessageClue());
+        } else {
+            tv_clue.setVisibility(View.GONE);
+        }
+
         img_reply.setTag(message);
         tv_message.setText(message.getMessage());
         tv_time.setText(DateFormatter.getTimeString(message.getCreatedDate()));
