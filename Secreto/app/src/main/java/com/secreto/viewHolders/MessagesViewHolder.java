@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.secreto.R;
+import com.secreto.common.Constants;
 import com.secreto.common.SharedPreferenceManager;
 import com.secreto.model.Message;
 import com.secreto.model.MessageAndUserResponse;
@@ -28,12 +29,14 @@ public class MessagesViewHolder extends BaseViewHolder {
     TextView tv_clue;
     @BindView(R.id.img_reply)
     ImageView img_reply;
+    private String messageType;
 
 
-    public MessagesViewHolder(View itemView, View.OnClickListener onClickListener) {
+    public MessagesViewHolder(View itemView, View.OnClickListener onClickListener, String messageType) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         img_reply.setOnClickListener(onClickListener);
+        this.messageType = messageType;
     }
 
     @Override
@@ -54,15 +57,12 @@ public class MessagesViewHolder extends BaseViewHolder {
             }
             tv_message.setText(message.getMessage());
             tv_time.setText(DateFormatter.getTimeString(message.getCreatedDate()));
+            img_reply.setTag(response.getUser());
         }
-        if (response.getUser() != null) {
-            User user = response.getUser();
-            img_reply.setTag(user);
-            if (!TextUtils.equals(SharedPreferenceManager.getUserObject().getUserId(), user.getUserId())) {
-                img_reply.setVisibility(View.GONE);
-                tv_clue.setVisibility(View.VISIBLE);
-                tv_clue.setText(user.getName());
-            }
+        if (messageType.equalsIgnoreCase(Constants.SENT)) {
+            img_reply.setVisibility(View.GONE);
+            if (response.getUser() != null && !TextUtils.isEmpty(response.getUser().getName()))
+                tv_clue.setText(response.getUser().getName());
         }
     }
 }
