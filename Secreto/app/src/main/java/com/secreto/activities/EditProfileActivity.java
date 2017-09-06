@@ -5,12 +5,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.design.widget.TextInputLayout;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +34,9 @@ import com.secreto.responsemodel.UserResponse;
 import com.secreto.utils.CustomProgressDialog;
 import com.secreto.utils.Logger;
 import com.secreto.utils.NetworkImageView;
+import com.secreto.widgets.CircleTransform;
+import com.secreto.widgets.RoundedCornersTransform;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
@@ -54,7 +59,7 @@ public class EditProfileActivity extends ImagePickerActivity {
     @BindView(R.id.etEmail)
     EditText etEmail;
     @BindView(R.id.iv_profileImg)
-    NetworkImageView iv_profileImg;
+    ImageView iv_profileImg;
     @BindView(R.id.input_layout_name_editText)
     TextInputLayout textInputLayoutName;
     @BindView(R.id.input_layout_mobile_editText)
@@ -63,7 +68,6 @@ public class EditProfileActivity extends ImagePickerActivity {
     EditText etGender;
     @BindView(R.id.tv_status)
     TextView tv_status;
-    private String status;
     CustomProgressDialog progressDialog;
     EditProfileActivity mActivity;
     private File photoFile;
@@ -92,9 +96,10 @@ public class EditProfileActivity extends ImagePickerActivity {
             etEmail.setText(user.getEmail());
             tv_status.setText(user.getCaption());
             if (!TextUtils.isEmpty(user.getProfile_pic())) {
-                iv_profileImg.setImageUrl(user.getProfile_pic(), ImageCacheManager.getInstance().getImageLoader());
+                int size = Common.dipToPixel(mActivity, 80);
+                Picasso.with(mActivity).load(user.getProfile_pic()).transform(new CircleTransform()).resize(size, size).placeholder(R.drawable.default_user).into(iv_profileImg);
             } else {
-                iv_profileImg.setDefaultImageResId(R.drawable.default_user);
+                iv_profileImg.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.default_user));
             }
         }
     }
@@ -104,7 +109,8 @@ public class EditProfileActivity extends ImagePickerActivity {
     protected void onImageSet(File photoFile) {
         if (photoFile != null && photoFile.exists()) {
             this.photoFile = photoFile;
-            iv_profileImg.setImageUrl(photoFile.getAbsolutePath(), ImageCacheManager.getInstance().getImageLoader());
+            int size = Common.dipToPixel(mActivity, 80);
+            Picasso.with(mActivity).load(photoFile).transform(new CircleTransform()).resize(size, size).into(iv_profileImg);
         }
     }
 
@@ -164,7 +170,6 @@ public class EditProfileActivity extends ImagePickerActivity {
                             } else {
                                 dialog.dismiss();
                                 tv_status.setText(status);
-                                mActivity.status = status;
                             }
                             break;
                         case R.id.iv_close:
@@ -274,6 +279,7 @@ public class EditProfileActivity extends ImagePickerActivity {
         String name = etName.getText().toString();
         String mobile = etMobile.getText().toString().trim();
         String gender = etGender.getText().toString().trim();
+        String status = tv_status.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
             textInputLayoutName.setError(getString(R.string.nick_name_can_not_be_left_blank));
         } else if (!TextUtils.isEmpty(mobile) && mobile.length() < 10) {

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,7 @@ import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
 import com.secreto.mediatorClasses.TextWatcherMediator;
+import com.secreto.widgets.CircleTransform;
 import com.secreto.widgets.SpannableTextView;
 import com.secreto.widgets.TermsAndPrivacyClickedListener;
 import com.secreto.image.ImageCacheManager;
@@ -35,6 +38,7 @@ import com.secreto.utils.CustomProgressDialog;
 import com.secreto.utils.Logger;
 import com.secreto.utils.LoginLogoutHandler;
 import com.secreto.utils.NetworkImageView;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
@@ -63,7 +67,7 @@ public class SignUpActivity extends ImagePickerActivity {
     @BindView(R.id.tvTermsOfUse)
     SpannableTextView tvTermsOfUse;
     @BindView(R.id.iv_profileImg)
-    NetworkImageView iv_profileImg;
+    ImageView iv_profileImg;
     @BindView(R.id.input_layout_name_editText)
     TextInputLayout textInputLayoutName;
     @BindView(R.id.input_layout_email_editText)
@@ -79,7 +83,6 @@ public class SignUpActivity extends ImagePickerActivity {
     private CustomProgressDialog progressDialog;
     private AlertDialog registrationSuccessDialog;
     private File photoFile;
-    private String status;
     private SignUpActivity mActivity;
 
 
@@ -107,9 +110,9 @@ public class SignUpActivity extends ImagePickerActivity {
     }
 
     private void init() {
-        iv_profileImg.setDefaultImageResId(R.drawable.default_user);
+        iv_profileImg.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.default_user));
         progressDialog = new CustomProgressDialog(this);
-        mActivity= this;
+        mActivity = this;
         tvTermsOfUse.setTermsAndPrivacyClickedListener(new TermsAndPrivacyClickedListener() {
             @Override
             public void onClickTerms(View view) {
@@ -187,7 +190,6 @@ public class SignUpActivity extends ImagePickerActivity {
                             } else {
                                 dialog.dismiss();
                                 tv_status.setText(status);
-                                mActivity.status = status;
                             }
                             break;
                         case R.id.iv_close:
@@ -225,6 +227,7 @@ public class SignUpActivity extends ImagePickerActivity {
         String password = etPassword.getText().toString().trim();
         String confirmPassword = etConfirmPassword.getText().toString().trim();
         String mobile = etMobile.getText().toString().trim();
+        String status = tv_status.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
             textInputLayoutName.setError(getString(R.string.nick_name_can_not_be_left_blank));
         } else if (TextUtils.isEmpty(userName)) {
@@ -246,7 +249,7 @@ public class SignUpActivity extends ImagePickerActivity {
         } else {
             if (Common.isOnline(this)) {
                 progressDialog.show();
-                DataManager.getInstance().signUp(name, userName, email, password, mobile,status, new ResultListenerNG<UserResponse>() {
+                DataManager.getInstance().signUp(name, userName, email, password, mobile, status, new ResultListenerNG<UserResponse>() {
                     @Override
                     public void onSuccess(UserResponse response) {
                         Logger.d(TAG, "signUp onSuccess : " + response);
@@ -316,7 +319,8 @@ public class SignUpActivity extends ImagePickerActivity {
     protected void onImageSet(File photoFile) {
         if (photoFile != null && photoFile.exists()) {
             this.photoFile = photoFile;
-            iv_profileImg.setImageUrl(photoFile.getAbsolutePath(), ImageCacheManager.getInstance().getImageLoader());
+            int size = Common.dipToPixel(mActivity, 80);
+            Picasso.with(mActivity).load(photoFile).transform(new CircleTransform()).resize(size, size).into(iv_profileImg);
         }
     }
 

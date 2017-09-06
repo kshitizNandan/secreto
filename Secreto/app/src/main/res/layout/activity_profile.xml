@@ -20,14 +20,13 @@
             android:orientation="vertical"
             android:padding="@dimen/dimen_size_20">
 
-            <com.secreto.utils.NetworkImageView
+            <ImageView
                 android:id="@+id/iv_profileImg"
                 android:layout_width="@dimen/dimen_size_80"
                 android:layout_height="@dimen/dimen_size_80"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dimen_size_20"
-                app:roundedCorner="true"
-                app:roundedCornerDP="40" />
+                android:src="@drawable/default_user" />
 
             <com.secreto.widgets.CustomFontTextView
                 android:id="@+id/tv_status"

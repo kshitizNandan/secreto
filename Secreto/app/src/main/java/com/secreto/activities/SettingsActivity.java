@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -15,18 +16,22 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.secreto.R;
 import com.secreto.base_activities.BaseActivityWithActionBar;
 import com.secreto.base_activities.ImagePickerActivity;
+import com.secreto.common.Common;
 import com.secreto.common.SharedPreferenceManager;
 import com.secreto.image.ImageCacheManager;
 import com.secreto.mediatorClasses.TextWatcherMediator;
 import com.secreto.model.User;
 import com.secreto.utils.LoginLogoutHandler;
 import com.secreto.utils.NetworkImageView;
+import com.secreto.widgets.CircleTransform;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
@@ -65,10 +70,12 @@ public class SettingsActivity extends BaseActivityWithActionBar {
         if (user != null) {
             ((TextView) headerView.findViewById(R.id.tv_name)).setText(user.getName());
             ((TextView) headerView.findViewById(R.id.tv_status)).setText(user.getCaption());
+            ImageView iv_profileImg = (ImageView) headerView.findViewById(R.id.iv_profileImg);
             if (!TextUtils.isEmpty(user.getProfile_pic())) {
-                ((NetworkImageView) headerView.findViewById(R.id.iv_profileImg)).setImageUrl(user.getProfile_pic(), ImageCacheManager.getInstance().getImageLoader());
+                int size = Common.dipToPixel(mActivity, 80);
+                Picasso.with(mActivity).load(user.getProfile_pic()).transform(new CircleTransform()).resize(size, size).placeholder(R.drawable.default_user).into(iv_profileImg);
             } else {
-                ((NetworkImageView) headerView.findViewById(R.id.iv_profileImg)).setDefaultImageResId(R.drawable.default_user);
+                iv_profileImg.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.default_user));
             }
         }
     }

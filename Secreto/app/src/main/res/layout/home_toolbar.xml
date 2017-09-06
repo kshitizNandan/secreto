@@ -26,14 +26,13 @@
             android:textSize="@dimen/text_size_18"
             app:fontStyle="StylishfontRegular" />
 
-        <com.secreto.utils.NetworkImageView
+        <ImageView
             android:id="@+id/iv_profileImg"
             android:layout_width="@dimen/dimen_size_60"
             android:layout_height="@dimen/dimen_size_60"
             android:layout_alignParentRight="true"
             android:padding="@dimen/dimen_size_10"
-            app:roundedCorner="true"
-            app:roundedCornerDP="40" />
+            android:src="@drawable/default_user" />
     </RelativeLayout>
 </android.support.v7.widget.Toolbar>
 
