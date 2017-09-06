@@ -53,6 +53,7 @@ public class MultipartRequest<T> extends Request<T> {
         mParams = params;
         this.clazz = clazz;
         buildMultipartEntity();
+        setShouldCache(false);
     }
 
     private MultipartRequest(String url, HashMap<Object, Object> params, final Class<T> clazz,
@@ -66,6 +67,7 @@ public class MultipartRequest<T> extends Request<T> {
         mFilePartName = filePartName;
         this.clazz = clazz;
         buildMultipartEntity();
+        setShouldCache(false);
     }
 
     private MultipartRequest(String url, HashMap<Object, Object> params, final Class<T> clazz,
@@ -78,6 +80,7 @@ public class MultipartRequest<T> extends Request<T> {
         mFilePartName = filePartName;
         this.clazz = clazz;
         buildMultipartEntity();
+        setShouldCache(false);
     }
 
     private MultipartRequest(String url, HashMap<Object, Object> params, final Class<T> clazz,
@@ -91,6 +94,7 @@ public class MultipartRequest<T> extends Request<T> {
         mParams = params;
         this.clazz = clazz;
         buildMultipartEntity();
+        setShouldCache(false);
     }
 
     public MultipartRequest(int method, String url, HashMap<Object, Object> params, final Class<T> clazz, final ResultListenerNG<T> resultListenerNG) {
