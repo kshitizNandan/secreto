@@ -9,18 +9,21 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.secreto.R;
 import com.secreto.adapters.MyFragmentPagerAdapter;
 import com.secreto.base_activities.BaseActivityWithActionBar;
+import com.secreto.common.Common;
 import com.secreto.common.Constants;
 import com.secreto.common.SharedPreferenceManager;
 import com.secreto.fragments.SentReceivedMessagesFragment;
@@ -28,6 +31,8 @@ import com.secreto.image.ImageCacheManager;
 import com.secreto.model.User;
 import com.secreto.utils.LoginLogoutHandler;
 import com.secreto.utils.NetworkImageView;
+import com.secreto.widgets.CircleTransform;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -40,7 +45,7 @@ public class HomeActivity extends BaseActivityWithActionBar {
 
     public static final int RC_SEND_MESSAGE = 200;
     @BindView(R.id.iv_profileImg)
-    NetworkImageView iv_profileImg;
+    ImageView iv_profileImg;
     private HomeActivity mActivity;
     @BindView(R.id.tabBar)
     TabLayout tabBar;
@@ -71,9 +76,10 @@ public class HomeActivity extends BaseActivityWithActionBar {
         User user = SharedPreferenceManager.getUserObject();
         if (user != null) {
             if (!TextUtils.isEmpty(user.getProfile_pic())) {
-                iv_profileImg.setImageUrl(user.getProfile_pic(), ImageCacheManager.getInstance().getImageLoader());
+                int size = Common.dipToPixel(mActivity, 60);
+                Picasso.with(mActivity).load(user.getProfile_pic()).transform(new CircleTransform()).resize(size, size).placeholder(R.drawable.default_user).into(iv_profileImg);
             } else {
-                iv_profileImg.setDefaultImageResId(R.drawable.default_user);
+                iv_profileImg.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.default_user));
             }
         }
     }
@@ -137,11 +143,15 @@ public class HomeActivity extends BaseActivityWithActionBar {
         if (user != null) {
             ((TextView) contentView.findViewById(R.id.tv_name)).setText(user.getName());
             ((TextView) contentView.findViewById(R.id.tv_status)).setText(user.getCaption());
+
+            ImageView iv_profileImg = (ImageView) contentView.findViewById(R.id.iv_profileImg);
             if (!TextUtils.isEmpty(user.getProfile_pic())) {
-                ((NetworkImageView) contentView.findViewById(R.id.iv_profileImg)).setImageUrl(user.getProfile_pic(), ImageCacheManager.getInstance().getImageLoader());
+                int size = Common.dipToPixel(mActivity, 40);
+                Picasso.with(mActivity).load(user.getProfile_pic()).transform(new CircleTransform()).resize(size, size).placeholder(R.drawable.default_user).into(iv_profileImg);
             } else {
-                ((NetworkImageView) contentView.findViewById(R.id.iv_profileImg)).setDefaultImageResId(R.drawable.default_user);
+                iv_profileImg.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.default_user));
             }
+
         }
         View.OnClickListener listener = new View.OnClickListener() {
             @Override

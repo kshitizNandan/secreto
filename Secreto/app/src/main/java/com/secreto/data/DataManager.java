@@ -18,9 +18,7 @@ import com.secreto.utils.Logger;
 import com.secreto.utils.QueryBuilder;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 
 import static com.secreto.BuildConfig.BASE_SERVER_ADDRESS;
 
@@ -84,7 +82,7 @@ public class DataManager {
         params.put(ApiConstants.EMAIL, email);
         params.put(ApiConstants.PASSWORD, password);
         params.put(ApiConstants.CONTACT, mobile);
-        params.put(ApiConstants.CAPTION, status);
+        params.put(ApiConstants.CAPTION, !TextUtils.isEmpty(status) ? status.equalsIgnoreCase("status") ? "Available" : status : "Available");
         params.put(ApiConstants.DEVICE_TOKEN, SharedPreferenceManager.getFcmToken());
         makeRequest(Request.Method.POST, URL_REGISTER, params, UserResponse.class, resultListenerNG);
     }
@@ -105,7 +103,6 @@ public class DataManager {
         params.put(ApiConstants.MESSAGE_CLUE, messageClue);
         params.put(ApiConstants.TO_USER_ID, toUserId);
         params.put(ApiConstants.CAN_REPLY, canReply);
-
         Logger.v(TAG, SEND_MESSAGE);
         makeRequest(Request.Method.POST, SEND_MESSAGE, params, BaseResponse.class, resultListenerNG);
     }
@@ -116,7 +113,7 @@ public class DataManager {
         params.put(ApiConstants.NAME, name);
         params.put(ApiConstants.CONTACT, mobile);
         params.put(ApiConstants.GENDER, gender);
-        params.put(ApiConstants.CAPTION, status);
+        params.put(ApiConstants.CAPTION, !TextUtils.isEmpty(status) ? status.equalsIgnoreCase("status") ? "Available" : status : "Available");
         params.put(ApiConstants.USER_ID, userId);
         Logger.v(TAG, URL_UPDATE_PROFILE);
         makeRequest(Request.Method.POST, URL_UPDATE_PROFILE, params, UserResponse.class, resultListenerNG);
