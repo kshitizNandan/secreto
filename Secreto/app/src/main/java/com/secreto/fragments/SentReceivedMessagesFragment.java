@@ -215,6 +215,7 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
                     User user = (User) view.getTag();
                     Intent intent = new Intent(getActivity(), CreateMessageActivity.class);
                     intent.putExtra(Constants.USER, user);
+                    intent.putExtra(Constants.NAVIGATION_FROM,true);
                     getActivity().startActivityForResult(intent, RC_SEND_MESSAGE);
                     getActivity().overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
 

@@ -8,6 +8,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -47,6 +48,7 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
     private String userId;
     private Activity mActivity;
     private String canReply = "No";
+    private boolean isUserVisible;
 
     @Override
 
@@ -72,6 +74,7 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
 
         progressDialog = new CustomProgressDialog(this);
         iv_profileImg.setDefaultImageResId(R.drawable.default_user);
+        isUserVisible = getIntent().getBooleanExtra(Constants.NAVIGATION_FROM, false);
         User user = (User) getIntent().getSerializableExtra(Constants.USER);
         if (user != null) {
             this.userId = user.getUserId();
@@ -82,8 +85,13 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
     }
 
     private void initView() {
-
         iv_profileImg.setDefaultImageResId(R.drawable.default_user);
+        if (isUserVisible) {
+            iv_profileImg.setVisibility(View.GONE);
+            etClue.setVisibility(View.GONE);
+            tvUserName.setVisibility(View.GONE);
+            allowCheckBox.setText(String.format(getString(R.string.allow_to_get_reply), getString(R.string.sender)));
+        }
     }
 
     @Override

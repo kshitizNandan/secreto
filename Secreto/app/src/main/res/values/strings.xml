@@ -121,4 +121,5 @@
     <string name="allow_to_get_reply">Allow to get reply from %1$s</string>
     <string name="search_user_message">Search users by their name,email or user name</string>
     <string name="no_users_not_found">No users found</string>
+    <string name="sender">Sender</string>
 </resources>
