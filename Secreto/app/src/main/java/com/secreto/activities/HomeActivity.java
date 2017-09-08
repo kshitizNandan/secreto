@@ -143,7 +143,6 @@ public class HomeActivity extends BaseActivityWithActionBar {
         if (user != null) {
             ((TextView) contentView.findViewById(R.id.tv_name)).setText(user.getName());
             ((TextView) contentView.findViewById(R.id.tv_status)).setText(user.getCaption());
-
             ImageView iv_profileImg = (ImageView) contentView.findViewById(R.id.iv_profileImg);
             if (!TextUtils.isEmpty(user.getProfile_pic())) {
                 int size = Common.dipToPixel(mActivity, 40);

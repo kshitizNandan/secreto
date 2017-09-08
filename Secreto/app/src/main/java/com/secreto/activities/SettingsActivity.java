@@ -20,11 +20,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.google.gson.Gson;
 import com.secreto.R;
 import com.secreto.base_activities.BaseActivityWithActionBar;
 import com.secreto.base_activities.ImagePickerActivity;
 import com.secreto.common.Common;
+import com.secreto.common.MyApplication;
 import com.secreto.common.SharedPreferenceManager;
+import com.secreto.data.DataManager;
 import com.secreto.image.ImageCacheManager;
 import com.secreto.mediatorClasses.TextWatcherMediator;
 import com.secreto.model.User;
@@ -32,6 +35,8 @@ import com.secreto.utils.LoginLogoutHandler;
 import com.secreto.utils.NetworkImageView;
 import com.secreto.widgets.CircleTransform;
 import com.squareup.picasso.Picasso;
+
+import org.apache.http.entity.mime.MultipartEntity;
 
 import java.io.File;
 

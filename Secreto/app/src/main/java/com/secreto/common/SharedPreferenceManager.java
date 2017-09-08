@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.secreto.data.DataManager;
 import com.secreto.model.User;
 
 public class SharedPreferenceManager {
@@ -14,7 +15,6 @@ public class SharedPreferenceManager {
     private static final String FILE_NAME = "PREFERENCE";
     private static final String USER_OBJECT = "user_object";
     private static final String USER_ID = "user_id";
-    private static final String IS_TUTORIAL_COMPLETE = "isTutorialComplete";
     private static final String PUSH_NOTIFICATION_TOKEN = "PUSH_NOTIFICATION_TOKEN";
 
     static {
@@ -43,13 +43,6 @@ public class SharedPreferenceManager {
         sharedPreference.edit().remove(USER_ID).apply();
     }
 
-    public static boolean isTutorialComplete() {
-        return sharedPreference.getBoolean(IS_TUTORIAL_COMPLETE, false);
-    }
-
-    public static void setIsTutorialComplete(boolean isTutorialComplete) {
-        sharedPreference.edit().putBoolean(IS_TUTORIAL_COMPLETE, isTutorialComplete).apply();
-    }
 
     public static void sertLoginCredentials(String email, String pass) {
         sharedPreference.edit().putString(EMAIL, email).apply();
