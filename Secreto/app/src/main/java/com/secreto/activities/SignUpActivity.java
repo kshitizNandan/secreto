@@ -110,7 +110,6 @@ public class SignUpActivity extends ImagePickerActivity {
     }
 
     private void init() {
-        iv_profileImg.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.default_user));
         progressDialog = new CustomProgressDialog(this);
         mActivity = this;
         tvTermsOfUse.setTermsAndPrivacyClickedListener(new TermsAndPrivacyClickedListener() {

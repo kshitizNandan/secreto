@@ -1,6 +1,7 @@
 package com.secreto.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.secreto.data.DataManager;
 
 import java.io.Serializable;
 

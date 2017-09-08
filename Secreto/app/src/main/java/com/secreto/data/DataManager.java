@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.android.volley.Request;
 import com.secreto.common.ApiConstants;
 import com.secreto.common.Constants;
+import com.secreto.common.MyApplication;
 import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.volley.MultipartRequest;
 import com.secreto.data.volley.RequestManagerApi;
@@ -49,6 +50,7 @@ public class DataManager {
         }
         return singleton;
     }
+
 
     private static <T> void makeRequest(int method, final String url, HashMap<Object, Object> params, Class<T> className, ResultListenerNG<T> resultListenerNG) {
         Logger.d(TAG, "Url : " + url);
