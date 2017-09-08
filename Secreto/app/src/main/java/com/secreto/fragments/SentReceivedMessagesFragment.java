@@ -164,7 +164,7 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
                     if (response.getMessageArrayList() != null && !response.getMessageArrayList().isEmpty()) {
                         objectArrayList.addAll(response.getMessageArrayList());
                     } else {
-                        tvEmptyText.setText(response.getMessage());
+                        tvEmptyText.setText(getString(R.string.please_share_your_profile_to_send_or_receive_messages));
                         tvEmptyText.setVisibility(View.VISIBLE);
                     }
                     nAdapter.notifyDataSetChanged();

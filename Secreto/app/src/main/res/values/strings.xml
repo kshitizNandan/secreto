@@ -122,4 +122,5 @@
     <string name="search_user_message">Search users by their name,email or user name</string>
     <string name="no_users_not_found">No users found</string>
     <string name="sender">Sender</string>
+    <string name="please_share_your_profile_to_send_or_receive_messages">Please share your profile to send or receive messages</string>
 </resources>
