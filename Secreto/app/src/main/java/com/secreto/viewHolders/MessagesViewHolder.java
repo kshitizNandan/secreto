@@ -42,27 +42,26 @@ public class MessagesViewHolder extends BaseViewHolder {
     @Override
     public void onBindView(Object object, int position) {
         MessageAndUserResponse response = (MessageAndUserResponse) object;
-        if (response.getMessage() != null) {
-            Message message = response.getMessage();
-            if (message.getCanReply().equalsIgnoreCase("YES")) {
-                img_reply.setVisibility(View.VISIBLE);
-            } else {
-                img_reply.setVisibility(View.GONE);
-            }
+        Message message = response.getMessage();
+        tv_message.setText(message.getMessage());
+        tv_time.setText(DateFormatter.getTimeString(message.getCreatedDate()));
+        img_reply.setTag(response.getUser());
+        if (messageType.equalsIgnoreCase(Constants.SENT)) {
+            img_reply.setVisibility(View.GONE);
+            if (response.getUser() != null && !TextUtils.isEmpty(response.getUser().getName()))
+                tv_clue.setText(response.getUser().getName());
+        } else {
             if (!TextUtils.isEmpty(message.getMessageClue())) {
                 tv_clue.setVisibility(View.VISIBLE);
                 tv_clue.setText(message.getMessageClue());
             } else {
                 tv_clue.setVisibility(View.GONE);
             }
-            tv_message.setText(message.getMessage());
-            tv_time.setText(DateFormatter.getTimeString(message.getCreatedDate()));
-            img_reply.setTag(response.getUser());
-        }
-        if (messageType.equalsIgnoreCase(Constants.SENT)) {
-            img_reply.setVisibility(View.GONE);
-            if (response.getUser() != null && !TextUtils.isEmpty(response.getUser().getName()))
-                tv_clue.setText(response.getUser().getName());
+            if (message.getCanReply().equalsIgnoreCase("YES")) {
+                img_reply.setVisibility(View.VISIBLE);
+            } else {
+                img_reply.setVisibility(View.GONE);
+            }
         }
     }
 }
