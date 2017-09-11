@@ -44,9 +44,13 @@ public class SearchUserViewHolder extends BaseViewHolder {
         }
         if (!TextUtils.isEmpty(user.getName())) {
             tvName.setText(user.getName());
+        } else {
+            tvName.setText("");
         }
         if (!TextUtils.isEmpty(user.getEmail())) {
             tvUserNameUserEmail.setText(user.getEmail());
+        } else {
+            tvUserNameUserEmail.setText("");
         }
     }
 }
