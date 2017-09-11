@@ -42,7 +42,7 @@
                 android:gravity="left"
                 android:text="status"
                 android:textColor="@color/half_black"
-                android:textSize="@dimen/text_size_18" />
+                android:textSize="@dimen/text_size_15" />
         </LinearLayout>
     </RelativeLayout>
 

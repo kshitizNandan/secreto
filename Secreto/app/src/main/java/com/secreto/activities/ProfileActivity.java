@@ -80,7 +80,7 @@ public class ProfileActivity extends BaseActivityWithActionBar {
             tv_gender.setText(!TextUtils.isEmpty(user.getGender()) ? user.getGender() : "-");
             tv_contact.setText(!TextUtils.isEmpty(user.getContact()) ? user.getContact() : "-");
             tv_userName.setText(user.getUserName());
-            tv_emailId.setText(user.getName());
+            tv_emailId.setText(user.getEmail());
             if (!user.getUserId().equalsIgnoreCase(SharedPreferenceManager.getUserObject().getUserId())) {
                 setScreenTitle(String.format(Locale.ENGLISH, getString(R.string.x_profile), user.getName()));
             }

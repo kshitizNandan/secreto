@@ -18,9 +18,11 @@
 
         <com.secreto.widgets.CustomFontTextView
             android:id="@+id/toolbarTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_toLeftOf="@+id/iv_profileImg"
+            android:gravity="center"
             android:maxLines="1"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size_18"
@@ -28,10 +30,11 @@
 
         <ImageView
             android:id="@+id/iv_profileImg"
-            android:layout_width="@dimen/dimen_size_60"
-            android:layout_height="@dimen/dimen_size_60"
+            android:layout_width="@dimen/dimen_size_40"
+            android:layout_height="@dimen/dimen_size_40"
             android:layout_alignParentRight="true"
-            android:padding="@dimen/dimen_size_10"
+            android:layout_margin="@dimen/dimen_size_5"
+            android:background="@drawable/white_circle"
             android:src="@drawable/default_user" />
     </RelativeLayout>
 </android.support.v7.widget.Toolbar>

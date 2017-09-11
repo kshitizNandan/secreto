@@ -126,6 +126,6 @@ public class SettingsActivity extends BaseActivityWithActionBar {
     @Override
     protected void onBackPress() {
         finish();
-        overridePendingTransition(R.anim.in_from_left_animation, R.anim.out_from_right_animation);
+        overridePendingTransition(R.anim.no_animation, R.anim.out_from_bottom);
     }
 }

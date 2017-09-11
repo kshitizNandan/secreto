@@ -98,6 +98,13 @@ public class EditProfileActivity extends ImagePickerActivity {
         if (user != null) {
             etName.setText(user.getName());
             etGender.setText(user.getGender());
+            String[] genders = getResources().getStringArray(R.array.gender_types);
+            for (int i = 0; i < genders.length; i++) {
+                if (genders[i].equalsIgnoreCase(user.getGender())) {
+                    genderSelection = i;
+                    break;
+                }
+            }
             etMobile.setText(user.getContact());
             etUserName.setText(user.getUserName());
             etEmail.setText(user.getEmail());

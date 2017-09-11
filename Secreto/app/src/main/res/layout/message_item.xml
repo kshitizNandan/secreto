@@ -41,6 +41,7 @@
                     android:id="@+id/imgReply"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/dimen_size_5"
                     android:src="@drawable/reply_icon"
                     android:visibility="gone" />
             </LinearLayout>

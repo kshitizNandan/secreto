@@ -283,7 +283,7 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
 
     @Override
     public boolean onLongClick(View v) {
-        showOptionsDialog();
+        //showOptionsDialog();
         return true;
     }
 }
