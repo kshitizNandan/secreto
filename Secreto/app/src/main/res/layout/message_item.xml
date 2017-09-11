@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -15,6 +14,7 @@
         app:cardUseCompatPadding="true">
 
         <LinearLayout
+            android:id="@+id/llMessageItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/transparent_to_color_gray"
@@ -33,11 +33,12 @@
                     style="@style/DefaultTextViewStyle"
                     android:layout_weight="1"
                     android:gravity="start"
+                    android:padding="@dimen/dimen_size_5"
                     android:textColor="@color/dark_gray"
                     android:textSize="@dimen/text_size_16" />
 
                 <ImageView
-                    android:id="@+id/img_reply"
+                    android:id="@+id/imgReply"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/reply_icon"
@@ -50,9 +51,10 @@
                 android:layout_marginTop="@dimen/dimen_size_5">
 
                 <com.secreto.widgets.CustomFontTextView
-                    android:id="@+id/tv_clue"
+                    android:id="@+id/tvClue"
                     style="@style/DefaultTextViewStyle"
                     android:gravity="left"
+                    android:padding="@dimen/dimen_size_5"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/text_size_12"
                     app:fontStyle="fontBold" />

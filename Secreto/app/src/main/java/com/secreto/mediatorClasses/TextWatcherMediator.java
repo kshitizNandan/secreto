@@ -30,5 +30,7 @@ public abstract class TextWatcherMediator implements TextWatcher {
 
     }
 
-    public abstract void onTextChanged(CharSequence s, View view);
+    public void onTextChanged(CharSequence s, View view) {
+
+    }
 }

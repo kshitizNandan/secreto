@@ -1,5 +1,6 @@
 package com.secreto.activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -45,6 +46,7 @@ import butterknife.OnClick;
 
 public class FindUserActivity extends BaseActivityWithActionBar implements View.OnClickListener, SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
     private static final int RC_SEND_MESSAGE = 200;
+    private static final String TAG = FindUserActivity.class.getSimpleName();
     @BindView(R.id.viewFlipper)
     ViewFlipper viewFlipper;
     @BindView(R.id.input_layout_email_editText)
@@ -80,6 +82,11 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
     @Override
     public int getLayoutResource() {
         return R.layout.activity_find_user;
+    }
+
+    public static void startActivity(Activity activity) {
+        Intent intent = new Intent(activity, FindUserActivity.class);
+        activity.startActivity(intent);
     }
 
     @Override
@@ -142,7 +149,7 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
 
     @OnClick(R.id.btnSubmit)
     void findUserApiCall() {
-        String userName = etEmail.getText().toString().trim();
+        final String userName = etEmail.getText().toString().trim();
         if (TextUtils.isEmpty(userName)) {
             textInputLayoutEmail.setError(getString(R.string.user_name_can_not_be_left_blank));
         } else if (userName.equals(SharedPreferenceManager.getUserObject().getUserName()) || userName.equals(SharedPreferenceManager.getUserObject().getEmail())) {
@@ -155,9 +162,7 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
                     public void onSuccess(UserResponse response) {
                         progressDialog.dismiss();
                         if (response.getUser() != null) {
-                            Intent intent = new Intent(mActivity, CreateMessageActivity.class);
-                            intent.putExtra(Constants.USER, response.getUser());
-                            startActivityForResult(intent, RC_SEND_MESSAGE);
+                            CreateMessageActivity.startActivityForResult(mActivity, response.getUser(), TAG, RC_SEND_MESSAGE);
                             overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
                             finish();
                         } else {
@@ -182,7 +187,7 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
         }
     }
 
-    private synchronized void getAllUsersApi() {
+    private void getAllUsersApi() {
         if (Common.isOnline(mActivity)) {
             if (isLoading) {
                 rl_progressBar.setVisibility(View.VISIBLE);
@@ -197,8 +202,7 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
                     if (offset == 0) {
                         items.clear();
                     }
-                    offset = response.getOffset();
-                    if (response.getUsers() != null)
+                    if (response.getUsers() != null && offset != -1)
                         items.addAll(response.getUsers());
                     if (!items.isEmpty()) {
                         recyclerViewSearch.setVisibility(View.VISIBLE);
@@ -207,6 +211,7 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
                         recyclerViewSearch.setVisibility(View.GONE);
                         tvEmptyText.setVisibility(View.VISIBLE);
                     }
+                    offset = response.getOffset();
                     searchAdapter.notifyDataSetChanged();
                     isLoading = false;
                     rl_progressBar.setVisibility(View.GONE);
@@ -241,9 +246,7 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
                 if (view.getTag() != null && view.getTag() instanceof User) {
                     User user = (User) view.getTag();
                     if (!user.getUserId().equalsIgnoreCase(SharedPreferenceManager.getUserObject().getUserId())) {
-                        Intent intent = new Intent(mActivity, CreateMessageActivity.class);
-                        intent.putExtra(Constants.USER, user);
-                        startActivityForResult(intent, RC_SEND_MESSAGE);
+                        CreateMessageActivity.startActivityForResult(mActivity, user, TAG, RC_SEND_MESSAGE);
                         overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
                     } else {
                         textInputLayoutEmail.setError(getString(R.string.you_can_not_send_message_to_yourself));
@@ -255,16 +258,20 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
     @Override
     public boolean onQueryTextSubmit(String query) {
         this.keyword = query;
-        if (!query.isEmpty())
+        if (!query.isEmpty()) {
+            offset = 0;
             getAllUsersApi();
+        }
         return true;
     }
 
     @Override
     public boolean onQueryTextChange(String query) {
         this.keyword = query;
-        if (!query.isEmpty())
+        if (!query.isEmpty()) {
+            offset = 0;
             getAllUsersApi();
+        }
         return true;
     }
 
@@ -295,6 +302,6 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
     protected void onBackPress() {
         super.onBackPress();
         Common.hideKeyboard(mActivity, etEmail);
-        overridePendingTransition(R.anim.no_animation, R.anim.out_from_right_animation);
+        overridePendingTransition(R.anim.in_from_left_animation, R.anim.out_from_right_animation);
     }
 }

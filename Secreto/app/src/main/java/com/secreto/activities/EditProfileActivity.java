@@ -1,8 +1,10 @@
 package com.secreto.activities;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -84,6 +86,11 @@ public class EditProfileActivity extends ImagePickerActivity {
     private void init() {
         progressDialog = new CustomProgressDialog(this);
         mActivity = this;
+    }
+
+    public static void startActivity(Activity activity) {
+        Intent intent = new Intent(activity, EditProfileActivity.class);
+        activity.startActivity(intent);
     }
 
     private void InitializeData() {
@@ -408,6 +415,6 @@ public class EditProfileActivity extends ImagePickerActivity {
     protected void onBackPress() {
         finish();
         Common.hideKeyboard(mActivity, etEmail);
-        overridePendingTransition(R.anim.no_animation, R.anim.out_from_right_animation);
+        overridePendingTransition(R.anim.in_from_left_animation, R.anim.out_from_right_animation);
     }
 }

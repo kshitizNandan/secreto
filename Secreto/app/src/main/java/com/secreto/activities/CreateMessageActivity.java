@@ -1,11 +1,8 @@
 package com.secreto.activities;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -22,11 +19,11 @@ import com.secreto.common.Common;
 import com.secreto.common.Constants;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
+import com.secreto.fragments.SentReceivedMessagesFragment;
 import com.secreto.image.ImageCacheManager;
 import com.secreto.model.User;
 import com.secreto.responsemodel.BaseResponse;
 import com.secreto.utils.CustomProgressDialog;
-import com.secreto.utils.Logger;
 import com.secreto.utils.NetworkImageView;
 
 import butterknife.BindView;
@@ -34,6 +31,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class CreateMessageActivity extends BaseActivityWithActionBar {
+    public static final String TAG = CreateMessageActivity.class.getSimpleName();
     @BindView(R.id.iv_profileImg)
     NetworkImageView iv_profileImg;
     @BindView(R.id.tvUserName)
@@ -47,8 +45,8 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
     private CustomProgressDialog progressDialog;
     private String userId;
     private Activity mActivity;
-    private String canReply = "No";
-    private boolean isUserVisible;
+    private String navFrom;
+    private User user;
 
     @Override
 
@@ -57,25 +55,14 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
         ButterKnife.bind(this);
         init();
         initView();
-        allowCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked) {
-                    canReply = "YES";
-                } else {
-                    canReply = "NO";
-                }
-            }
-        });
     }
 
     private void init() {
         mActivity = this;
-
         progressDialog = new CustomProgressDialog(this);
         iv_profileImg.setDefaultImageResId(R.drawable.default_user);
-        isUserVisible = getIntent().getBooleanExtra(Constants.NAVIGATION_FROM, false);
-        User user = (User) getIntent().getSerializableExtra(Constants.USER);
+        navFrom = getIntent().getStringExtra(Constants.NAVIGATION_FROM);
+        user = (User) getIntent().getSerializableExtra(Constants.USER);
         if (user != null) {
             this.userId = user.getUserId();
             tvUserName.setText(user.getName());
@@ -84,9 +71,16 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
         allowCheckBox.setText(String.format(getString(R.string.allow_to_get_reply), user.getName()));
     }
 
+    public static void startActivityForResult(Activity activity, User user, String navFrom, int REQUEST_CODE) {
+        Intent intent = new Intent(activity, CreateMessageActivity.class);
+        intent.putExtra(Constants.USER, user);
+        intent.putExtra(Constants.NAVIGATION_FROM, navFrom);
+        activity.startActivityForResult(intent, REQUEST_CODE);
+    }
+
     private void initView() {
         iv_profileImg.setDefaultImageResId(R.drawable.default_user);
-        if (isUserVisible) {
+        if (navFrom.equalsIgnoreCase(SentReceivedMessagesFragment.TAG)) {
             iv_profileImg.setVisibility(View.GONE);
             etClue.setVisibility(View.GONE);
             tvUserName.setVisibility(View.GONE);
@@ -99,10 +93,18 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
         return R.layout.activity_create_message;
     }
 
+    @OnClick(R.id.iv_profileImg)
+    void openUserProfileScreen() {
+        if (user != null) {
+            ProfileActivity.startActivity(mActivity, user);
+            overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
+        }
+    }
 
     @OnClick(R.id.tvSend)
     void sendMessage() {
         String message = etMessage.getText().toString();
+        String canReply = allowCheckBox.isChecked() ? "YES" : "NO";
         if (TextUtils.isEmpty(message)) {
             Toast.makeText(this, R.string.message_can_not_be_left_blank, Toast.LENGTH_SHORT).show();
         } else {
@@ -143,7 +145,7 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
         Intent intent = new Intent(this, HomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-        overridePendingTransition(R.anim.no_animation, R.anim.out_from_right_animation);
+        overridePendingTransition(R.anim.in_from_left_animation, R.anim.out_from_right_animation);
         Common.hideKeyboard(mActivity, etMessage);
     }
 

@@ -46,7 +46,6 @@ public class HomeActivity extends BaseActivityWithActionBar {
     public static final int RC_SEND_MESSAGE = 200;
     @BindView(R.id.iv_profileImg)
     ImageView iv_profileImg;
-    private HomeActivity mActivity;
     @BindView(R.id.tabBar)
     TabLayout tabBar;
     @BindView(R.id.viewPager)
@@ -60,9 +59,7 @@ public class HomeActivity extends BaseActivityWithActionBar {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
-                new IntentFilter(Constants.REFRESH_LIST_BROADCAST));
-        init();
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter(Constants.REFRESH_LIST_BROADCAST));
         initViews();
     }
 
@@ -76,17 +73,14 @@ public class HomeActivity extends BaseActivityWithActionBar {
         User user = SharedPreferenceManager.getUserObject();
         if (user != null) {
             if (!TextUtils.isEmpty(user.getProfile_pic())) {
-                int size = Common.dipToPixel(mActivity, 60);
-                Picasso.with(mActivity).load(user.getProfile_pic()).transform(new CircleTransform()).resize(size, size).placeholder(R.drawable.default_user).into(iv_profileImg);
+                int size = Common.dipToPixel(this, 60);
+                Picasso.with(this).load(user.getProfile_pic()).transform(new CircleTransform()).resize(size, size).placeholder(R.drawable.default_user).into(iv_profileImg);
             } else {
-                iv_profileImg.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.default_user));
+                iv_profileImg.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_user));
             }
         }
     }
 
-    private void init() {
-        mActivity = this;
-    }
 
     private void initViews() {
         String[] titles = getResources().getStringArray(R.array.message_types);
@@ -98,9 +92,8 @@ public class HomeActivity extends BaseActivityWithActionBar {
         fabComposeMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mActivity, FindUserActivity.class);
-                startActivityForResult(intent, RC_SEND_MESSAGE);
-                overridePendingTransition(R.anim.in_from_right_animation, R.anim.no_animation);
+                FindUserActivity.startActivity(HomeActivity.this);
+                overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
             }
         });
     }
@@ -123,7 +116,7 @@ public class HomeActivity extends BaseActivityWithActionBar {
 
     @OnClick(R.id.iv_profileImg)
     void onClickProfileImg() {
-        Intent settingsActivityIntent = new Intent(mActivity, SettingsActivity.class);
+        Intent settingsActivityIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsActivityIntent);
         overridePendingTransition(R.anim.in_from_bottom, R.anim.no_animation);
     }
@@ -131,7 +124,7 @@ public class HomeActivity extends BaseActivityWithActionBar {
 
     @OnLongClick(R.id.iv_profileImg)
     boolean showLogoutDialog() {
-        final Dialog dialog = new Dialog(mActivity, R.style.dialog_style);
+        final Dialog dialog = new Dialog(this, R.style.dialog_style);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.custom_logout_dilaog, null);
@@ -145,10 +138,10 @@ public class HomeActivity extends BaseActivityWithActionBar {
             ((TextView) contentView.findViewById(R.id.tv_status)).setText(user.getCaption());
             ImageView iv_profileImg = (ImageView) contentView.findViewById(R.id.iv_profileImg);
             if (!TextUtils.isEmpty(user.getProfile_pic())) {
-                int size = Common.dipToPixel(mActivity, 40);
-                Picasso.with(mActivity).load(user.getProfile_pic()).transform(new CircleTransform()).resize(size, size).placeholder(R.drawable.default_user).into(iv_profileImg);
+                int size = Common.dipToPixel(this, 40);
+                Picasso.with(this).load(user.getProfile_pic()).transform(new CircleTransform()).resize(size, size).placeholder(R.drawable.default_user).into(iv_profileImg);
             } else {
-                iv_profileImg.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.default_user));
+                iv_profileImg.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_user));
             }
 
         }
@@ -160,7 +153,7 @@ public class HomeActivity extends BaseActivityWithActionBar {
                         dialog.dismiss();
                         break;
                     case R.id.tv_logout:
-                        LoginLogoutHandler.logoutUser(mActivity);
+                        LoginLogoutHandler.logoutUser(HomeActivity.this);
                         break;
                 }
             }
@@ -174,7 +167,7 @@ public class HomeActivity extends BaseActivityWithActionBar {
     @Override
     public void onBackPressed() {
         if (exitFlag) {
-            Toast.makeText(mActivity, getString(R.string.back_pressagain_to_exit), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.back_pressagain_to_exit), Toast.LENGTH_SHORT).show();
             exitFlag = false;
         } else {
             super.onBackPressed();

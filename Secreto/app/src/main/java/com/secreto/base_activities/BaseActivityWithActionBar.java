@@ -11,6 +11,8 @@ import com.secreto.R;
 
 public abstract class BaseActivityWithActionBar extends IBaseActivity {
 
+    private TextView toolbarTitle;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +30,7 @@ public abstract class BaseActivityWithActionBar extends IBaseActivity {
                 actionBar.setHomeAsUpIndicator(setHomeButtonDrawable());
                 getSupportActionBar().setDisplayShowTitleEnabled(false);
             }
-            TextView toolbarTitle = (TextView) toolbar.findViewById(R.id.toolbarTitle);
+            toolbarTitle = (TextView) toolbar.findViewById(R.id.toolbarTitle);
             if (toolbarTitle != null)
                 toolbarTitle.setText(getScreenTitle());
         }
@@ -45,6 +47,11 @@ public abstract class BaseActivityWithActionBar extends IBaseActivity {
         }
     }
 
+    protected void setScreenTitle(String title) {
+        if (toolbarTitle != null)
+            toolbarTitle.setText(title);
+    }
+
     @Override
     public String getScreenTitle() {
         return getString(R.string.app_name);
@@ -58,6 +65,11 @@ public abstract class BaseActivityWithActionBar extends IBaseActivity {
     @Override
     protected void onBackPress() {
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        onBackPress();
     }
 
     @Override
