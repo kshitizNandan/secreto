@@ -4,7 +4,6 @@
     android:id="@+id/viewFlipper"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
     android:orientation="vertical">
 
     <include layout="@layout/loading_screen_without_text" />
@@ -35,7 +34,8 @@
                     android:layout_centerInParent="true"
                     android:gravity="center"
                     android:paddingBottom="@dimen/dimen_size_10"
-                    android:textColor="@android:color/white"
+                    android:text="@string/please_share_your_profile_to_send_or_receive_messages"
+                    android:textColor="@color/colorPrimary"
                     android:visibility="gone"
                     app:layoutManager="LinearLayoutManager" />
 

@@ -117,8 +117,7 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
-                                setResult(RESULT_OK);
-                                onBackPress();
+                                startHomeScreen();
                             }
                         }, false);
                     }
@@ -139,6 +138,15 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
             }
         }
     }
+
+    private void startHomeScreen() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        overridePendingTransition(R.anim.no_animation, R.anim.out_from_right_animation);
+        Common.hideKeyboard(mActivity, etMessage);
+    }
+
 
     @Override
     protected void onBackPress() {

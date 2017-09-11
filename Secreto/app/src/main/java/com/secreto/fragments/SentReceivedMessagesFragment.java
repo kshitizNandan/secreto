@@ -106,7 +106,7 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
     private void setRecyclerAdapter() {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-        nAdapter = new SentOrReceivedMessagesRecyclerAdapter(objectArrayList, this,messageType);
+        nAdapter = new SentOrReceivedMessagesRecyclerAdapter(objectArrayList, this, messageType);
         recyclerView.setAdapter(nAdapter);
 
         // Load More
@@ -148,7 +148,7 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
             if (offset == -1) {
                 return;
             }
-            if (isLoading) {
+            if (isLoading && !swipeRefresh.isRefreshing()) {
                 rl_progressBar.setVisibility(View.VISIBLE);
             } else if (!swipeRefresh.isRefreshing()) {
                 setLoadingLayout();
@@ -161,11 +161,15 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
                         objectArrayList.clear();
                     }
                     offset = response.getOffset();
-                    if (response.getMessageArrayList() != null && !response.getMessageArrayList().isEmpty()) {
+                    if (response.getMessageArrayList() != null) {
                         objectArrayList.addAll(response.getMessageArrayList());
+                    }
+                    if (!objectArrayList.isEmpty()) {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        tvEmptyText.setVisibility(View.GONE);
                     } else {
-                        tvEmptyText.setText(getString(R.string.please_share_your_profile_to_send_or_receive_messages));
                         tvEmptyText.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
                     }
                     nAdapter.notifyDataSetChanged();
                     setMainLayout();
@@ -215,7 +219,7 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
                     User user = (User) view.getTag();
                     Intent intent = new Intent(getActivity(), CreateMessageActivity.class);
                     intent.putExtra(Constants.USER, user);
-                    intent.putExtra(Constants.NAVIGATION_FROM,true);
+                    intent.putExtra(Constants.NAVIGATION_FROM, true);
                     getActivity().startActivityForResult(intent, RC_SEND_MESSAGE);
                     getActivity().overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
 

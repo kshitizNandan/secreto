@@ -145,7 +145,7 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
         String userName = etEmail.getText().toString().trim();
         if (TextUtils.isEmpty(userName)) {
             textInputLayoutEmail.setError(getString(R.string.user_name_can_not_be_left_blank));
-        } else if (userName.equalsIgnoreCase(SharedPreferenceManager.getUserObject().getName()) || userName.equalsIgnoreCase(SharedPreferenceManager.getUserObject().getEmail())) {
+        } else if (userName.equals(SharedPreferenceManager.getUserObject().getUserName()) || userName.equals(SharedPreferenceManager.getUserObject().getEmail())) {
             textInputLayoutEmail.setError(getString(R.string.you_can_not_send_message_to_yourself));
         } else {
             if (Common.isOnline(mActivity)) {
@@ -182,7 +182,7 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
         }
     }
 
-    private void getAllUsersApi() {
+    private synchronized void getAllUsersApi() {
         if (Common.isOnline(mActivity)) {
             if (isLoading) {
                 rl_progressBar.setVisibility(View.VISIBLE);
@@ -198,10 +198,13 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
                         items.clear();
                     }
                     offset = response.getOffset();
-                    if (response.getUsers() != null && !response.getUsers().isEmpty()) {
+                    if (response.getUsers() != null)
                         items.addAll(response.getUsers());
+                    if (!items.isEmpty()) {
+                        recyclerViewSearch.setVisibility(View.VISIBLE);
+                        tvEmptyText.setVisibility(View.GONE);
                     } else {
-                        tvEmptyText.setText(getString(R.string.no_users_not_found));
+                        recyclerViewSearch.setVisibility(View.GONE);
                         tvEmptyText.setVisibility(View.VISIBLE);
                     }
                     searchAdapter.notifyDataSetChanged();
@@ -237,10 +240,14 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
             case R.id.rLFindUser:
                 if (view.getTag() != null && view.getTag() instanceof User) {
                     User user = (User) view.getTag();
-                    Intent intent = new Intent(mActivity, CreateMessageActivity.class);
-                    intent.putExtra(Constants.USER, user);
-                    startActivityForResult(intent, RC_SEND_MESSAGE);
-                    overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
+                    if (!user.getUserId().equalsIgnoreCase(SharedPreferenceManager.getUserObject().getUserId())) {
+                        Intent intent = new Intent(mActivity, CreateMessageActivity.class);
+                        intent.putExtra(Constants.USER, user);
+                        startActivityForResult(intent, RC_SEND_MESSAGE);
+                        overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
+                    } else {
+                        textInputLayoutEmail.setError(getString(R.string.you_can_not_send_message_to_yourself));
+                    }
                 }
         }
     }
@@ -280,16 +287,8 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case RC_SEND_MESSAGE:
-                    finish();
-                    break;
-            }
-        } else {
-            if (menuItem != null)
-                menuItem.collapseActionView();
-        }
+        if (menuItem != null)
+            menuItem.collapseActionView();
     }
 
     @Override

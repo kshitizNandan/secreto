@@ -47,12 +47,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.v(TAG, "classNameTag-->" + classNameTag);
             if (className.equalsIgnoreCase(classNameTag)) {
                 sendBroadcastMessage();
-            } else {
-                showNotification(notification);
             }
-        } else {
-            showNotification(notification);
         }
+        showNotification(notification);
     }
 
 
@@ -78,8 +75,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         mBuilder.setAutoCancel(true);
         mBuilder.setDefaults(Notification.DEFAULT_ALL);
         mNotificationManager.notify((int) System.currentTimeMillis(), mBuilder.build());
-
-//        sendBroadcastMessage(type);
     }
 
     // Send Broadcast to My Events
