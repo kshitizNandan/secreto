@@ -73,7 +73,7 @@ public class HomeActivity extends BaseActivityWithActionBar {
         User user = SharedPreferenceManager.getUserObject();
         if (user != null) {
             if (!TextUtils.isEmpty(user.getProfile_pic())) {
-                int size = Common.dipToPixel(this, 60);
+                int size = Common.dipToPixel(this, 80);
                 Picasso.with(this).load(user.getProfile_pic()).transform(new CircleTransform()).resize(size, size).placeholder(R.drawable.default_user).into(iv_profileImg);
             } else {
                 iv_profileImg.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_user));

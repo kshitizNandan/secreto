@@ -2,6 +2,7 @@ package com.secreto.common;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -31,6 +32,7 @@ import com.secreto.utils.Logger;
 
 import java.io.UnsupportedEncodingException;
 import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -148,5 +150,14 @@ public class Common {
         }
         builder.show();
 
+    }
+
+    public static void ShareProfile(Context context) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        String sharingMessage = String.format(Locale.ENGLISH, context.getString(R.string.hey_guys_please_share_your_views_about_me), SharedPreferenceManager.getUserObject().getUserName());
+        sendIntent.putExtra(Intent.EXTRA_TEXT, sharingMessage);
+        sendIntent.setType("text/plain");
+        context.startActivity(sendIntent);
     }
 }
