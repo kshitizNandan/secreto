@@ -71,7 +71,7 @@ public class EditProfileActivity extends ImagePickerActivity {
     CustomProgressDialog progressDialog;
     EditProfileActivity mActivity;
     private File photoFile;
-    private int genderSelection;
+    private int genderSelection = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
