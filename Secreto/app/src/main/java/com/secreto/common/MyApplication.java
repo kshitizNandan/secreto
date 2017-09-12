@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
@@ -65,7 +66,7 @@ public class MyApplication extends Application {
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
-                Logger.d(TAG, "TEMPHASH KEY:" +
+                Log.v(TAG, "TEMPHASH KEY:" +
                         Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
         } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
