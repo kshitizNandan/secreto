@@ -127,4 +127,5 @@
     <string name="to_x">To : %s</string>
     <string name="share_profile">Share Profile</string>
     <string name="hey_guys_please_share_your_views_about_me">Hey Guys please share your views about me .. %s</string>
+    <string name="compose_message">Compose Message</string>
 </resources>

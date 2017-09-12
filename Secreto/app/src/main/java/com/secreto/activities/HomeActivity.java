@@ -50,8 +50,8 @@ public class HomeActivity extends BaseActivityWithActionBar {
     TabLayout tabBar;
     @BindView(R.id.viewPager)
     ViewPager viewPager;
-    @BindView(R.id.fabComposeMessage)
-    FloatingActionButton fabComposeMessage;
+    @BindView(R.id.composeMessageButton)
+    com.github.clans.fab.FloatingActionButton composeMessageButton;
     ArrayList<Fragment> fragmentArrayList = new ArrayList<>();
     private boolean exitFlag = true;
 
@@ -88,8 +88,7 @@ public class HomeActivity extends BaseActivityWithActionBar {
         fragmentArrayList.add(SentReceivedMessagesFragment.newInstance(Constants.SENT));
         viewPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentArrayList, titles));
         tabBar.setupWithViewPager(viewPager);
-        // fab compose Click
-        fabComposeMessage.setOnClickListener(new View.OnClickListener() {
+        composeMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FindUserActivity.startActivity(HomeActivity.this);
