@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -30,6 +32,7 @@ import com.secreto.R;
 import com.secreto.responsemodel.BaseResponse;
 import com.secreto.utils.Logger;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -153,11 +156,29 @@ public class Common {
     }
 
     public static void ShareProfile(Context context) {
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        String sharingMessage = String.format(Locale.ENGLISH, context.getString(R.string.hey_guys_please_share_your_views_about_me), SharedPreferenceManager.getUserObject().getUserName());
-        sendIntent.putExtra(Intent.EXTRA_TEXT, sharingMessage);
+        Intent sendIntent = new Intent(android.content.Intent.ACTION_SEND);
         sendIntent.setType("text/plain");
-        context.startActivity(sendIntent);
+        sendIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+//        String sharingMessage = String.format(Locale.ENGLISH, context.getString(R.string.hey_guys_please_share_your_views_about_me), SharedPreferenceManager.getUserObject().getUserName());
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "bla bla");
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "https://www.google.co.in/");
+        context.startActivity(Intent.createChooser(sendIntent, "Share link!"));
+    }
+
+    public static void shareImage(Context context) {
+        Intent share = new Intent(Intent.ACTION_SEND);
+        // If you want to share a png image only, you can do:
+        // setType("image/png"); OR for jpeg: setType("image/jpeg");
+        share.setType("text/plain");
+        // Make sure you put example png image named myImage.png in your
+        // directory
+        String imagePath = Environment.getExternalStorageDirectory() + "/myImage.png";
+
+        File imageFileToShare = new File(imagePath);
+
+        Uri uri = Uri.parse(SharedPreferenceManager.getUserObject().getProfile_pic());
+        share.putExtra(Intent.EXTRA_TEXT, uri);
+
+        context.startActivity(Intent.createChooser(share, "Share Image!"));
     }
 }

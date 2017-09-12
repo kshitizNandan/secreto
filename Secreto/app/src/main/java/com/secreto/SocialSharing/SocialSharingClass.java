@@ -61,7 +61,7 @@ public class SocialSharingClass extends BaseActivityWithActionBar implements Vie
         try {
             ShareDialog shareDialog = new ShareDialog((Activity) context);
             shareDialog.show(new ShareLinkContent.Builder()
-                    .setContentUrl(Uri.parse(message))
+                    .setContentUrl(Uri.parse("https://www.google.co.in/"))
                     .build(), ShareDialog.Mode.AUTOMATIC);
             shareDialog.registerCallback(callbackManager, facebookCallback);
         } catch (Exception e) {

@@ -109,33 +109,33 @@ public class HomeActivity extends BaseActivityWithActionBar {
             public boolean onMenuItemSelected(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.action_share:
-//                        Common.ShareProfile(HomeActivity.this);
-                        final String sharingMessage = String.format(Locale.ENGLISH, getString(R.string.hey_guys_please_share_your_views_about_me), SharedPreferenceManager.getUserObject().getUserName());
-                        new SocialSharingClass(HomeActivity.this, new SocialSharingClass.OnItemSelectedItemListener() {
-                            @Override
-                            public void selectedItem(String item) {
-                                if (item.equalsIgnoreCase(SocialSharingClass.FACEBOOK)) {
-                                    SocialSharingClass.ShareOnFacebook(HomeActivity.this, sharingMessage, callbackManager, new FacebookCallback<Sharer.Result>() {
-                                        @Override
-                                        public void onSuccess(Sharer.Result result) {
-                                            Toast.makeText(HomeActivity.this, "success", Toast.LENGTH_SHORT).show();
-                                        }
-
-                                        @Override
-                                        public void onCancel() {
-                                        }
-
-                                        @Override
-                                        public void onError(FacebookException error) {
-                                            Toast.makeText(HomeActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                } else if (item.equalsIgnoreCase(SocialSharingClass.TWITTER)) {
-                                    SocialSharingClass.ShareOnTwitter(HomeActivity.this, sharingMessage);
-                                } else if (item.equalsIgnoreCase(SocialSharingClass.LINKEDIN)) {
-                                }
-                            }
-                        });
+                        Common.shareImage(HomeActivity.this);
+//                        final String sharingMessage = String.format(Locale.ENGLISH, getString(R.string.hey_guys_please_share_your_views_about_me), SharedPreferenceManager.getUserObject().getUserName());
+//                        new SocialSharingClass(HomeActivity.this, new SocialSharingClass.OnItemSelectedItemListener() {
+//                            @Override
+//                            public void selectedItem(String item) {
+//                                if (item.equalsIgnoreCase(SocialSharingClass.FACEBOOK)) {
+//                                    SocialSharingClass.ShareOnFacebook(HomeActivity.this, sharingMessage, callbackManager, new FacebookCallback<Sharer.Result>() {
+//                                        @Override
+//                                        public void onSuccess(Sharer.Result result) {
+//                                            Toast.makeText(HomeActivity.this, "success", Toast.LENGTH_SHORT).show();
+//                                        }
+//
+//                                        @Override
+//                                        public void onCancel() {
+//                                        }
+//
+//                                        @Override
+//                                        public void onError(FacebookException error) {
+//                                            Toast.makeText(HomeActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    });
+//                                } else if (item.equalsIgnoreCase(SocialSharingClass.TWITTER)) {
+//                                    SocialSharingClass.ShareOnTwitter(HomeActivity.this, sharingMessage);
+//                                } else if (item.equalsIgnoreCase(SocialSharingClass.LINKEDIN)) {
+//                                }
+//                            }
+//                        });
                         break;
                     case R.id.action_sendMessage:
                         FindUserActivity.startActivity(HomeActivity.this);
