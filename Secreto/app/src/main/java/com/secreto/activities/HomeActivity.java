@@ -17,9 +17,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionMenu;
 import com.secreto.R;
 import com.secreto.adapters.MyFragmentPagerAdapter;
 import com.secreto.base_activities.BaseActivityWithActionBar;
@@ -44,6 +47,9 @@ import butterknife.OnLongClick;
 public class HomeActivity extends BaseActivityWithActionBar {
 
     public static final int RC_SEND_MESSAGE = 200;
+
+    @BindView(R.id.llViewPager)
+    LinearLayout llViewPager;
     @BindView(R.id.iv_profileImg)
     ImageView iv_profileImg;
     @BindView(R.id.tabBar)
@@ -52,6 +58,9 @@ public class HomeActivity extends BaseActivityWithActionBar {
     ViewPager viewPager;
     @BindView(R.id.composeMessageButton)
     com.github.clans.fab.FloatingActionButton composeMessageButton;
+    @BindView(R.id.menu_labels_right)
+    com.github.clans.fab.FloatingActionMenu menu_labels_right;
+
     ArrayList<Fragment> fragmentArrayList = new ArrayList<>();
     private boolean exitFlag = true;
 
@@ -88,6 +97,16 @@ public class HomeActivity extends BaseActivityWithActionBar {
         fragmentArrayList.add(SentReceivedMessagesFragment.newInstance(Constants.SENT));
         viewPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentArrayList, titles));
         tabBar.setupWithViewPager(viewPager);
+        menu_labels_right.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
+            @Override
+            public void onMenuToggle(boolean opened) {
+                if (opened) {
+                    llViewPager.setFocusableInTouchMode(false);
+                } else {
+                    llViewPager.setFocusableInTouchMode(true);
+                }
+            }
+        });
         composeMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,7 +115,7 @@ public class HomeActivity extends BaseActivityWithActionBar {
             }
         });
     }
-
+ 
 
     @Override
     public int getLayoutResource() {
@@ -120,6 +139,11 @@ public class HomeActivity extends BaseActivityWithActionBar {
         overridePendingTransition(R.anim.in_from_bottom, R.anim.no_animation);
     }
 
+
+    @OnClick(R.id.llViewPager)
+    void closeFloatToggle() {
+        menu_labels_right.close(true);
+    }
 
     @OnLongClick(R.id.iv_profileImg)
     boolean showLogoutDialog() {

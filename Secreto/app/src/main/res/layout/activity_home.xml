@@ -9,52 +9,63 @@
 
     <include layout="@layout/home_toolbar" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabBar"
-            style="@style/TabStyle" />
-
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/llViewPager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/viewPager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabBar"
+                style="@style/TabStyle" />
 
-            <com.github.clans.fab.FloatingActionMenu
-                android:id="@+id/menu_labels_right"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
-                android:paddingBottom="@dimen/dimen_size_10"
-                android:paddingLeft="@dimen/dimen_size_10"
-                android:paddingRight="@dimen/dimen_size_10"
-                fab:menu_backgroundColor="@color/off_white"
-                fab:menu_labels_ellipsize="end"
-                fab:menu_labels_position="left"
-                fab:menu_labels_singleLine="true">
+                android:layout_below="@id/tabBar">
 
-                <com.github.clans.fab.FloatingActionButton
-                    android:id="@+id/composeMessageButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/reply_icon"
-                    fab:fab_label="@string/compose_message"
-                    fab:fab_size="mini" />
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true" />
+            </RelativeLayout>
+        </LinearLayout>
 
-                <com.github.clans.fab.FloatingActionButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/reply_icon"
-                    fab:fab_label="@string/share_profile"
-                    fab:fab_size="mini" />
-            </com.github.clans.fab.FloatingActionMenu>
-        </RelativeLayout>
-    </LinearLayout>
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/menu_labels_right"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:paddingBottom="@dimen/dimen_size_10"
+            android:paddingLeft="@dimen/dimen_size_10"
+            android:paddingRight="@dimen/dimen_size_10"
+            fab:menu_backgroundColor="@color/off_white"
+            fab:menu_labels_ellipsize="end"
+            fab:menu_labels_position="left"
+            fab:menu_labels_singleLine="true">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/composeMessageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/reply_icon"
+                fab:fab_label="@string/compose_message"
+                fab:fab_size="mini" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/reply_icon"
+                fab:fab_label="@string/share_profile"
+                fab:fab_size="mini" />
+        </com.github.clans.fab.FloatingActionMenu>
+    </RelativeLayout>
 </LinearLayout>
