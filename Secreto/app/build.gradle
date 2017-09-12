@@ -59,6 +59,9 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
     compile 'com.github.markomilos:paginate:0.5.1'
     compile 'io.github.yavski:fab-speed-dial:1.0.6'
+    compile 'com.facebook.android:facebook-android-sdk:4.+'
+    compile 'com.twitter.sdk.android:twitter-core:3.0.0'
+    compile 'com.twitter.sdk.android:tweet-composer:3.0.0'
 }
 // ADD THIS AT THE BOTTOM
 apply plugin: 'com.google.gms.google-services'

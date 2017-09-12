@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.secreto.widgets.CustomFontTextView
+        style="@style/DefaultTextViewStyle"
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/dimen_size_10"
+        android:text="@string/share_profile"
+        android:textSize="@dimen/text_size_20" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_1"
+        android:background="@color/gray" />
+
+    <com.secreto.widgets.CustomFontTextView
+        android:id="@+id/tv_facebook"
+        style="@style/DefaultTextViewStyle"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_size_7"
+        android:text="facebook" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_1"
+        android:background="@color/gray" />
+
+    <com.secreto.widgets.CustomFontTextView
+        android:id="@+id/tv_twitter"
+        style="@style/DefaultTextViewStyle"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_size_7"
+        android:text="twitter"
+        android:textSize="@dimen/text_size_18" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_1"
+        android:background="@color/gray" />
+
+    <com.secreto.widgets.CustomFontTextView
+        android:id="@+id/tv_linkedin"
+        style="@style/DefaultTextViewStyle"
+        android:padding="@dimen/dimen_size_7"
+        android:text="linkedin"
+        android:textSize="@dimen/text_size_18" />
+
+</LinearLayout>
