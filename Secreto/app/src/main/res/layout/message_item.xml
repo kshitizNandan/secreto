@@ -32,7 +32,9 @@
                     android:id="@+id/tv_message"
                     style="@style/DefaultTextViewStyle"
                     android:layout_weight="1"
+                    android:ellipsize="end"
                     android:gravity="start"
+                    android:maxLines="2"
                     android:padding="@dimen/dimen_size_5"
                     android:textColor="@color/dark_gray"
                     android:textSize="@dimen/text_size_16" />
@@ -55,6 +57,7 @@
                     android:id="@+id/tvClue"
                     style="@style/DefaultTextViewStyle"
                     android:gravity="left"
+                    android:maxLines="1"
                     android:padding="@dimen/dimen_size_5"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/text_size_12"
