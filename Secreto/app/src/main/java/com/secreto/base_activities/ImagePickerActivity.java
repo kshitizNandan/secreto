@@ -39,15 +39,11 @@ public abstract class ImagePickerActivity extends BaseActivityWithActionBar {
     protected static Uri mImageUri, mVideoUri;
     protected static final int RC_CAMERA_REQUEST = 0;
     protected static final int RC_PICK_IMAGE_REQUEST = 1;
-    protected static final int RC_VIDEO_FROM_GALLERY = 2;
-    protected static final int RC_VIDEO_CAMERA = 3;
     protected static final int RC_CROP_ACTIVITY = CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE;
     private static File _photoFile;
-    private static File _videoFile;
     private AlertDialog imagePickerDialog;
 
     public enum CropAspectRatio {
-        SQUARE,
         HORIZONTAL_RECT,
         VERTICAL_RECT
     }
@@ -91,80 +87,6 @@ public abstract class ImagePickerActivity extends BaseActivityWithActionBar {
         }
     }
 
-    protected void showTakeVideoPopup() {
-        if (!hasPermissions(this, PERMISSIONS)) {
-            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
-        } else {
-            final CharSequence[] items = {getString(R.string.select_video_from_gallery), getString(R.string.take_video), getString(R.string.cancel)};
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(getString(R.string.select_video));
-            builder.setItems(items, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
-                    switch (item) {
-                        case RC_CAMERA_REQUEST:
-                            getVideoFromGallery();
-                            break;
-                        case RC_PICK_IMAGE_REQUEST:
-                            getVideoFromCamera();
-                            break;
-                    }
-
-                }
-            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-    }
-
-
-    private void getVideoFromGallery() {
-        if (!Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED)) {
-            try {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.INTERNAL_CONTENT_URI);
-                intent.setType("video/*");
-                intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 20);//max of 20 seconds
-                startActivityForResult(intent, RC_VIDEO_FROM_GALLERY);
-            } catch (Exception e) {
-                Logger.e(TAG, "Exception: " + e);
-            }
-        } else {
-            try {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
-                intent.setType("video/*");
-                startActivityForResult(intent, RC_VIDEO_FROM_GALLERY);
-            } catch (Exception e) {
-                Logger.e(TAG, "Exception: " + e);
-            }
-        }
-    }
-
-    private void getVideoFromCamera() {
-        String storageState = Environment.getExternalStorageState();
-        try {
-            File mediaDir;
-            if (storageState.equals(Environment.MEDIA_MOUNTED)) {
-                mediaDir = new File(SDCardHandler.VIDEO_STORAGE_PATH);
-            } else {
-                mediaDir = new File(getFilesDir(), Constants.APP_NAME);
-            }
-            if (!mediaDir.exists()) {
-                mediaDir.mkdirs();
-            }
-            _videoFile = new File(mediaDir, new Date().getTime() + ".mp4");
-            if (!_videoFile.exists()) {
-                _videoFile.createNewFile();
-            }
-        } catch (IOException e) {
-            Logger.d(TAG, "Could not create file: " + e);
-        }
-        if (_videoFile != null) {
-            mVideoUri = getUriFromFile(_videoFile);
-            Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, mVideoUri);
-            intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 20);//max of 20 seconds
-            startActivityForResult(intent, RC_VIDEO_CAMERA);
-        }
-    }
 
     public void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
@@ -258,37 +180,6 @@ public abstract class ImagePickerActivity extends BaseActivityWithActionBar {
                 .start(this);
     }
 
-
-    private boolean isValidVideo(String path) {
-        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        retriever.setDataSource(path);
-        String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-        long timeInmillisec = Long.parseLong(time);
-        long duration = timeInmillisec / 1000;
-        long hours = duration / 3600;
-        long minutes = (duration - hours * 3600) / 60;
-        long seconds = duration - (hours * 3600 + minutes * 60);
-        return duration <= 20;
-    }
-
-
-    public String getRealPathFromVideoURI(Uri contentUri) {
-        String res = null;
-        String[] proj = {MediaStore.Video.Media.DATA};
-        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
-            res = cursor.getString(column_index);
-        }
-        if (cursor != null)
-            cursor.close();
-        return res;
-    }
-
-    public Bitmap getVideoThumbnail(String videoFilePath) {
-        return ThumbnailUtils.createVideoThumbnail(videoFilePath, MediaStore.Video.Thumbnails.MICRO_KIND);
-    }
-
     // This is special method to get Uri From File for Naugat
     public static Uri getUriFromFile(File file) {
         Uri uri;
@@ -321,31 +212,6 @@ public abstract class ImagePickerActivity extends BaseActivityWithActionBar {
                         String imgPath = result.getUri().getPath();
                         _photoFile = new File(imgPath);
                         onImageSet(_photoFile);
-//                        if (mImageProfile != null && _photoFile.exists()) {
-//                            if (mImageProfile instanceof NetworkImageView) {
-//                                ((NetworkImageView) mImageProfile).setImageUrl(imgPath, ImageCacheManager.getInstance().getImageLoader());
-//                            } else {
-//                                Uri uri = getUriFromFile(_photoFile);
-//                                mImageProfile.setImageURI(uri);
-//                            }
-//                        }
-                    }
-                    break;
-                case RC_VIDEO_FROM_GALLERY:
-                    if (data != null) {
-                        if (isValidVideo(getRealPathFromVideoURI(data.getData()))) {
-                            mVideoUri = data.getData();
-                            _videoFile = new File(getRealPathFromVideoURI(mVideoUri));
-//                            if (mImageProfile != null)
-//                                mImageProfile.setImageBitmap(getVideoThumbnail(getRealPathFromVideoURI(data.getData())));
-                        } else {
-                            Toast.makeText(this, R.string.video_length_error, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    break;
-                case RC_VIDEO_CAMERA:
-                    if (_videoFile != null && _videoFile.exists() /*&& mImageProfile != null*/) {
-//                        mImageProfile.setImageBitmap(getVideoThumbnail(_videoFile.getAbsolutePath()));
                     }
                     break;
             }

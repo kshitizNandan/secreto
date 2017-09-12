@@ -22,7 +22,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.share.Sharer;
 import com.secreto.R;
+import com.secreto.SocialSharing.SocialSharingClass;
 import com.secreto.adapters.MyFragmentPagerAdapter;
 import com.secreto.base_activities.BaseActivityWithActionBar;
 import com.secreto.common.Common;
@@ -35,6 +40,7 @@ import com.secreto.widgets.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +50,7 @@ import io.github.yavski.fabspeeddial.FabSpeedDial;
 
 public class HomeActivity extends BaseActivityWithActionBar {
     public static final int RC_SEND_MESSAGE = 200;
+    private CallbackManager callbackManager = CallbackManager.Factory.create();
     @BindView(R.id.iv_profileImg)
     ImageView iv_profileImg;
     @BindView(R.id.tabBar)
@@ -102,7 +109,33 @@ public class HomeActivity extends BaseActivityWithActionBar {
             public boolean onMenuItemSelected(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.action_share:
-                        Common.ShareProfile(HomeActivity.this);
+//                        Common.ShareProfile(HomeActivity.this);
+                        final String sharingMessage = String.format(Locale.ENGLISH, getString(R.string.hey_guys_please_share_your_views_about_me), SharedPreferenceManager.getUserObject().getUserName());
+                        new SocialSharingClass(HomeActivity.this, new SocialSharingClass.OnItemSelectedItemListener() {
+                            @Override
+                            public void selectedItem(String item) {
+                                if (item.equalsIgnoreCase(SocialSharingClass.FACEBOOK)) {
+                                    SocialSharingClass.ShareOnFacebook(HomeActivity.this, sharingMessage, callbackManager, new FacebookCallback<Sharer.Result>() {
+                                        @Override
+                                        public void onSuccess(Sharer.Result result) {
+                                            Toast.makeText(HomeActivity.this, "success", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        @Override
+                                        public void onCancel() {
+                                        }
+
+                                        @Override
+                                        public void onError(FacebookException error) {
+                                            Toast.makeText(HomeActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                } else if (item.equalsIgnoreCase(SocialSharingClass.TWITTER)) {
+                                    SocialSharingClass.ShareOnTwitter(HomeActivity.this, sharingMessage);
+                                } else if (item.equalsIgnoreCase(SocialSharingClass.LINKEDIN)) {
+                                }
+                            }
+                        });
                         break;
                     case R.id.action_sendMessage:
                         FindUserActivity.startActivity(HomeActivity.this);
@@ -212,6 +245,13 @@ public class HomeActivity extends BaseActivityWithActionBar {
                 }
             }
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Facebook Callback
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

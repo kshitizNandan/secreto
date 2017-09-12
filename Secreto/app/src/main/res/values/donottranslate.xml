@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="select_video_from_gallery">Select video from gallery</string>
-    <string name="select_video">Select video</string>
-    <string name="take_video">Take video</string>
-    <string name="video_length_error">Video length error</string>
+    <string name="facebook_id">246260575896144</string>
 </resources>

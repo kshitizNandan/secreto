@@ -13,6 +13,7 @@ import android.view.Display;
 import android.view.WindowManager;
 
 
+import com.facebook.FacebookSdk;
 import com.secreto.widgets.Typefaces;
 import com.secreto.image.ImageCacheManager;
 import com.secreto.image.RequestManager;
@@ -48,7 +49,7 @@ public class MyApplication extends Application {
         createImageCache();
         preloadTypefaces();
         printHashKey();
-
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
     }
 
     private void preloadTypefaces() {
@@ -67,9 +68,7 @@ public class MyApplication extends Application {
                 Logger.d(TAG, "TEMPHASH KEY:" +
                         Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
     }
