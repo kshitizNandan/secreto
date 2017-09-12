@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_share"
+        android:icon="@drawable/share"
+        android:title="@string/share_profile" />
+    <item
+        android:id="@+id/action_sendMessage"
+        android:icon="@drawable/message"
+        android:title="@string/leave_a_message" />
+</menu>

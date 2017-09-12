@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -14,15 +14,14 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.clans.fab.FloatingActionMenu;
 import com.secreto.R;
 import com.secreto.adapters.MyFragmentPagerAdapter;
 import com.secreto.base_activities.BaseActivityWithActionBar;
@@ -30,10 +29,8 @@ import com.secreto.common.Common;
 import com.secreto.common.Constants;
 import com.secreto.common.SharedPreferenceManager;
 import com.secreto.fragments.SentReceivedMessagesFragment;
-import com.secreto.image.ImageCacheManager;
 import com.secreto.model.User;
 import com.secreto.utils.LoginLogoutHandler;
-import com.secreto.utils.NetworkImageView;
 import com.secreto.widgets.CircleTransform;
 import com.squareup.picasso.Picasso;
 
@@ -43,24 +40,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import io.github.yavski.fabspeeddial.FabSpeedDial;
 
 public class HomeActivity extends BaseActivityWithActionBar {
-
     public static final int RC_SEND_MESSAGE = 200;
-
-    @BindView(R.id.llViewPager)
-    LinearLayout llViewPager;
     @BindView(R.id.iv_profileImg)
     ImageView iv_profileImg;
     @BindView(R.id.tabBar)
     TabLayout tabBar;
     @BindView(R.id.viewPager)
     ViewPager viewPager;
-    @BindView(R.id.composeMessageButton)
-    com.github.clans.fab.FloatingActionButton composeMessageButton;
-    @BindView(R.id.menu_labels_right)
-    com.github.clans.fab.FloatingActionMenu menu_labels_right;
-
+    @BindView(R.id.floatButton)
+    FabSpeedDial composeMessageButton;
+    @BindView(R.id.overlayView)
+    View overlayView;
     ArrayList<Fragment> fragmentArrayList = new ArrayList<>();
     private boolean exitFlag = true;
 
@@ -97,25 +90,36 @@ public class HomeActivity extends BaseActivityWithActionBar {
         fragmentArrayList.add(SentReceivedMessagesFragment.newInstance(Constants.SENT));
         viewPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentArrayList, titles));
         tabBar.setupWithViewPager(viewPager);
-        menu_labels_right.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
+        // Float button Listener
+        composeMessageButton.setMenuListener(new FabSpeedDial.MenuListener() {
             @Override
-            public void onMenuToggle(boolean opened) {
-                if (opened) {
-                    llViewPager.setFocusableInTouchMode(false);
-                } else {
-                    llViewPager.setFocusableInTouchMode(true);
-                }
+            public boolean onPrepareMenu(NavigationMenu navigationMenu) {
+                overlayView.setVisibility(View.VISIBLE);
+                return true;
             }
-        });
-        composeMessageButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View view) {
-                FindUserActivity.startActivity(HomeActivity.this);
-                overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
+            public boolean onMenuItemSelected(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.action_share:
+                        Common.ShareProfile(HomeActivity.this);
+                        break;
+                    case R.id.action_sendMessage:
+                        FindUserActivity.startActivity(HomeActivity.this);
+                        overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
+                        break;
+                }
+                overlayView.setVisibility(View.GONE);
+                return true;
+            }
+
+            @Override
+            public void onMenuClosed() {
+                overlayView.setVisibility(View.GONE);
             }
         });
     }
- 
+
 
     @Override
     public int getLayoutResource() {
@@ -139,11 +143,6 @@ public class HomeActivity extends BaseActivityWithActionBar {
         overridePendingTransition(R.anim.in_from_bottom, R.anim.no_animation);
     }
 
-
-    @OnClick(R.id.llViewPager)
-    void closeFloatToggle() {
-        menu_labels_right.close(true);
-    }
 
     @OnLongClick(R.id.iv_profileImg)
     boolean showLogoutDialog() {
