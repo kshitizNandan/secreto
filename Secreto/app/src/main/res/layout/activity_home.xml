@@ -27,6 +27,12 @@
         android:background="@color/transparent_white"
         android:visibility="gone" />
 
+    <ImageView
+        android:id="@+id/test"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <io.github.yavski.fabspeeddial.FabSpeedDial
         android:id="@+id/floatButton"
         android:layout_width="wrap_content"

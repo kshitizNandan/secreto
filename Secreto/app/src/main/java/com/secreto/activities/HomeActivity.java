@@ -5,6 +5,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.TabLayout;
@@ -13,6 +21,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,6 +70,8 @@ public class HomeActivity extends BaseActivityWithActionBar {
     FabSpeedDial composeMessageButton;
     @BindView(R.id.overlayView)
     View overlayView;
+    @BindView(R.id.test)
+    ImageView imageView;
     ArrayList<Fragment> fragmentArrayList = new ArrayList<>();
     private boolean exitFlag = true;
 
@@ -109,7 +120,9 @@ public class HomeActivity extends BaseActivityWithActionBar {
             public boolean onMenuItemSelected(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.action_share:
-                        Common.shareImage(HomeActivity.this);
+                        imageView.setImageBitmap(drawTextToBitmap(HomeActivity.this, R.drawable.logo, "this is test on image"));
+
+//                        Common.shareImage(HomeActivity.this);
 //                        final String sharingMessage = String.format(Locale.ENGLISH, getString(R.string.hey_guys_please_share_your_views_about_me), SharedPreferenceManager.getUserObject().getUserName());
 //                        new SocialSharingClass(HomeActivity.this, new SocialSharingClass.OnItemSelectedItemListener() {
 //                            @Override
@@ -153,6 +166,48 @@ public class HomeActivity extends BaseActivityWithActionBar {
         });
     }
 
+    public Bitmap drawTextToBitmap(Context mContext, int resourceId, String mText) {
+        try {
+            Resources resources = mContext.getResources();
+            float scale = resources.getDisplayMetrics().density;
+            Bitmap bitmap = BitmapFactory.decodeResource(resources, resourceId);
+
+            android.graphics.Bitmap.Config bitmapConfig = bitmap.getConfig();
+            // set default bitmap config if none
+            if (bitmapConfig == null) {
+                bitmapConfig = android.graphics.Bitmap.Config.ARGB_8888;
+            }
+            // resource bitmaps are imutable,
+            // so we need to convert it to mutable one
+            bitmap = bitmap.copy(bitmapConfig, true);
+
+            Canvas canvas = new Canvas(bitmap);
+            // new antialised Paint
+            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            // text color - #3D3D3D
+            paint.setColor(Color.rgb(110, 110, 110));
+            // text size in pixels
+            paint.setTextSize((int) (12 * scale));
+            // text shadow
+            paint.setShadowLayer(1f, 0f, 1f, Color.DKGRAY);
+
+            // draw text to the Canvas center
+            Rect bounds = new Rect();
+            paint.getTextBounds(mText, 0, mText.length(), bounds);
+            int x = (bitmap.getWidth() - bounds.width()) / 6;
+            int y = (bitmap.getHeight() + bounds.height()) / 5;
+
+            canvas.drawText(mText, x * scale, y * scale, paint);
+
+            return bitmap;
+        } catch (Exception e) {
+            // TODO: handle exception
+
+
+            return null;
+        }
+
+    }
 
     @Override
     public int getLayoutResource() {
