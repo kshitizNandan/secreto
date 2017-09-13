@@ -107,7 +107,7 @@ public class SettingsActivity extends BaseActivityWithActionBar {
                         overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
                         break;
                     case R.id.nav_shareProfile:
-                        Common.ShareProfile(SettingsActivity.this);
+                        Common.shareProfile(SettingsActivity.this);
                         break;
                 }
                 return false;

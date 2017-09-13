@@ -155,7 +155,7 @@ public class Common {
 
     }
 
-    public static void ShareProfile(Context context) {
+    public static void shareProfile(Context context) {
         Intent sendIntent = new Intent(android.content.Intent.ACTION_SEND);
         sendIntent.setType("text/plain");
         sendIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
@@ -173,12 +173,9 @@ public class Common {
         // Make sure you put example png image named myImage.png in your
         // directory
         String imagePath = Environment.getExternalStorageDirectory() + "/myImage.png";
-
         File imageFileToShare = new File(imagePath);
-
         Uri uri = Uri.parse(SharedPreferenceManager.getUserObject().getProfile_pic());
         share.putExtra(Intent.EXTRA_TEXT, uri);
-
         context.startActivity(Intent.createChooser(share, "Share Image!"));
     }
 }

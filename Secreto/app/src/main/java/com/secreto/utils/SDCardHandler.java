@@ -7,6 +7,5 @@ import android.os.Environment;
  */
 
 public class SDCardHandler {
-    public static final String IMAGE_STORAGE_PATH = Environment.getExternalStorageDirectory() + "/my_caremate/Media/Images/";
-    public static final String VIDEO_STORAGE_PATH = Environment.getExternalStorageDirectory() + "/my_caremate/Media/Videos/";
+    public static final String IMAGE_STORAGE_PATH = Environment.getExternalStorageDirectory() + "/secreto/Media/Images/";
 }
