@@ -283,7 +283,8 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
 
     @Override
     public boolean onLongClick(View v) {
-        //showOptionsDialog();
+        ExpandMessageDialogFragment expandMessageDialogFragment = new ExpandMessageDialogFragment();
+        expandMessageDialogFragment.show(getActivity().getSupportFragmentManager(), "");
         return true;
     }
 }
