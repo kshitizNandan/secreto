@@ -37,6 +37,8 @@ public class DataManager {
     private static final String URL_GET_ALL_USERS = BASE_SERVER_ADDRESS + "getAllUsers";
     private static final String URL_CHANGE_PASS = BASE_SERVER_ADDRESS + "changePassword";
     private static final String URL_LOGOUT = BASE_SERVER_ADDRESS + "logout";
+    private static final String URL_DELETE_MESSAGE = BASE_SERVER_ADDRESS + "deleteMessage";
+    private static final String URL_DELETE_ACCOUNT = BASE_SERVER_ADDRESS + "deleteAccount";
 
 
     private static DataManager singleton;
@@ -156,11 +158,29 @@ public class DataManager {
         makeRequest(Request.Method.POST, URL_CHANGE_PASS, params, UserResponse.class, resultListenerNG);
     }
 
+
     public void logoutApiCall(ResultListenerNG<BaseResponse> resultListenerNG) {
         String userId = SharedPreferenceManager.getUserObject().getUserId();
         HashMap<Object, Object> params = new HashMap<>();
         params.put(ApiConstants.DEVICE_TOKEN, SharedPreferenceManager.getFcmToken());
         params.put(ApiConstants.USER_ID, userId);
         makeRequest(Request.Method.POST, URL_LOGOUT, params, BaseResponse.class, resultListenerNG);
+    }
+
+    public void deleteMessageApiCall(String messageId, String type, ResultListenerNG<BaseResponse> resultListenerNG) {
+        String userId = SharedPreferenceManager.getUserObject().getUserId();
+        HashMap<Object, Object> params = new HashMap<>();
+        params.put(ApiConstants.MESSAGE_ID, messageId);
+        params.put(ApiConstants.USER_ID, userId);
+        params.put(ApiConstants.TYPE, type);
+        makeRequest(Request.Method.POST, URL_DELETE_MESSAGE, params, BaseResponse.class, resultListenerNG);
+    }
+
+    public void deleteAccountApiCall(String feedback, ResultListenerNG<BaseResponse> resultListenerNG) {
+        String userId = SharedPreferenceManager.getUserObject().getUserId();
+        HashMap<Object, Object> params = new HashMap<>();
+        params.put(ApiConstants.FEEDBACK, feedback);
+        params.put(ApiConstants.USER_ID, userId);
+        makeRequest(Request.Method.POST, URL_DELETE_ACCOUNT, params, BaseResponse.class, resultListenerNG);
     }
 }
