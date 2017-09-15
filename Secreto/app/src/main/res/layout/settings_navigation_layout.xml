@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llSettingsMenu"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/dimen_size_10">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.secreto.widgets.CustomFontTextView
+            style="@style/TextViewStyle.settingsMenu"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/notifications" />
+
+        <ToggleButton
+            android:id="@+id/toggleButton"
+            style="@style/toggleButton"
+            android:layout_width="wrap_content" />
+    </LinearLayout>
+
+    <com.secreto.widgets.CustomFontTextView
+        android:id="@+id/tvEditProfile"
+        style="@style/TextViewStyle.settingsMenu"
+        android:text="@string/edit_profile" />
+
+    <com.secreto.widgets.CustomFontTextView
+        android:id="@+id/tvShare"
+        style="@style/TextViewStyle.settingsMenu"
+        android:layout_marginTop="@dimen/dimen_size_5"
+        android:text="@string/share_profile" />
+
+    <com.secreto.widgets.CustomFontTextView
+        style="@style/TextViewStyle.settingsMenu"
+        android:layout_marginTop="@dimen/dimen_size_5"
+        android:text="@string/account_settings" />
+
+    <View
+        style="@style/SeparatorStyle"
+        android:layout_marginTop="@dimen/dimen_size_10" />
+
+    <com.secreto.widgets.CustomFontTextView
+        style="@style/TextViewStyle.settingsMenu"
+        android:layout_marginTop="@dimen/dimen_size_10"
+        android:text="@string/about_us" />
+
+    <com.secreto.widgets.CustomFontTextView
+        style="@style/TextViewStyle.settingsMenu"
+        android:layout_marginTop="@dimen/dimen_size_5"
+        android:text="@string/terms_policy" />
+
+    <com.secreto.widgets.CustomFontTextView
+        style="@style/TextViewStyle.settingsMenu"
+        android:layout_marginTop="@dimen/dimen_size_5"
+        android:text="@string/help_feedback" />
+
+    <com.secreto.widgets.CustomFontTextView
+        android:id="@+id/tvLogout"
+        style="@style/TextViewStyle.settingsMenu"
+        android:layout_marginTop="@dimen/dimen_size_5"
+        android:text="@string/logout" />
+</LinearLayout>

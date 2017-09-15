@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/llHeaderView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -27,7 +28,7 @@
 
             <com.secreto.widgets.CustomFontTextView
                 android:id="@+id/tv_name"
-                style="@style/DefaultTextViewStyle"
+                style="@style/TextViewStyle.black.large"
                 android:layout_marginTop="@dimen/dimen_size_10"
                 android:gravity="left"
                 android:text="name"
@@ -37,7 +38,7 @@
 
             <com.secreto.widgets.CustomFontTextView
                 android:id="@+id/tv_status"
-                style="@style/DefaultTextViewStyle"
+                style="@style/TextViewStyle"
                 android:layout_marginTop="@dimen/dimen_size_5"
                 android:gravity="left"
                 android:text="status"
@@ -49,7 +50,5 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_size_1"
-        android:layout_alignParentBottom="true"
         android:background="@color/gray" />
-
-</RelativeLayout>
+</LinearLayout>

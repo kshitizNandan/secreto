@@ -49,7 +49,7 @@
 
             <com.secreto.widgets.CustomFontTextView
                 android:id="@+id/tv_status"
-                style="@style/DefaultTextViewStyle"
+                style="@style/TextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_size_10"
@@ -146,7 +146,7 @@
 
             <com.secreto.widgets.CustomFontTextView
                 android:id="@+id/tvChangePass"
-                style="@style/DefaultTextViewStyle"
+                style="@style/TextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"

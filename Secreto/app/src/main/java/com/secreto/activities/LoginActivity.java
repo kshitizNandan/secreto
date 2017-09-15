@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -87,7 +88,7 @@ public class LoginActivity extends BaseActivityWithActionBar {
                         progressDialog.dismiss();
                         if (response.getUser() != null) {
                             goToHomeScreen(response.getUser());
-                        }else{
+                        } else {
                             Toast.makeText(LoginActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }

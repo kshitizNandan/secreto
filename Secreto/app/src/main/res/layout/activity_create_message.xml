@@ -25,6 +25,18 @@
             android:paddingLeft="@dimen/dimen_size_44"
             android:paddingRight="@dimen/dimen_size_44">
 
+            <com.secreto.widgets.CustomFontTextView
+                android:id="@+id/tvAppName"
+                style="@style/TextViewStyle"
+                android:layout_width="match_parent"
+                android:padding="@dimen/dimen_size_10"
+                android:text="@string/app_name"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_40"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:fontStyle="StylishfontRegular" />
+
             <com.secreto.utils.NetworkImageView
                 android:id="@+id/iv_profileImg"
                 android:layout_width="@dimen/dimen_size_80"
@@ -36,7 +48,7 @@
 
             <com.secreto.widgets.CustomFontTextView
                 android:id="@+id/tvUserName"
-                style="@style/DefaultTextViewStyle"
+                style="@style/TextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/dimen_size_10"
                 android:text="userName" />
@@ -67,7 +79,7 @@
 
             <com.secreto.widgets.CustomFontCheckBox
                 android:id="@+id/allowCheckBox"
-                style="@style/DefaultTextViewStyle"
+                style="@style/TextViewStyle"
                 android:text="@string/allow_to_get_reply" />
 
             <com.secreto.widgets.CustomFontButton

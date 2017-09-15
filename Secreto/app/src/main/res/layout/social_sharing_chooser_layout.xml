@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <com.secreto.widgets.CustomFontTextView
-        style="@style/DefaultTextViewStyle"
+        style="@style/TextViewStyle"
         android:layout_width="match_parent"
         android:gravity="center_horizontal"
         android:padding="@dimen/dimen_size_10"
@@ -20,7 +20,7 @@
 
     <com.secreto.widgets.CustomFontTextView
         android:id="@+id/tv_facebook"
-        style="@style/DefaultTextViewStyle"
+        style="@style/TextViewStyle"
         android:layout_height="wrap_content"
         android:padding="@dimen/dimen_size_7"
         android:text="facebook" />
@@ -32,7 +32,7 @@
 
     <com.secreto.widgets.CustomFontTextView
         android:id="@+id/tv_twitter"
-        style="@style/DefaultTextViewStyle"
+        style="@style/TextViewStyle"
         android:layout_height="wrap_content"
         android:padding="@dimen/dimen_size_7"
         android:text="twitter"
@@ -45,7 +45,7 @@
 
     <com.secreto.widgets.CustomFontTextView
         android:id="@+id/tv_linkedin"
-        style="@style/DefaultTextViewStyle"
+        style="@style/TextViewStyle"
         android:padding="@dimen/dimen_size_7"
         android:text="linkedin"
         android:textSize="@dimen/text_size_18" />

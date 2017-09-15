@@ -159,7 +159,14 @@ public class Common {
             });
         }
         builder.show();
+    }
 
+    public static void showAlertDialog(Context context, String message, final DialogInterface.OnClickListener okListener, final DialogInterface.OnClickListener cancelListener) {
+        new AlertDialog.Builder(context)
+                .setTitle(context.getString(R.string.app_name))
+                .setMessage(message)
+                .setPositiveButton(context.getString(R.string.ok), okListener)
+                .setNegativeButton(context.getString(R.string.cancel), cancelListener).show();
     }
 
     public static void shareProfile(Context context) {

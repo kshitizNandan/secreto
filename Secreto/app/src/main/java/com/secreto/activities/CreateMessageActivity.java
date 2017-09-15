@@ -42,6 +42,8 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
     CheckBox allowCheckBox;
     @BindView(R.id.etClue)
     EditText etClue;
+    @BindView(R.id.tvAppName)
+    TextView tvAppName;
     private CustomProgressDialog progressDialog;
     private String userId;
     private Activity mActivity;
@@ -84,6 +86,7 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
             iv_profileImg.setVisibility(View.GONE);
             etClue.setVisibility(View.GONE);
             tvUserName.setVisibility(View.GONE);
+            tvAppName.setVisibility(View.VISIBLE);
             allowCheckBox.setText(String.format(getString(R.string.allow_to_get_reply), getString(R.string.sender)));
         }
     }

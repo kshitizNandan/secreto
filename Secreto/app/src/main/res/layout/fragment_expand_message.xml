@@ -30,7 +30,7 @@
 
                 <com.secreto.widgets.CustomFontTextView
                     android:id="@+id/tv_message"
-                    style="@style/DefaultTextViewStyle"
+                    style="@style/TextViewStyle"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:gravity="start"
@@ -55,7 +55,7 @@
 
                 <com.secreto.widgets.CustomFontTextView
                     android:id="@+id/tvClue"
-                    style="@style/DefaultTextViewStyle"
+                    style="@style/TextViewStyle"
                     android:gravity="left"
                     android:maxLines="@null"
                     android:padding="@dimen/dimen_size_5"
@@ -65,7 +65,7 @@
 
                 <com.secreto.widgets.CustomFontTextView
                     android:id="@+id/tv_time"
-                    style="@style/DefaultTextViewStyle"
+                    style="@style/TextViewStyle"
                     android:layout_marginLeft="@dimen/dimen_size_10"
                     android:layout_weight="1"
                     android:gravity="right"

@@ -129,4 +129,6 @@
     <string name="hey_guys_please_share_your_views_about_me">Hey Guys please share your views about me .. %s</string>
     <string name="compose_message">Compose Message</string>
     <string name="by">By :</string>
+    <string name="account_settings">Account Settings</string>
+    <string name="off_notification_message">Are you sure you want to turn off the notifictaions?</string>
 </resources>
