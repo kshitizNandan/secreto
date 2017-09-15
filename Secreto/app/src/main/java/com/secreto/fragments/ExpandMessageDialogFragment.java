@@ -8,9 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.secreto.R;
@@ -20,12 +18,9 @@ import com.secreto.common.Constants;
 import com.secreto.common.MyApplication;
 import com.secreto.model.Message;
 import com.secreto.model.MessageAndUserResponse;
-import com.secreto.model.User;
 import com.secreto.utils.DateFormatter;
 
 import java.util.Locale;
-
-import butterknife.BindView;
 
 import static com.secreto.activities.HomeActivity.RC_SEND_MESSAGE;
 
@@ -34,9 +29,10 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
     private TextView tv_message;
     private TextView tv_time;
     private TextView tv_clue;
-    private ImageView img_reply;
+    private ImageButton ivReply;
     private ProgressDialog progressDialog;
     private MessageAndUserResponse response;
+    private View viewReply;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -47,8 +43,9 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         Point point = MyApplication.getScreenSize();
         final int width = point.x;
+        final int height = point.y / 2;
         dialog.setContentView(R.layout.fragment_expand_message);
-        dialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(width, height);
         dialog.show();
         initViews(dialog);
         if (response != null) {
@@ -60,7 +57,7 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
 
     private void setListeners() {
         tv_clue.setOnClickListener(this);
-        img_reply.setOnClickListener(this);
+        ivReply.setOnClickListener(this);
     }
 
     private void initViews(Dialog dialog) {
@@ -70,17 +67,19 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
         tv_message = (TextView) dialog.findViewById(R.id.tv_message);
         tv_time = (TextView) dialog.findViewById(R.id.tv_time);
         tv_clue = (TextView) dialog.findViewById(R.id.tvClue);
-        img_reply = (ImageView) dialog.findViewById(R.id.imgReply);
+        ivReply = (ImageButton) dialog.findViewById(R.id.imgReply);
+        viewReply = dialog.findViewById(R.id.viewReply);
     }
 
     private void setViews() {
         Message message = response.getMessage();
         tv_message.setText(message.getMessage());
         tv_time.setText(DateFormatter.getTimeString(message.getCreatedDate()));
-        img_reply.setTag(response.getUser());
+        ivReply.setTag(response.getUser());
         tv_clue.setTag(response.getUser());
         if (response.getMessageType().equalsIgnoreCase(Constants.SENT)) {
-            img_reply.setVisibility(View.GONE);
+            ivReply.setVisibility(View.GONE);
+            viewReply.setVisibility(View.GONE);
             if (response.getUser() != null && !TextUtils.isEmpty(response.getUser().getName()))
                 tv_clue.setText(String.format(Locale.ENGLISH, getString(R.string.to_x), response.getUser().getName()));
         } else {
@@ -91,9 +90,11 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
                 tv_clue.setVisibility(View.GONE);
             }
             if (message.getCanReply().equalsIgnoreCase("YES")) {
-                img_reply.setVisibility(View.VISIBLE);
+                ivReply.setVisibility(View.VISIBLE);
+                viewReply.setVisibility(View.VISIBLE);
             } else {
-                img_reply.setVisibility(View.GONE);
+                ivReply.setVisibility(View.GONE);
+                viewReply.setVisibility(View.GONE);
             }
         }
     }
