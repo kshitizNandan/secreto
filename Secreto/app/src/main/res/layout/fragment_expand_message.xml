@@ -13,7 +13,7 @@
 
         <com.secreto.widgets.CustomFontTextView
             android:id="@+id/tvClue"
-            style="@style/DefaultTextViewStyle"
+            style="@style/TextViewStyle"
             android:gravity="left"
             android:maxLines="@null"
             android:padding="@dimen/dimen_size_5"
@@ -23,7 +23,7 @@
 
         <com.secreto.widgets.CustomFontTextView
             android:id="@+id/tv_time"
-            style="@style/DefaultTextViewStyle"
+            style="@style/TextViewStyle"
             android:layout_marginLeft="@dimen/dimen_size_10"
             android:layout_weight="1"
             android:gravity="right"
@@ -33,10 +33,8 @@
 
     <View
         android:id="@+id/viewLlClueAndTime"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_size_1"
-        android:layout_below="@+id/llClueAndTime"
-        android:background="@color/gray" />
+        style="@style/SeparatorStyle"
+        android:layout_below="@+id/llClueAndTime" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,7 +49,7 @@
 
             <com.secreto.widgets.CustomFontTextView
                 android:id="@+id/tv_message"
-                style="@style/DefaultTextViewStyle"
+                style="@style/TextViewStyle"
                 android:layout_width="match_parent"
                 android:clickable="true"
                 android:ellipsize="end"
@@ -71,11 +69,7 @@
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
 
-        <View
-            android:id="@+id/viewLlTextViewMessage"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_size_1"
-            android:background="@color/gray" />
+        <View style="@style/SeparatorStyle" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -115,9 +109,6 @@
                 android:background="@drawable/reply_icon" />
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_size_1"
-            android:background="@color/gray" />
+        <View style="@style/SeparatorStyle" />
     </LinearLayout>
 </RelativeLayout>
