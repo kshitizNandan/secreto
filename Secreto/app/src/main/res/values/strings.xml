@@ -125,8 +125,14 @@
     <string name="please_share_your_profile_to_send_or_receive_messages">Please share your profile to send or receive messages</string>
     <string name="x_profile">%s\'s Profile</string>
     <string name="to_x">To : %s</string>
-    <string name="share_profile">Share Profile</string>
+    <string name="share_profile">Share profile</string>
     <string name="hey_guys_please_share_your_views_about_me">Hey Guys please share your views about me .. %s</string>
     <string name="compose_message">Compose Message</string>
     <string name="by">By :</string>
+    <string name="account_settings">Account Settings</string>
+    <string name="off_notification_message">Are you sure you want to turn off the notifictaions?</string>
+    <string name="delete_your_account">Delete your account</string>
+    <string name="delet_account_confrim_message">Are you sure you want to delete your account?</string>
+    <string name="please_provide_your_valuable_feedback">Please provide your valuable feedback</string>
+    <string name="edit_your_profile">Edit your profile</string>
 </resources>

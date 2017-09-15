@@ -5,14 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.TabLayout;
@@ -21,22 +13,16 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.share.Sharer;
 import com.secreto.R;
-import com.secreto.SocialSharing.SocialSharingClass;
 import com.secreto.adapters.MyFragmentPagerAdapter;
 import com.secreto.base_activities.BaseActivityWithActionBar;
 import com.secreto.common.Common;
@@ -49,7 +35,6 @@ import com.secreto.widgets.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -192,7 +177,7 @@ public class HomeActivity extends BaseActivityWithActionBar {
                         dialog.dismiss();
                         break;
                     case R.id.tv_logout:
-                        LoginLogoutHandler.logoutUser(HomeActivity.this);
+                        LoginLogoutHandler.logoutUserWithConfirm(HomeActivity.this);
                         break;
                 }
             }

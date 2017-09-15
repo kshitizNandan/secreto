@@ -19,6 +19,7 @@ import com.secreto.R;
 import com.secreto.activities.HomeActivity;
 import com.secreto.common.Constants;
 import com.secreto.common.MyApplication;
+import com.secreto.common.SharedPreferenceManager;
 
 import org.json.JSONObject;
 
@@ -47,9 +48,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.v(TAG, "classNameTag-->" + classNameTag);
             if (className.equalsIgnoreCase(classNameTag)) {
                 sendBroadcastMessage();
+            } else {
+                if (SharedPreferenceManager.getNotificationService()) // weather user turned off the notifications of not
+                    showNotification(notification);
             }
+        } else {
+            if (SharedPreferenceManager.getNotificationService()) // weather user turned off the notifications of not
+                showNotification(notification);
         }
-        showNotification(notification);
+        sendBroadcastMessage();
     }
 
 

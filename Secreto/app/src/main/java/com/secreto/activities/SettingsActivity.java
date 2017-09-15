@@ -1,64 +1,82 @@
 package com.secreto.activities;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
-import com.google.gson.Gson;
+import com.android.volley.VolleyError;
 import com.secreto.R;
 import com.secreto.base_activities.BaseActivityWithActionBar;
-import com.secreto.base_activities.ImagePickerActivity;
 import com.secreto.common.Common;
-import com.secreto.common.Constants;
-import com.secreto.common.MyApplication;
 import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.DataManager;
-import com.secreto.image.ImageCacheManager;
+import com.secreto.data.volley.ResultListenerNG;
 import com.secreto.mediatorClasses.TextWatcherMediator;
 import com.secreto.model.User;
+import com.secreto.responsemodel.BaseResponse;
+import com.secreto.utils.Logger;
 import com.secreto.utils.LoginLogoutHandler;
-import com.secreto.utils.NetworkImageView;
 import com.secreto.widgets.CircleTransform;
 import com.squareup.picasso.Picasso;
-
-import org.apache.http.entity.mime.MultipartEntity;
-
-import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class SettingsActivity extends BaseActivityWithActionBar {
-    @BindView(R.id.navigation_view)
-    NavigationView navigation_view;
-    private View headerView;
+    private static final String TAG = SettingsActivity.class.getSimpleName();
+    @BindView(R.id.llHeaderView)
+    LinearLayout llHeaderView;
+    @BindView(R.id.toggleButton)
+    ToggleButton toggleButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        loadNavHeader();
-        handleNavigationItemClick();
+        initViews();
     }
 
+    private void initViews() {
+        toggleButton.setChecked(SharedPreferenceManager.getNotificationService());
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked) {
+                    Common.showAlertDialog(SettingsActivity.this, getString(R.string.off_notification_message), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            SharedPreferenceManager.setNotificationService(false);
+                            dialog.dismiss();
+                        }
+                    }, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            SharedPreferenceManager.setNotificationService(true);
+                            toggleButton.setChecked(true);
+                        }
+                    });
+                } else {
+                    SharedPreferenceManager.setNotificationService(true);
+                }
+            }
+        });
+    }
 
     @Override
     protected void onResume() {
@@ -66,13 +84,12 @@ public class SettingsActivity extends BaseActivityWithActionBar {
         resetUserData();
     }
 
-
     private void resetUserData() {
         User user = SharedPreferenceManager.getUserObject();
         if (user != null) {
-            ((TextView) headerView.findViewById(R.id.tv_name)).setText(user.getName());
-            ((TextView) headerView.findViewById(R.id.tv_status)).setText(user.getCaption());
-            ImageView iv_profileImg = (ImageView) headerView.findViewById(R.id.iv_profileImg);
+            ((TextView) llHeaderView.findViewById(R.id.tv_name)).setText(user.getName());
+            ((TextView) llHeaderView.findViewById(R.id.tv_status)).setText(user.getCaption());
+            ImageView iv_profileImg = (ImageView) llHeaderView.findViewById(R.id.iv_profileImg);
             if (!TextUtils.isEmpty(user.getProfile_pic())) {
                 int size = Common.dipToPixel(this, 80);
                 Picasso.with(this).load(user.getProfile_pic()).transform(new CircleTransform()).resize(size, size).placeholder(R.drawable.default_user).into(iv_profileImg);
@@ -82,39 +99,104 @@ public class SettingsActivity extends BaseActivityWithActionBar {
         }
     }
 
-    private void loadNavHeader() {
-        headerView = navigation_view.getHeaderView(0);
-        headerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ProfileActivity.startActivity(SettingsActivity.this, SharedPreferenceManager.getUserObject());
-                overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
-            }
-        });
+    @OnClick(R.id.llHeaderView)
+    void headerClick() {
+        ProfileActivity.startActivity(SettingsActivity.this, SharedPreferenceManager.getUserObject());
+        overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
+    }
+
+    @OnClick(R.id.tvEditProfile)
+    void editProfile() {
+        EditProfileActivity.startActivity(this);
+        overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
+    }
+
+    @OnClick(R.id.tvShare)
+    void shareProfile() {
+        Common.shareProfile(this);
     }
 
 
-    private void handleNavigationItemClick() {
-        navigation_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.nav_logout:
-                        LoginLogoutHandler.logoutUser(SettingsActivity.this);
-                        break;
-                    case R.id.nav_ediProfile:
-                        EditProfileActivity.startActivity(SettingsActivity.this);
-                        overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
-                        break;
-                    case R.id.nav_shareProfile:
-                        Common.shareProfile(SettingsActivity.this);
-                        break;
+    @OnClick(R.id.tvLogout)
+    void logout() {
+        LoginLogoutHandler.logoutUserWithConfirm(this);
+    }
+
+    @OnClick(R.id.tvFeedback)
+    void sendFeedback() {
+        showFeedbackDialog();
+    }
+
+    private void showFeedbackDialog() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View contentView = inflater.inflate(R.layout.feedback_dialog, null);
+        final EditText etFeedback = (EditText) contentView.findViewById(R.id.etFeedback);
+        final TextInputLayout input_layout_feedback = (TextInputLayout) contentView.findViewById(R.id.input_layout_feedback);
+        final Dialog dialog = new Dialog(this, R.style.dialog_style);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(contentView);
+        if (dialog.getWindow() != null) {
+            dialog.setCancelable(false);
+            dialog.show();
+
+            View.OnClickListener onClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switch (v.getId()) {
+                        case R.id.btnOk:
+                            String feedback = etFeedback.getText().toString().trim();
+                            if (TextUtils.isEmpty(feedback)) {
+                                input_layout_feedback.setError(getString(R.string.please_provide_your_valuable_feedback));
+                            } else {
+                                feedbackApiCall(feedback, dialog);
+                            }
+                            break;
+                        case R.id.ivClose:
+                            dialog.dismiss();
+                            break;
+                    }
                 }
-                return false;
-            }
-        });
+            };
+
+            contentView.findViewById(R.id.btnOk).setOnClickListener(onClickListener);
+            contentView.findViewById(R.id.ivClose).setOnClickListener(onClickListener);
+            etFeedback.addTextChangedListener(new TextWatcherMediator(etFeedback) {
+                @Override
+                public void onTextChanged(CharSequence s, View view) {
+                    if (!TextUtils.isEmpty(s)) {
+                        input_layout_feedback.setError("");
+                    }
+                }
+            });
+        }
     }
 
+    private void feedbackApiCall(String feedback, final Dialog parentDialog) {
+        if (Common.isOnline(this)) {
+            DataManager.getInstance().feedbackApiCall(feedback, new ResultListenerNG<BaseResponse>() {
+                @Override
+                public void onSuccess(BaseResponse response) {
+                    parentDialog.dismiss();
+                    Toast.makeText(SettingsActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onError(VolleyError error) {
+                    progressDialog.dismiss();
+                    BaseResponse baseResponse = Common.getStatusMessage(error);
+                    if (baseResponse == null || TextUtils.isEmpty(baseResponse.getMessage())) {
+                        Logger.e(TAG, "Delete Account error : " + error.getMessage());
+                        Toast.makeText(SettingsActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Logger.e(TAG, "Delete Account error : " + baseResponse.getMessage());
+                        Toast.makeText(SettingsActivity.this, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(this, getString(R.string.check_your_internet_connection), Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     public int getLayoutResource() {

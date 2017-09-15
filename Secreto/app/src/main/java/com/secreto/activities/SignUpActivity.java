@@ -4,10 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,18 +25,15 @@ import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
 import com.secreto.mediatorClasses.TextWatcherMediator;
+import com.secreto.model.User;
+import com.secreto.responsemodel.BaseResponse;
+import com.secreto.responsemodel.MediaResponse;
+import com.secreto.responsemodel.UserResponse;
+import com.secreto.utils.Logger;
+import com.secreto.utils.LoginLogoutHandler;
 import com.secreto.widgets.CircleTransform;
 import com.secreto.widgets.SpannableTextView;
 import com.secreto.widgets.TermsAndPrivacyClickedListener;
-import com.secreto.image.ImageCacheManager;
-import com.secreto.responsemodel.BaseResponse;
-import com.secreto.model.User;
-import com.secreto.responsemodel.MediaResponse;
-import com.secreto.responsemodel.UserResponse;
-import com.secreto.utils.CustomProgressDialog;
-import com.secreto.utils.Logger;
-import com.secreto.utils.LoginLogoutHandler;
-import com.secreto.utils.NetworkImageView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -80,10 +76,8 @@ public class SignUpActivity extends ImagePickerActivity {
     TextInputLayout textInputLayoutconfirmPass;
     @BindView(R.id.input_layout_mobile_editText)
     TextInputLayout textInputLayoutMobile;
-    private CustomProgressDialog progressDialog;
     private AlertDialog registrationSuccessDialog;
     private File photoFile;
-    private SignUpActivity mActivity;
 
 
     @Override
@@ -110,8 +104,6 @@ public class SignUpActivity extends ImagePickerActivity {
     }
 
     private void init() {
-        progressDialog = new CustomProgressDialog(this);
-        mActivity = this;
         tvTermsOfUse.setTermsAndPrivacyClickedListener(new TermsAndPrivacyClickedListener() {
             @Override
             public void onClickTerms(View view) {
@@ -318,8 +310,8 @@ public class SignUpActivity extends ImagePickerActivity {
     protected void onImageSet(File photoFile) {
         if (photoFile != null && photoFile.exists()) {
             this.photoFile = photoFile;
-            int size = Common.dipToPixel(mActivity, 80);
-            Picasso.with(mActivity).load(photoFile).transform(new CircleTransform()).resize(size, size).into(iv_profileImg);
+            int size = Common.dipToPixel(this, 80);
+            Picasso.with(this).load(photoFile).transform(new CircleTransform()).resize(size, size).into(iv_profileImg);
         }
     }
 

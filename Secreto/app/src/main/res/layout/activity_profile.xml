@@ -30,7 +30,7 @@
 
             <com.secreto.widgets.CustomFontTextView
                 android:id="@+id/tv_status"
-                style="@style/DefaultTextViewStyle"
+                style="@style/TextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/dimen_size_10"
                 android:layout_weight="1"
@@ -47,7 +47,7 @@
                 android:weightSum="2">
 
                 <com.secreto.widgets.CustomFontTextView
-                    style="@style/DefaultTextViewStyle"
+                    style="@style/TextViewStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/dimen_size_10"
                     android:layout_weight="1"
@@ -58,7 +58,7 @@
 
                 <com.secreto.widgets.CustomFontTextView
                     android:id="@+id/tv_name"
-                    style="@style/DefaultTextViewStyle"
+                    style="@style/TextViewStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/dimen_size_10"
                     android:layout_weight="1"
@@ -76,7 +76,7 @@
                 android:weightSum="2">
 
                 <com.secreto.widgets.CustomFontTextView
-                    style="@style/DefaultTextViewStyle"
+                    style="@style/TextViewStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/dimen_size_10"
                     android:layout_weight="1"
@@ -87,7 +87,7 @@
 
                 <com.secreto.widgets.CustomFontTextView
                     android:id="@+id/tv_gender"
-                    style="@style/DefaultTextViewStyle"
+                    style="@style/TextViewStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/dimen_size_10"
                     android:layout_weight="1"
@@ -104,7 +104,7 @@
                 android:weightSum="2">
 
                 <com.secreto.widgets.CustomFontTextView
-                    style="@style/DefaultTextViewStyle"
+                    style="@style/TextViewStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/dimen_size_10"
                     android:layout_weight="1"
@@ -115,7 +115,7 @@
 
                 <com.secreto.widgets.CustomFontTextView
                     android:id="@+id/tv_contact"
-                    style="@style/DefaultTextViewStyle"
+                    style="@style/TextViewStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/dimen_size_10"
                     android:layout_weight="1"
@@ -132,7 +132,7 @@
                 android:weightSum="2">
 
                 <com.secreto.widgets.CustomFontTextView
-                    style="@style/DefaultTextViewStyle"
+                    style="@style/TextViewStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/dimen_size_10"
                     android:layout_weight="1"
@@ -143,7 +143,7 @@
 
                 <com.secreto.widgets.CustomFontTextView
                     android:id="@+id/tv_userName"
-                    style="@style/DefaultTextViewStyle"
+                    style="@style/TextViewStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/dimen_size_10"
                     android:layout_weight="1"
@@ -160,7 +160,7 @@
                 android:weightSum="2">
 
                 <com.secreto.widgets.CustomFontTextView
-                    style="@style/DefaultTextViewStyle"
+                    style="@style/TextViewStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/dimen_size_10"
                     android:layout_weight="1"
@@ -171,7 +171,7 @@
 
                 <com.secreto.widgets.CustomFontTextView
                     android:id="@+id/tv_emailId"
-                    style="@style/DefaultTextViewStyle"
+                    style="@style/TextViewStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/dimen_size_10"
                     android:layout_weight="1"

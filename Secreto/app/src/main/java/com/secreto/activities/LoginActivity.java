@@ -17,10 +17,9 @@ import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
 import com.secreto.mediatorClasses.TextWatcherMediator;
-import com.secreto.responsemodel.BaseResponse;
 import com.secreto.model.User;
+import com.secreto.responsemodel.BaseResponse;
 import com.secreto.responsemodel.UserResponse;
-import com.secreto.utils.CustomProgressDialog;
 import com.secreto.utils.Logger;
 import com.secreto.utils.LoginLogoutHandler;
 
@@ -40,7 +39,6 @@ public class LoginActivity extends BaseActivityWithActionBar {
     TextInputLayout textInputLayoutEmail;
     @BindView(R.id.input_layout_password_editText)
     TextInputLayout textInputLayoutPassword;
-    private CustomProgressDialog progressDialog;
 
     @Override
     public int getLayoutResource() {
@@ -57,7 +55,6 @@ public class LoginActivity extends BaseActivityWithActionBar {
 
 
     private void initView() {
-        progressDialog = new CustomProgressDialog(this);
         etEmail.setText(SharedPreferenceManager.getLoginCredentials(SharedPreferenceManager.EMAIL));
         etPassword.setText(SharedPreferenceManager.getLoginCredentials(SharedPreferenceManager.PASS));
         if (!TextUtils.isEmpty(etEmail.getText())) {
@@ -87,7 +84,7 @@ public class LoginActivity extends BaseActivityWithActionBar {
                         progressDialog.dismiss();
                         if (response.getUser() != null) {
                             goToHomeScreen(response.getUser());
-                        }else{
+                        } else {
                             Toast.makeText(LoginActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }

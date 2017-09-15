@@ -16,6 +16,7 @@ public class SharedPreferenceManager {
     private static final String USER_OBJECT = "user_object";
     private static final String USER_ID = "user_id";
     private static final String PUSH_NOTIFICATION_TOKEN = "PUSH_NOTIFICATION_TOKEN";
+    private static final String PUSH_NOTIFICATION_SERVICE = "PUSH_NOTIFICATION_SERVICE";
 
     static {
         sharedPreference = MyApplication.getInstance().getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
@@ -63,5 +64,13 @@ public class SharedPreferenceManager {
     public static void removeLoginCredentials() {
         sharedPreference.edit().remove(EMAIL).apply();
         sharedPreference.edit().remove(PASS).apply();
+    }
+
+    public static void setNotificationService(boolean b) {
+        sharedPreference.edit().putBoolean(PUSH_NOTIFICATION_SERVICE, b).apply();
+    }
+
+    public static boolean getNotificationService() {
+        return sharedPreference.getBoolean(PUSH_NOTIFICATION_SERVICE, false);
     }
 }

@@ -42,7 +42,7 @@
 
                 <com.secreto.widgets.CustomFontTextView
                     android:id="@+id/tv_name"
-                    style="@style/DefaultTextViewStyle"
+                    style="@style/TextViewStyle"
                     android:layout_width="match_parent"
                     android:gravity="left"
                     android:text="name"
@@ -52,7 +52,7 @@
 
                 <com.secreto.widgets.CustomFontTextView
                     android:id="@+id/tv_status"
-                    style="@style/DefaultTextViewStyle"
+                    style="@style/TextViewStyle"
                     android:layout_width="match_parent"
                     android:gravity="left"
                     android:text="status"

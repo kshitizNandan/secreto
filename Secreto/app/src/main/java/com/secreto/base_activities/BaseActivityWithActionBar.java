@@ -8,16 +8,23 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.secreto.R;
+import com.secreto.utils.CustomProgressDialog;
 
 public abstract class BaseActivityWithActionBar extends IBaseActivity {
 
     private TextView toolbarTitle;
+    protected CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResource());
         setToolbarWithBack();
+        initProgressDialog();
+    }
+
+    private void initProgressDialog() {
+        progressDialog = new CustomProgressDialog(this);
     }
 
     void setToolbarWithBack() {
@@ -75,5 +82,13 @@ public abstract class BaseActivityWithActionBar extends IBaseActivity {
     @Override
     public int setHomeButtonDrawable() {
         return R.drawable.back_arrow_w;
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        super.onDestroy();
     }
 }

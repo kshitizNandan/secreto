@@ -32,11 +32,11 @@
 
                 <com.secreto.widgets.CustomFontTextView
                     android:id="@+id/tvAppName"
-                    style="@style/DefaultTextViewStyle"
+                    style="@style/TextViewStyle"
                     android:layout_width="match_parent"
                     android:padding="@dimen/dimen_size_10"
                     android:text="@string/app_name"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/text_size_40"
                     android:textStyle="bold"
                     app:fontStyle="StylishfontRegular" />

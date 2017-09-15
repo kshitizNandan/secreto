@@ -10,9 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -20,13 +18,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.android.volley.VolleyError;
 import com.secreto.R;
 import com.secreto.activities.CreateMessageActivity;
-import com.secreto.activities.HomeActivity;
 import com.secreto.activities.ProfileActivity;
 import com.secreto.adapters.SentOrReceivedMessagesRecyclerAdapter;
 import com.secreto.common.Common;
@@ -47,7 +43,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnLongClick;
 
 import static com.secreto.activities.HomeActivity.RC_SEND_MESSAGE;
 
@@ -272,7 +267,7 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
                         dialog.dismiss();
                         break;
                     case R.id.tv_logout:
-                        LoginLogoutHandler.logoutUser(getActivity());
+                        LoginLogoutHandler.logoutUserWithConfirm(getActivity());
                         break;
                 }
             }

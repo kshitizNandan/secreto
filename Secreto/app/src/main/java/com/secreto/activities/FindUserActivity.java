@@ -1,7 +1,6 @@
 package com.secreto.activities;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -27,7 +26,6 @@ import com.secreto.R;
 import com.secreto.adapters.SearchUserAdapter;
 import com.secreto.base_activities.BaseActivityWithActionBar;
 import com.secreto.common.Common;
-import com.secreto.common.Constants;
 import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
@@ -36,7 +34,6 @@ import com.secreto.model.User;
 import com.secreto.responsemodel.AllUserResponse;
 import com.secreto.responsemodel.BaseResponse;
 import com.secreto.responsemodel.UserResponse;
-import com.secreto.utils.CustomProgressDialog;
 
 import java.util.ArrayList;
 
@@ -64,8 +61,6 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
 
     private SearchUserAdapter searchAdapter;
     private ArrayList<Object> items = new ArrayList<>();
-    private FindUserActivity mActivity;
-    private ProgressDialog progressDialog;
     private MenuItem menuItem;
     private int offset;
     private boolean isLoading;
@@ -106,9 +101,7 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
     }
 
     private void init() {
-        progressDialog = new CustomProgressDialog(this);
-        mActivity = this;
-        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerViewSearch.setLayoutManager(linearLayoutManager);
         searchAdapter = new SearchUserAdapter(items, this);
         recyclerViewSearch.setAdapter(searchAdapter);
@@ -155,14 +148,14 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
         } else if (userName.equals(SharedPreferenceManager.getUserObject().getUserName()) || userName.equals(SharedPreferenceManager.getUserObject().getEmail())) {
             textInputLayoutEmail.setError(getString(R.string.you_can_not_send_message_to_yourself));
         } else {
-            if (Common.isOnline(mActivity)) {
+            if (Common.isOnline(this)) {
                 progressDialog.show();
                 DataManager.getInstance().findUser(userName, new ResultListenerNG<UserResponse>() {
                     @Override
                     public void onSuccess(UserResponse response) {
                         progressDialog.dismiss();
                         if (response.getUser() != null) {
-                            CreateMessageActivity.startActivityForResult(mActivity, response.getUser(), TAG, RC_SEND_MESSAGE);
+                            CreateMessageActivity.startActivityForResult(FindUserActivity.this, response.getUser(), TAG, RC_SEND_MESSAGE);
                             overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
                             finish();
                         } else {
@@ -175,9 +168,9 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
                         progressDialog.dismiss();
                         BaseResponse baseResponse = Common.getStatusMessage(error);
                         if (baseResponse == null || TextUtils.isEmpty(baseResponse.getMessage())) {
-                            Toast.makeText(mActivity, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FindUserActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(mActivity, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FindUserActivity.this, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -188,7 +181,7 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
     }
 
     private void getAllUsersApi() {
-        if (Common.isOnline(mActivity)) {
+        if (Common.isOnline(this)) {
             if (isLoading) {
                 rl_progressBar.setVisibility(View.VISIBLE);
             } else {
@@ -225,9 +218,9 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
                     progressBar.setVisibility(View.GONE);
                     BaseResponse baseResponse = Common.getStatusMessage(error);
                     if (baseResponse == null || TextUtils.isEmpty(baseResponse.getMessage())) {
-                        Toast.makeText(mActivity, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FindUserActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(mActivity, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FindUserActivity.this, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -246,7 +239,7 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
                 if (view.getTag() != null && view.getTag() instanceof User) {
                     User user = (User) view.getTag();
                     if (!user.getUserId().equalsIgnoreCase(SharedPreferenceManager.getUserObject().getUserId())) {
-                        CreateMessageActivity.startActivityForResult(mActivity, user, TAG, RC_SEND_MESSAGE);
+                        CreateMessageActivity.startActivityForResult(this, user, TAG, RC_SEND_MESSAGE);
                         overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
                     } else {
                         textInputLayoutEmail.setError(getString(R.string.you_can_not_send_message_to_yourself));
@@ -301,7 +294,7 @@ public class FindUserActivity extends BaseActivityWithActionBar implements View.
     @Override
     protected void onBackPress() {
         super.onBackPress();
-        Common.hideKeyboard(mActivity, etEmail);
+        Common.hideKeyboard(this, etEmail);
         overridePendingTransition(R.anim.in_from_left_animation, R.anim.out_from_right_animation);
     }
 }

@@ -41,7 +41,7 @@
 
                 <com.secreto.widgets.CustomFontTextView
                     android:id="@+id/tv_name"
-                    style="@style/DefaultTextViewStyle"
+                    style="@style/TextViewStyle"
                     android:text="name"
                     android:textColor="@color/dark_gray"
                     android:textSize="@dimen/text_size_18"
@@ -49,7 +49,7 @@
 
                 <com.secreto.widgets.CustomFontTextView
                     android:id="@+id/tv_userName_userEmail"
-                    style="@style/DefaultTextViewStyle"
+                    style="@style/TextViewStyle"
                     android:layout_marginTop="@dimen/dimen_size_3"
                     android:text="status"
                     android:textColor="@color/half_black"

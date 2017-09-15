@@ -9,7 +9,6 @@
     android:focusableInTouchMode="true"
     android:scrollbars="none">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,11 +21,11 @@
 
         <com.secreto.widgets.CustomFontTextView
             android:id="@+id/tvAppName"
-            style="@style/DefaultTextViewStyle"
+            style="@style/TextViewStyle"
             android:layout_width="match_parent"
             android:padding="@dimen/dimen_size_10"
             android:text="@string/app_name"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_40"
             android:textStyle="bold"
             app:fontStyle="StylishfontRegular" />
@@ -68,7 +67,7 @@
 
             <com.secreto.widgets.CustomFontCheckBox
                 android:id="@+id/rememberCheckBox"
-                style="@style/DefaultTextViewStyle"
+                style="@style/TextViewStyle"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
@@ -76,7 +75,7 @@
 
             <com.secreto.widgets.CustomFontTextView
                 android:id="@+id/tvForgotPassword"
-                style="@style/DefaultTextViewStyle"
+                style="@style/TextViewStyle"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"

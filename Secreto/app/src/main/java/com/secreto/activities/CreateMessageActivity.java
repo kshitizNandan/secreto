@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +22,6 @@ import com.secreto.fragments.SentReceivedMessagesFragment;
 import com.secreto.image.ImageCacheManager;
 import com.secreto.model.User;
 import com.secreto.responsemodel.BaseResponse;
-import com.secreto.utils.CustomProgressDialog;
 import com.secreto.utils.NetworkImageView;
 
 import butterknife.BindView;
@@ -42,7 +40,8 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
     CheckBox allowCheckBox;
     @BindView(R.id.etClue)
     EditText etClue;
-    private CustomProgressDialog progressDialog;
+    @BindView(R.id.tvAppName)
+    TextView tvAppName;
     private String userId;
     private Activity mActivity;
     private String navFrom;
@@ -59,7 +58,6 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
 
     private void init() {
         mActivity = this;
-        progressDialog = new CustomProgressDialog(this);
         iv_profileImg.setDefaultImageResId(R.drawable.default_user);
         navFrom = getIntent().getStringExtra(Constants.NAVIGATION_FROM);
         user = (User) getIntent().getSerializableExtra(Constants.USER);
@@ -84,6 +82,7 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
             iv_profileImg.setVisibility(View.GONE);
             etClue.setVisibility(View.GONE);
             tvUserName.setVisibility(View.GONE);
+            tvAppName.setVisibility(View.VISIBLE);
             allowCheckBox.setText(String.format(getString(R.string.allow_to_get_reply), getString(R.string.sender)));
         }
     }
