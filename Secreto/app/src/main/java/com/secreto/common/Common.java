@@ -3,7 +3,14 @@ package com.secreto.common;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -155,30 +162,65 @@ public class Common {
 
     }
 
-    public static void ShareProfile(Context context) {
+    public static void shareProfile(Context context) {
         Intent sendIntent = new Intent(android.content.Intent.ACTION_SEND);
         sendIntent.setType("text/plain");
         sendIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-//        String sharingMessage = String.format(Locale.ENGLISH, context.getString(R.string.hey_guys_please_share_your_views_about_me), SharedPreferenceManager.getUserObject().getUserName());
-        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "bla bla");
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "https://www.google.co.in/");
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name));
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "http://rajanpatelmakeupartist.com/secreto/" + SharedPreferenceManager.getUserObject().getUserName());
         context.startActivity(Intent.createChooser(sendIntent, "Share link!"));
     }
 
     public static void shareImage(Context context) {
         Intent share = new Intent(Intent.ACTION_SEND);
-        // If you want to share a png image only, you can do:
-        // setType("image/png"); OR for jpeg: setType("image/jpeg");
         share.setType("text/plain");
-        // Make sure you put example png image named myImage.png in your
-        // directory
         String imagePath = Environment.getExternalStorageDirectory() + "/myImage.png";
-
         File imageFileToShare = new File(imagePath);
-
         Uri uri = Uri.parse(SharedPreferenceManager.getUserObject().getProfile_pic());
         share.putExtra(Intent.EXTRA_TEXT, uri);
-
         context.startActivity(Intent.createChooser(share, "Share Image!"));
+    }
+
+    public Bitmap drawTextToBitmap(Context mContext, int resourceId, String mText) {
+        try {
+            Resources resources = mContext.getResources();
+            float scale = resources.getDisplayMetrics().density;
+            Bitmap bitmap = BitmapFactory.decodeResource(resources, resourceId);
+
+            android.graphics.Bitmap.Config bitmapConfig = bitmap.getConfig();
+            // set default bitmap config if none
+            if (bitmapConfig == null) {
+                bitmapConfig = android.graphics.Bitmap.Config.ARGB_8888;
+            }
+            // resource bitmaps are imutable,
+            // so we need to convert it to mutable one
+            bitmap = bitmap.copy(bitmapConfig, true);
+
+            Canvas canvas = new Canvas(bitmap);
+            // new antialised Paint
+            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            // text color - #3D3D3D
+            paint.setColor(Color.rgb(110, 110, 110));
+            // text size in pixels
+            paint.setTextSize((int) (12 * scale));
+            // text shadow
+            paint.setShadowLayer(1f, 0f, 1f, Color.DKGRAY);
+
+            // draw text to the Canvas center
+            Rect bounds = new Rect();
+            paint.getTextBounds(mText, 0, mText.length(), bounds);
+            int x = (bitmap.getWidth() - bounds.width()) / 6;
+            int y = (bitmap.getHeight() + bounds.height()) / 5;
+
+            canvas.drawText(mText, x * scale, y * scale, paint);
+
+            return bitmap;
+        } catch (Exception e) {
+            // TODO: handle exception
+
+
+            return null;
+        }
+
     }
 }
