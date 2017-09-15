@@ -20,4 +20,6 @@ public class ApiConstants {
     public static final String CAPTION = "caption";
     public static final String CAN_REPLY = "canReply";
     public static final String DEVICE_TOKEN = "deviceToken";
+    public static final String MESSAGE_ID = "messageId";
+    public static final String FEEDBACK = "feedback";
 }
