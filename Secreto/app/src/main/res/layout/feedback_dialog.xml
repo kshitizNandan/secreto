@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="@dimen/dimen_size_300"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_rounded_border"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen_size_20">
+
+        <RelativeLayout
+            android:id="@+id/headerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <com.secreto.widgets.CustomFontTextView
+                android:id="@+id/alertDialog_title_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dimen_size_20"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:padding="@dimen/dimen_size_5"
+                android:text="@string/app_name"
+                android:textAllCaps="true"
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/text_size_16"
+                app:fontStyle="StylishfontRegular"
+                app:textAllCaps="false" />
+
+
+            <ImageView
+                android:id="@+id/ivClose"
+                android:layout_width="@dimen/dimen_size_35"
+                android:layout_height="@dimen/dimen_size_35"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/dimen_size_10"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:visibility="visible" />
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_size_15"
+            android:orientation="vertical">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:textColorHint="@color/gray"
+                app:errorEnabled="true">
+
+                <com.secreto.widgets.CustomFontEditText
+                    android:id="@+id/etFeedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:hint="@string/please_provide_your_valuable_feedback"
+                    android:imeOptions="actionDone"
+                    android:inputType="textMultiLine"
+                    android:lines="4"
+                    android:maxLines="4"
+                    android:textColor="@color/dark_gray"
+                    android:textColorHint="@color/gray"
+                    android:textSize="@dimen/text_size_14"
+                    app:fontStyle="fontRegular" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <com.secreto.widgets.CustomFontButton
+                android:id="@+id/btnOk"
+                style="@style/DefaultButtonStyle"
+                android:text="@string/ok" />
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
