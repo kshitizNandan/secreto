@@ -111,10 +111,11 @@ public class DataManager {
         makeRequest(Request.Method.POST, SEND_MESSAGE, params, BaseResponse.class, resultListenerNG);
     }
 
-    public void updateProfile(String name, String mobile, String gender, String status, ResultListenerNG<UserResponse> resultListenerNG) {
+    public void updateProfile(String name, String userName, String mobile, String gender, String status, ResultListenerNG<UserResponse> resultListenerNG) {
         HashMap<Object, Object> params = new HashMap<>();
         String userId = SharedPreferenceManager.getUserObject().getUserId();
         params.put(ApiConstants.NAME, name);
+        params.put(ApiConstants.USER_NAME, userName);
         params.put(ApiConstants.CONTACT, mobile);
         params.put(ApiConstants.GENDER, gender);
         params.put(ApiConstants.CAPTION, !TextUtils.isEmpty(status) ? status.equalsIgnoreCase("status") ? "Available" : status : "Available");
@@ -177,6 +178,14 @@ public class DataManager {
     }
 
     public void deleteAccountApiCall(String feedback, ResultListenerNG<BaseResponse> resultListenerNG) {
+        String userId = SharedPreferenceManager.getUserObject().getUserId();
+        HashMap<Object, Object> params = new HashMap<>();
+        params.put(ApiConstants.FEEDBACK, feedback);
+        params.put(ApiConstants.USER_ID, userId);
+        makeRequest(Request.Method.POST, URL_DELETE_ACCOUNT, params, BaseResponse.class, resultListenerNG);
+    }
+
+    public void feedbackApiCall(String feedback, ResultListenerNG<BaseResponse> resultListenerNG) {
         String userId = SharedPreferenceManager.getUserObject().getUserId();
         HashMap<Object, Object> params = new HashMap<>();
         params.put(ApiConstants.FEEDBACK, feedback);

@@ -149,6 +149,7 @@ public class Common {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(context.getString(R.string.app_name))
                 .setMessage(message)
+                .setCancelable(false)
                 .setPositiveButton(context.getString(R.string.ok), onClickListener);
         if (isShowCancelBtn) {
             builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -165,6 +166,7 @@ public class Common {
         new AlertDialog.Builder(context)
                 .setTitle(context.getString(R.string.app_name))
                 .setMessage(message)
+                .setCancelable(false)
                 .setPositiveButton(context.getString(R.string.ok), okListener)
                 .setNegativeButton(context.getString(R.string.cancel), cancelListener).show();
     }

@@ -5,8 +5,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.design.widget.TextInputLayout;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,21 +22,17 @@ import com.android.volley.VolleyError;
 import com.secreto.R;
 import com.secreto.base_activities.ImagePickerActivity;
 import com.secreto.common.Common;
-import com.secreto.common.Constants;
 import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
-import com.secreto.image.ImageCacheManager;
 import com.secreto.mediatorClasses.TextWatcherMediator;
 import com.secreto.model.User;
 import com.secreto.responsemodel.BaseResponse;
 import com.secreto.responsemodel.MediaResponse;
 import com.secreto.responsemodel.UserResponse;
-import com.secreto.utils.CustomProgressDialog;
 import com.secreto.utils.Logger;
-import com.secreto.utils.NetworkImageView;
+import com.secreto.utils.LoginLogoutHandler;
 import com.secreto.widgets.CircleTransform;
-import com.secreto.widgets.RoundedCornersTransform;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -66,12 +61,12 @@ public class EditProfileActivity extends ImagePickerActivity {
     TextInputLayout textInputLayoutName;
     @BindView(R.id.input_layout_mobile_editText)
     TextInputLayout textInputLayoutMobile;
+    @BindView(R.id.input_layout_userName_editText)
+    TextInputLayout textInputLayoutuserName;
     @BindView(R.id.etGender)
     EditText etGender;
     @BindView(R.id.tv_status)
     TextView tv_status;
-    CustomProgressDialog progressDialog;
-    EditProfileActivity mActivity;
     private File photoFile;
     private int genderSelection = -1;
 
@@ -79,13 +74,18 @@ public class EditProfileActivity extends ImagePickerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        init();
         InitializeData();
+        setTextWatcher();
     }
 
-    private void init() {
-        progressDialog = new CustomProgressDialog(this);
-        mActivity = this;
+    @Override
+    public String getScreenTitle() {
+        return getString(R.string.edit_profile);
+    }
+
+    @Override
+    public int getLayoutResource() {
+        return R.layout.activity_edit_profile;
     }
 
     public static void startActivity(Activity activity) {
@@ -110,21 +110,48 @@ public class EditProfileActivity extends ImagePickerActivity {
             etEmail.setText(user.getEmail());
             tv_status.setText(user.getCaption());
             if (!TextUtils.isEmpty(user.getProfile_pic())) {
-                int size = Common.dipToPixel(mActivity, 80);
-                Picasso.with(mActivity).load(user.getProfile_pic()).transform(new CircleTransform()).resize(size, size).placeholder(R.drawable.default_user).into(iv_profileImg);
+                int size = Common.dipToPixel(this, 80);
+                Picasso.with(this).load(user.getProfile_pic()).transform(new CircleTransform()).resize(size, size).placeholder(R.drawable.default_user).into(iv_profileImg);
             } else {
-                iv_profileImg.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.default_user));
+                iv_profileImg.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_user));
             }
         }
     }
 
+    private void setTextWatcher() {
+        class GenericTextWatcher extends TextWatcherMediator {
+            private GenericTextWatcher(View view) {
+                super(view);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, View view) {
+                switch (view.getId()) {
+                    case R.id.etName:
+                        textInputLayoutName.setError("");
+                        break;
+                    case R.id.etUserName:
+                        textInputLayoutuserName.setError("");
+                        break;
+                    case R.id.etMobile:
+                        textInputLayoutMobile.setError("");
+                        break;
+
+                }
+            }
+        }
+        etName.addTextChangedListener(new GenericTextWatcher(etName));
+        etUserName.addTextChangedListener(new GenericTextWatcher(etUserName));
+        etEmail.addTextChangedListener(new GenericTextWatcher(etEmail));
+        etMobile.addTextChangedListener(new GenericTextWatcher(etMobile));
+    }
 
     @Override
     protected void onImageSet(File photoFile) {
         if (photoFile != null && photoFile.exists()) {
             this.photoFile = photoFile;
-            int size = Common.dipToPixel(mActivity, 80);
-            Picasso.with(mActivity).load(photoFile).transform(new CircleTransform()).resize(size, size).into(iv_profileImg);
+            int size = Common.dipToPixel(this, 80);
+            Picasso.with(this).load(photoFile).transform(new CircleTransform()).resize(size, size).into(iv_profileImg);
         }
     }
 
@@ -133,15 +160,11 @@ public class EditProfileActivity extends ImagePickerActivity {
         return null;
     }
 
-    @Override
-    public int getLayoutResource() {
-        return R.layout.activity_edit_profile;
-    }
 
     @OnClick(R.id.etGender)
     void genderSelctionDialog() {
         final CharSequence[] charSequences = getResources().getStringArray(R.array.gender_types);
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mActivity)
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.select_gender)).
                         setSingleChoiceItems(charSequences, genderSelection, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, final int selectedItem) {
@@ -222,7 +245,7 @@ public class EditProfileActivity extends ImagePickerActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(contentView);
         if (dialog.getWindow() != null) {
-            dialog.setCancelable(true);
+            dialog.setCancelable(false);
             dialog.show();
 
             View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -293,15 +316,18 @@ public class EditProfileActivity extends ImagePickerActivity {
         String name = etName.getText().toString();
         String mobile = etMobile.getText().toString().trim();
         String gender = etGender.getText().toString().trim();
+        String userName = etUserName.getText().toString().trim();
         String status = tv_status.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
             textInputLayoutName.setError(getString(R.string.nick_name_can_not_be_left_blank));
+        } else if (TextUtils.isEmpty(userName)) {
+            textInputLayoutuserName.setError(getString(R.string.user_name_can_not_be_left_blank));
         } else if (!TextUtils.isEmpty(mobile) && mobile.length() < 10) {
             textInputLayoutName.setError(getString(R.string.mobile_phone_number_should_be_of_10_digits));
         } else {
             if (Common.isOnline(this)) {
                 progressDialog.show();
-                DataManager.getInstance().updateProfile(name, mobile, gender, status, new ResultListenerNG<UserResponse>() {
+                DataManager.getInstance().updateProfile(name, userName, mobile, gender, status, new ResultListenerNG<UserResponse>() {
                     @Override
                     public void onSuccess(UserResponse response) {
                         Logger.d(TAG, "Profile update onSuccess : " + response);
@@ -310,7 +336,7 @@ public class EditProfileActivity extends ImagePickerActivity {
                             uploadImageApiCall(response.getUser());
                         } else {
                             SharedPreferenceManager.setUserObject(response.getUser());
-                            Common.showAlertDialog(mActivity, response.getMessage(), new DialogInterface.OnClickListener() {
+                            Common.showAlertDialog(EditProfileActivity.this, response.getMessage(), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     onBackPress();
@@ -325,16 +351,105 @@ public class EditProfileActivity extends ImagePickerActivity {
                         BaseResponse baseResponse = Common.getStatusMessage(error);
                         if (baseResponse == null || TextUtils.isEmpty(baseResponse.getMessage())) {
                             Logger.e(TAG, "Profile update error : " + error.getMessage());
-                            Toast.makeText(mActivity, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditProfileActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
                         } else {
                             Logger.e(TAG, "Profile update error : " + baseResponse.getMessage());
-                            Toast.makeText(mActivity, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditProfileActivity.this, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
             } else {
                 Toast.makeText(this, R.string.check_your_internet_connection, Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    @OnClick(R.id.btnDeleteAccount)
+    void deleteAccount() {
+        Common.showAlertDialog(this, getString(R.string.delet_account_confrim_message), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                showDeleteAccountDialog();
+            }
+        }, true);
+    }
+
+    private void showDeleteAccountDialog() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View contentView = inflater.inflate(R.layout.feedback_dialog, null);
+        final EditText etFeedback = (EditText) contentView.findViewById(R.id.etFeedback);
+        final TextInputLayout input_layout_feedback = (TextInputLayout) contentView.findViewById(R.id.input_layout_feedback);
+        final Dialog dialog = new Dialog(this, R.style.dialog_style);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(contentView);
+        if (dialog.getWindow() != null) {
+            dialog.setCancelable(false);
+            dialog.show();
+
+            View.OnClickListener onClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switch (v.getId()) {
+                        case R.id.btnOk:
+                            String feedback = etFeedback.getText().toString().trim();
+                            if (TextUtils.isEmpty(feedback)) {
+                                input_layout_feedback.setError(getString(R.string.please_provide_your_valuable_feedback));
+                            } else {
+                                deleteAccountApiCall(feedback, dialog);
+                            }
+                            break;
+                        case R.id.ivClose:
+                            dialog.dismiss();
+                            break;
+                    }
+                }
+            };
+
+            contentView.findViewById(R.id.btnOk).setOnClickListener(onClickListener);
+            contentView.findViewById(R.id.ivClose).setOnClickListener(onClickListener);
+            etFeedback.addTextChangedListener(new TextWatcherMediator(etFeedback) {
+                @Override
+                public void onTextChanged(CharSequence s, View view) {
+                    if (!TextUtils.isEmpty(s)) {
+                        input_layout_feedback.setError("");
+                    }
+                }
+            });
+        }
+    }
+
+    private void deleteAccountApiCall(String feedback, final Dialog parentDialog) {
+        if (Common.isOnline(this)) {
+            progressDialog.show();
+            DataManager.getInstance().deleteAccountApiCall(feedback, new ResultListenerNG<BaseResponse>() {
+                @Override
+                public void onSuccess(BaseResponse response) {
+                    Common.showAlertDialog(EditProfileActivity.this, response.getMessage(), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            progressDialog.dismiss();
+                            dialog.dismiss();
+                            parentDialog.dismiss();
+                            LoginLogoutHandler.logoutUser(EditProfileActivity.this);
+                        }
+                    }, false);
+                }
+
+                @Override
+                public void onError(VolleyError error) {
+                    progressDialog.dismiss();
+                    BaseResponse baseResponse = Common.getStatusMessage(error);
+                    if (baseResponse == null || TextUtils.isEmpty(baseResponse.getMessage())) {
+                        Logger.e(TAG, "Delete Account error : " + error.getMessage());
+                        Toast.makeText(EditProfileActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Logger.e(TAG, "Delete Account error : " + baseResponse.getMessage());
+                        Toast.makeText(EditProfileActivity.this, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(this, getString(R.string.check_your_internet_connection), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -345,7 +460,7 @@ public class EditProfileActivity extends ImagePickerActivity {
                 @Override
                 public void onSuccess(UserResponse response) {
                     progressDialog.dismiss();
-                    Common.showAlertDialog(mActivity, response.getMessage(), null, false);
+                    Common.showAlertDialog(EditProfileActivity.this, response.getMessage(), null, false);
                     if (response.getUser() != null)
                         SharedPreferenceManager.setUserObject(response.getUser());
                     if (dialog != null)
@@ -358,10 +473,10 @@ public class EditProfileActivity extends ImagePickerActivity {
                     BaseResponse baseResponse = Common.getStatusMessage(error);
                     if (baseResponse == null || TextUtils.isEmpty(baseResponse.getMessage())) {
                         Logger.e(TAG, "change password error : " + error.getMessage());
-                        Toast.makeText(mActivity, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditProfileActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
                     } else {
                         Logger.e(TAG, "change password error : " + baseResponse.getMessage());
-                        Toast.makeText(mActivity, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditProfileActivity.this, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -382,7 +497,7 @@ public class EditProfileActivity extends ImagePickerActivity {
                         user.setProfile_pic(response.getMedia());
                         SharedPreferenceManager.setUserObject(user);
                     }
-                    Common.showAlertDialog(mActivity, getString(R.string.user_details_updated_successfully), new DialogInterface.OnClickListener() {
+                    Common.showAlertDialog(EditProfileActivity.this, getString(R.string.user_details_updated_successfully), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             onBackPress();
@@ -396,10 +511,10 @@ public class EditProfileActivity extends ImagePickerActivity {
                     BaseResponse baseResponse = Common.getStatusMessage(error);
                     if (baseResponse == null || TextUtils.isEmpty(baseResponse.getMessage())) {
                         Logger.e(TAG, "Image upload error : " + error.getMessage());
-                        Toast.makeText(mActivity, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditProfileActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
                     } else {
                         Logger.e(TAG, "Image Upload error : " + baseResponse.getMessage());
-                        Toast.makeText(mActivity, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditProfileActivity.this, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -408,20 +523,11 @@ public class EditProfileActivity extends ImagePickerActivity {
         }
     }
 
-    @Override
-    public String getScreenTitle() {
-        return getString(R.string.edit_profile);
-    }
-
-    @Override
-    public boolean isShowHomeButton() {
-        return true;
-    }
 
     @Override
     protected void onBackPress() {
         finish();
-        Common.hideKeyboard(mActivity, etEmail);
+        Common.hideKeyboard(this, etEmail);
         overridePendingTransition(R.anim.in_from_left_animation, R.anim.out_from_right_animation);
     }
 }

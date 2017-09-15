@@ -25,18 +25,13 @@
     <com.secreto.widgets.CustomFontTextView
         android:id="@+id/tvEditProfile"
         style="@style/TextViewStyle.settingsMenu"
-        android:text="@string/edit_profile" />
+        android:text="@string/edit_your_profile" />
 
     <com.secreto.widgets.CustomFontTextView
         android:id="@+id/tvShare"
         style="@style/TextViewStyle.settingsMenu"
         android:layout_marginTop="@dimen/dimen_size_5"
         android:text="@string/share_profile" />
-
-    <com.secreto.widgets.CustomFontTextView
-        style="@style/TextViewStyle.settingsMenu"
-        android:layout_marginTop="@dimen/dimen_size_5"
-        android:text="@string/account_settings" />
 
     <View
         style="@style/SeparatorStyle"
@@ -53,6 +48,7 @@
         android:text="@string/terms_policy" />
 
     <com.secreto.widgets.CustomFontTextView
+        android:id="@+id/tvFeedback"
         style="@style/TextViewStyle.settingsMenu"
         android:layout_marginTop="@dimen/dimen_size_5"
         android:text="@string/help_feedback" />

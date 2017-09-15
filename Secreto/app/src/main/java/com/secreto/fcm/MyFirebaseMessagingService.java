@@ -48,10 +48,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.v(TAG, "classNameTag-->" + classNameTag);
             if (className.equalsIgnoreCase(classNameTag)) {
                 sendBroadcastMessage();
+            } else {
+                if (SharedPreferenceManager.getNotificationService()) // weather user turned off the notifications of not
+                    showNotification(notification);
             }
+        } else {
+            if (SharedPreferenceManager.getNotificationService()) // weather user turned off the notifications of not
+                showNotification(notification);
         }
-        if (SharedPreferenceManager.getNotificationService()) // weather user turned off the notifications of not
-            showNotification(notification);
+        sendBroadcastMessage();
     }
 
 

@@ -9,7 +9,6 @@
 
     <include layout="@layout/toolbar" />
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -101,12 +100,9 @@
                 <com.secreto.widgets.CustomFontEditText
                     android:id="@+id/etUserName"
                     style="@style/DefaultEditTextStyle"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
                     android:hint="@string/user_name"
                     android:imeOptions="actionNext"
-                    android:inputType="textEmailAddress"
+                    android:inputType="textPersonName"
                     android:textIsSelectable="false" />
 
             </android.support.design.widget.TextInputLayout>
@@ -158,6 +154,12 @@
                 style="@style/DefaultButtonStyle"
                 android:layout_marginTop="@dimen/dimen_size_10"
                 android:text="@string/update" />
+
+            <com.secreto.widgets.CustomFontButton
+                android:id="@+id/btnDeleteAccount"
+                style="@style/DefaultButtonStyle"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:text="@string/delete_your_account" />
         </LinearLayout>
     </ScrollView>
 

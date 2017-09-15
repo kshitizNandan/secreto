@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -18,10 +17,9 @@ import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
 import com.secreto.mediatorClasses.TextWatcherMediator;
-import com.secreto.responsemodel.BaseResponse;
 import com.secreto.model.User;
+import com.secreto.responsemodel.BaseResponse;
 import com.secreto.responsemodel.UserResponse;
-import com.secreto.utils.CustomProgressDialog;
 import com.secreto.utils.Logger;
 import com.secreto.utils.LoginLogoutHandler;
 
@@ -41,7 +39,6 @@ public class LoginActivity extends BaseActivityWithActionBar {
     TextInputLayout textInputLayoutEmail;
     @BindView(R.id.input_layout_password_editText)
     TextInputLayout textInputLayoutPassword;
-    private CustomProgressDialog progressDialog;
 
     @Override
     public int getLayoutResource() {
@@ -58,7 +55,6 @@ public class LoginActivity extends BaseActivityWithActionBar {
 
 
     private void initView() {
-        progressDialog = new CustomProgressDialog(this);
         etEmail.setText(SharedPreferenceManager.getLoginCredentials(SharedPreferenceManager.EMAIL));
         etPassword.setText(SharedPreferenceManager.getLoginCredentials(SharedPreferenceManager.PASS));
         if (!TextUtils.isEmpty(etEmail.getText())) {
