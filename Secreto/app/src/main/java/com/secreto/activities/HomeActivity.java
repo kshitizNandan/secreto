@@ -120,35 +120,7 @@ public class HomeActivity extends BaseActivityWithActionBar {
             public boolean onMenuItemSelected(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.action_share:
-                        imageView.setImageBitmap(drawTextToBitmap(HomeActivity.this, R.drawable.logo, "this is test on image"));
-
-//                        Common.shareImage(HomeActivity.this);
-//                        final String sharingMessage = String.format(Locale.ENGLISH, getString(R.string.hey_guys_please_share_your_views_about_me), SharedPreferenceManager.getUserObject().getUserName());
-//                        new SocialSharingClass(HomeActivity.this, new SocialSharingClass.OnItemSelectedItemListener() {
-//                            @Override
-//                            public void selectedItem(String item) {
-//                                if (item.equalsIgnoreCase(SocialSharingClass.FACEBOOK)) {
-//                                    SocialSharingClass.ShareOnFacebook(HomeActivity.this, sharingMessage, callbackManager, new FacebookCallback<Sharer.Result>() {
-//                                        @Override
-//                                        public void onSuccess(Sharer.Result result) {
-//                                            Toast.makeText(HomeActivity.this, "success", Toast.LENGTH_SHORT).show();
-//                                        }
-//
-//                                        @Override
-//                                        public void onCancel() {
-//                                        }
-//
-//                                        @Override
-//                                        public void onError(FacebookException error) {
-//                                            Toast.makeText(HomeActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-//                                        }
-//                                    });
-//                                } else if (item.equalsIgnoreCase(SocialSharingClass.TWITTER)) {
-//                                    SocialSharingClass.ShareOnTwitter(HomeActivity.this, sharingMessage);
-//                                } else if (item.equalsIgnoreCase(SocialSharingClass.LINKEDIN)) {
-//                                }
-//                            }
-//                        });
+                        Common.shareProfile(HomeActivity.this);
                         break;
                     case R.id.action_sendMessage:
                         FindUserActivity.startActivity(HomeActivity.this);
@@ -164,49 +136,6 @@ public class HomeActivity extends BaseActivityWithActionBar {
                 overlayView.setVisibility(View.GONE);
             }
         });
-    }
-
-    public Bitmap drawTextToBitmap(Context mContext, int resourceId, String mText) {
-        try {
-            Resources resources = mContext.getResources();
-            float scale = resources.getDisplayMetrics().density;
-            Bitmap bitmap = BitmapFactory.decodeResource(resources, resourceId);
-
-            android.graphics.Bitmap.Config bitmapConfig = bitmap.getConfig();
-            // set default bitmap config if none
-            if (bitmapConfig == null) {
-                bitmapConfig = android.graphics.Bitmap.Config.ARGB_8888;
-            }
-            // resource bitmaps are imutable,
-            // so we need to convert it to mutable one
-            bitmap = bitmap.copy(bitmapConfig, true);
-
-            Canvas canvas = new Canvas(bitmap);
-            // new antialised Paint
-            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            // text color - #3D3D3D
-            paint.setColor(Color.rgb(110, 110, 110));
-            // text size in pixels
-            paint.setTextSize((int) (12 * scale));
-            // text shadow
-            paint.setShadowLayer(1f, 0f, 1f, Color.DKGRAY);
-
-            // draw text to the Canvas center
-            Rect bounds = new Rect();
-            paint.getTextBounds(mText, 0, mText.length(), bounds);
-            int x = (bitmap.getWidth() - bounds.width()) / 6;
-            int y = (bitmap.getHeight() + bounds.height()) / 5;
-
-            canvas.drawText(mText, x * scale, y * scale, paint);
-
-            return bitmap;
-        } catch (Exception e) {
-            // TODO: handle exception
-
-
-            return null;
-        }
-
     }
 
     @Override

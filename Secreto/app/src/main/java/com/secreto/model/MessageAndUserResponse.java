@@ -9,6 +9,15 @@ public class MessageAndUserResponse implements Serializable {
     private Message message;
     @SerializedName("user")
     private User user;
+    private String messageType;
+
+    public String getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(String messageType) {
+        this.messageType = messageType;
+    }
 
     public Message getMessage() {
         return message;

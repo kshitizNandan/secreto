@@ -9,6 +9,7 @@ public class Constants {
     public static final String USER = "user";
     public static final String REFRESH_LIST_BROADCAST = "RefreshList";
     public static final String NAVIGATION_FROM = "navigationFrom";
+    public static final String MESSAGE_AND_USER_RESPONSE = "message_and_user_response";
 
     public class SocialType {
         public static final String FACEBOOK = "FACEBOOK";

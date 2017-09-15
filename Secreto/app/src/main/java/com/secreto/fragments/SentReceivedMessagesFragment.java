@@ -34,6 +34,7 @@ import com.secreto.common.Constants;
 import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
+import com.secreto.model.MessageAndUserResponse;
 import com.secreto.model.User;
 import com.secreto.responsemodel.BaseResponse;
 import com.secreto.responsemodel.SendOrReceivedMessageResponse;
@@ -283,8 +284,14 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
 
     @Override
     public boolean onLongClick(View v) {
-        ExpandMessageDialogFragment expandMessageDialogFragment = new ExpandMessageDialogFragment();
-        expandMessageDialogFragment.show(getActivity().getSupportFragmentManager(), "");
+        if (v.getTag() != null && v.getTag() instanceof MessageAndUserResponse) {
+            MessageAndUserResponse response = (MessageAndUserResponse) v.getTag();
+            ExpandMessageDialogFragment expandMessageDialogFragment = new ExpandMessageDialogFragment();
+            Bundle args = new Bundle();
+            args.putSerializable(Constants.MESSAGE_AND_USER_RESPONSE, response);
+            expandMessageDialogFragment.setArguments(args);
+            expandMessageDialogFragment.show(getActivity().getSupportFragmentManager(), "");
+        }
         return true;
     }
 }

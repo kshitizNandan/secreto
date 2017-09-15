@@ -36,6 +36,7 @@ public class MessagesViewHolder extends BaseViewHolder {
     @BindView(R.id.llMessageItem)
     LinearLayout cardMessageItem;
     private String messageType;
+    private MessageAndUserResponse response;
 
 
     public MessagesViewHolder(View itemView, View.OnClickListener onClickListener, View.OnLongClickListener onLongClickListener, String messageType) {
@@ -52,12 +53,13 @@ public class MessagesViewHolder extends BaseViewHolder {
 
     @Override
     public void onBindView(Object object, int position) {
-        MessageAndUserResponse response = (MessageAndUserResponse) object;
+        response = (MessageAndUserResponse) object;
         Message message = response.getMessage();
+        response.setMessageType(messageType);
         tv_message.setText(message.getMessage());
         tv_time.setText(DateFormatter.getTimeString(message.getCreatedDate()));
         img_reply.setTag(response.getUser());
-        cardMessageItem.setTag(response.getUser());
+        cardMessageItem.setTag(response);
         tv_clue.setTag(response.getUser());
         if (messageType.equalsIgnoreCase(Constants.SENT)) {
             img_reply.setVisibility(View.GONE);
