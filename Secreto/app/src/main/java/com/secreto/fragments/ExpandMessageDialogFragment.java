@@ -1,13 +1,18 @@
 package com.secreto.fragments;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
@@ -15,6 +20,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +38,7 @@ import com.secreto.model.Message;
 import com.secreto.model.MessageAndUserResponse;
 import com.secreto.responsemodel.BaseResponse;
 import com.secreto.utils.DateFormatter;
+import com.secreto.utils.SDCardHandler;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,6 +49,8 @@ import static com.secreto.activities.HomeActivity.RC_SEND_MESSAGE;
 
 public class ExpandMessageDialogFragment extends DialogFragment implements View.OnClickListener {
     private static final String TAG = ExpandMessageDialogFragment.class.getSimpleName();
+    private static final String[] PERMISSIONS = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private static final int PERMISSION_ALL = 500;
     private TextView tv_message;
     private TextView tv_time;
     private TextView tv_clue;
@@ -51,7 +60,7 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
     private View viewReply;
     private AlertDialog deleteDialog;
     private Dialog dialog;
-    private ImageView img;
+    private LinearLayout llButtons;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -92,7 +101,7 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
         viewReply = dialog.findViewById(R.id.viewReply);
         imgDelete = (ImageView) dialog.findViewById(R.id.ivDelete);
         ivShare = (ImageView) dialog.findViewById(R.id.ivShare);
-        img = (ImageView) dialog.findViewById(R.id.img);
+        llButtons = (LinearLayout) dialog.findViewById(R.id.llButtons);
     }
 
     private void setViews() {
@@ -151,18 +160,7 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
                 }
                 break;
             case R.id.ivShare:
-                RelativeLayout rlMain = (RelativeLayout) dialog.findViewById(R.id.rlMain);
-                rlMain.setDrawingCacheEnabled(true);
-                rlMain.buildDrawingCache();
-                Bitmap bm = rlMain.getDrawingCache();
-                //  img.setImageBitmap(bm);
-                File imgFile = persistImage(bm, getString(R.string.image));
-                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                Uri screenshotUri = Uri.parse(imgFile.getAbsolutePath());
-                img.setImageURI(screenshotUri);
-                sharingIntent.setType("image/*");
-                sharingIntent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
-                startActivity(Intent.createChooser(sharingIntent, "Share image using"));
+                requestPermissions(PERMISSIONS, PERMISSION_ALL);
                 break;
         }
     }
@@ -203,19 +201,59 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
     }
 
-    private File persistImage(Bitmap bitmap, String name) {
-        File filesDir = getActivity().getApplicationContext().getFilesDir();
-        File imageFile = new File(filesDir, name + ".jpg");
 
+    private void persistImage() {
+        RelativeLayout rlMain = (RelativeLayout) dialog.findViewById(R.id.rlMain);
+        llButtons.setVisibility(View.GONE);
+        rlMain.setDrawingCacheEnabled(true);
+        rlMain.buildDrawingCache();
+        Bitmap bitmap = rlMain.getDrawingCache();
+        File mediaDir;
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            mediaDir = new File(SDCardHandler.IMAGE_STORAGE_PATH);
+        } else {
+            mediaDir = new File(getActivity().getFilesDir(), Constants.APP_NAME);
+        }
+        if (!mediaDir.exists()) {
+            mediaDir.mkdirs();
+        }
+        File imageFile = new File(mediaDir, System.currentTimeMillis() + ".jpg");
         OutputStream os;
         try {
             os = new FileOutputStream(imageFile);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            // Share image
+            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+            sharingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            sharingIntent.setType("image/*");
+            sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(imageFile.getAbsolutePath()));
+            startActivity(Intent.createChooser(sharingIntent, "Share Image Using"));
             os.flush();
             os.close();
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            llButtons.setVisibility(View.VISIBLE);
         }
-        return imageFile;
+    }
+
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        boolean isPermissionGranted = true;
+        switch (requestCode) {
+            case PERMISSION_ALL:
+                for (int i : grantResults) {
+                    if (i != PackageManager.PERMISSION_GRANTED) {
+                        isPermissionGranted = false;
+                        break;
+                    }
+                }
+                break;
+        }
+        if (isPermissionGranted) {
+            persistImage();
+        } else {
+            Toast.makeText(getActivity(), R.string.permission_denied, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

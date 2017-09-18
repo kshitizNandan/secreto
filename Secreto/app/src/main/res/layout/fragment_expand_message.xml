@@ -117,10 +117,6 @@
                 android:padding="@dimen/dimen_size_10"
                 android:src="@drawable/share" />
 
-            <ImageView
-                android:id="@+id/img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <View style="@style/SeparatorStyle" />

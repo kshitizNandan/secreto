@@ -180,12 +180,10 @@ public class Common {
         context.startActivity(Intent.createChooser(sendIntent, "Share link!"));
     }
 
-    public static void shareImage(Context context) {
+    public static void shareImage(Context context, File file) {
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
-        String imagePath = Environment.getExternalStorageDirectory() + "/myImage.png";
-        File imageFileToShare = new File(imagePath);
-        Uri uri = Uri.parse(SharedPreferenceManager.getUserObject().getProfile_pic());
+        Uri uri = Uri.parse(file.getAbsolutePath());
         share.putExtra(Intent.EXTRA_TEXT, uri);
         context.startActivity(Intent.createChooser(share, "Share Image!"));
     }
