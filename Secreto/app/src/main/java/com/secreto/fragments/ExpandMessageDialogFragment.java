@@ -8,16 +8,12 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
-import android.widget.ImageView;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -49,8 +45,7 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
     private TextView tv_message;
     private TextView tv_time;
     private TextView tv_clue;
-    private ImageView ivReply, imgDelete;
-    private ImageButton ivReply, imgDelete, imgShare;
+    private ImageView ivReply, imgDelete, ivShare;
     private ProgressDialog progressDialog;
     private MessageAndUserResponse response;
     private View viewReply;
@@ -83,7 +78,7 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
         tv_clue.setOnClickListener(this);
         ivReply.setOnClickListener(this);
         imgDelete.setOnClickListener(this);
-        imgShare.setOnClickListener(this);
+        ivShare.setOnClickListener(this);
     }
 
     private void initViews(Dialog dialog) {
@@ -96,8 +91,7 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
         ivReply = (ImageView) dialog.findViewById(R.id.ivReply);
         viewReply = dialog.findViewById(R.id.viewReply);
         imgDelete = (ImageView) dialog.findViewById(R.id.ivDelete);
-        imgDelete = (ImageButton) dialog.findViewById(R.id.imgDelete);
-        imgShare = (ImageButton) dialog.findViewById(R.id.imgShare);
+        ivShare = (ImageView) dialog.findViewById(R.id.ivShare);
         img = (ImageView) dialog.findViewById(R.id.img);
     }
 
@@ -156,7 +150,7 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
                     deleteDialog.show();
                 }
                 break;
-            case R.id.imgShare:
+            case R.id.ivShare:
                 RelativeLayout rlMain = (RelativeLayout) dialog.findViewById(R.id.rlMain);
                 rlMain.setDrawingCacheEnabled(true);
                 rlMain.buildDrawingCache();
@@ -219,7 +213,7 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
             os.flush();
             os.close();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         return imageFile;
     }
