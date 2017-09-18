@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@android:color/white"
+    android:id="@+id/rlMain"
     android:padding="@dimen/dimen_size_10">
 
     <LinearLayout
@@ -114,7 +116,15 @@
                 android:layout_weight="1"
                 android:padding="@dimen/dimen_size_10"
                 android:src="@drawable/share" />
+                android:layout_margin="@dimen/dimen_size_5"
+                android:background="@drawable/reply_icon"
+                />
+            <ImageView
+                android:id="@+id/img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
+
 
         <View style="@style/SeparatorStyle" />
     </LinearLayout>

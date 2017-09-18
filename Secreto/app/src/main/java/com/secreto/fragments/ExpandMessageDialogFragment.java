@@ -4,8 +4,11 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
@@ -13,6 +16,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +37,9 @@ import com.secreto.model.MessageAndUserResponse;
 import com.secreto.responsemodel.BaseResponse;
 import com.secreto.utils.DateFormatter;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.Locale;
 
 import static com.secreto.activities.HomeActivity.RC_SEND_MESSAGE;
@@ -40,17 +50,20 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
     private TextView tv_time;
     private TextView tv_clue;
     private ImageView ivReply, imgDelete;
+    private ImageButton ivReply, imgDelete, imgShare;
     private ProgressDialog progressDialog;
     private MessageAndUserResponse response;
     private View viewReply;
     private AlertDialog deleteDialog;
+    private Dialog dialog;
+    private ImageView img;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         if (getArguments() != null) {
             response = (MessageAndUserResponse) getArguments().getSerializable(Constants.MESSAGE_AND_USER_RESPONSE);
         }
-        final Dialog dialog = new Dialog(getActivity());
+        dialog = new Dialog(getActivity());
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         Point point = MyApplication.getScreenSize();
         final int width = point.x;
@@ -70,6 +83,7 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
         tv_clue.setOnClickListener(this);
         ivReply.setOnClickListener(this);
         imgDelete.setOnClickListener(this);
+        imgShare.setOnClickListener(this);
     }
 
     private void initViews(Dialog dialog) {
@@ -82,6 +96,9 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
         ivReply = (ImageView) dialog.findViewById(R.id.ivReply);
         viewReply = dialog.findViewById(R.id.viewReply);
         imgDelete = (ImageView) dialog.findViewById(R.id.ivDelete);
+        imgDelete = (ImageButton) dialog.findViewById(R.id.imgDelete);
+        imgShare = (ImageButton) dialog.findViewById(R.id.imgShare);
+        img = (ImageView) dialog.findViewById(R.id.img);
     }
 
     private void setViews() {
@@ -138,6 +155,21 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
                     }
                     deleteDialog.show();
                 }
+                break;
+            case R.id.imgShare:
+                RelativeLayout rlMain = (RelativeLayout) dialog.findViewById(R.id.rlMain);
+                rlMain.setDrawingCacheEnabled(true);
+                rlMain.buildDrawingCache();
+                Bitmap bm = rlMain.getDrawingCache();
+                //  img.setImageBitmap(bm);
+                File imgFile = persistImage(bm, getString(R.string.image));
+                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                Uri screenshotUri = Uri.parse(imgFile.getAbsolutePath());
+                img.setImageURI(screenshotUri);
+                sharingIntent.setType("image/*");
+                sharingIntent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
+                startActivity(Intent.createChooser(sharingIntent, "Share image using"));
+                break;
         }
     }
 
@@ -175,6 +207,21 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
     private void sendBroadcastMessage() {
         Intent intent = new Intent(Constants.REFRESH_LIST_BROADCAST);
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+    }
+
+    private File persistImage(Bitmap bitmap, String name) {
+        File filesDir = getActivity().getApplicationContext().getFilesDir();
+        File imageFile = new File(filesDir, name + ".jpg");
+
+        OutputStream os;
+        try {
+            os = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+        }
+        return imageFile;
     }
 
     @Override
