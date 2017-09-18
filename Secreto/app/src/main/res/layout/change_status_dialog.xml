@@ -90,13 +90,13 @@
 
                 <com.secreto.widgets.CustomFontButton
                     android:id="@+id/btn_ok"
-                    style="@style/DefaultButtonStyle"
+                    style="@style/ButtonStyle"
                     android:layout_weight="1"
                     android:text="@string/ok" />
 
                 <com.secreto.widgets.CustomFontButton
                     android:id="@+id/btn_cancel"
-                    style="@style/DefaultButtonStyle"
+                    style="@style/ButtonStyle"
                     android:layout_marginLeft="@dimen/dimen_size_10"
                     android:layout_weight="1"
                     android:text="@string/cancel" />

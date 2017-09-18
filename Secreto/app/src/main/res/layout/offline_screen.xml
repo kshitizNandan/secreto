@@ -22,7 +22,7 @@
 
     <com.secreto.widgets.CustomFontButton
         android:id="@+id/tvRetry"
-        style="@style/DefaultButtonStyle"
+        style="@style/ButtonStyle"
         android:layout_width="wrap_content"
         android:layout_marginTop="@dimen/dimen_size_20"
         android:text="@string/retry" />

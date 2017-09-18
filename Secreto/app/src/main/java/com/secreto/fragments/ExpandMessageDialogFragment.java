@@ -12,7 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +39,7 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
     private TextView tv_message;
     private TextView tv_time;
     private TextView tv_clue;
-    private ImageButton ivReply, imgDelete;
+    private ImageView ivReply, imgDelete;
     private ProgressDialog progressDialog;
     private MessageAndUserResponse response;
     private View viewReply;
@@ -79,9 +79,9 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
         tv_message = (TextView) dialog.findViewById(R.id.tv_message);
         tv_time = (TextView) dialog.findViewById(R.id.tv_time);
         tv_clue = (TextView) dialog.findViewById(R.id.tvClue);
-        ivReply = (ImageButton) dialog.findViewById(R.id.imgReply);
+        ivReply = (ImageView) dialog.findViewById(R.id.ivReply);
         viewReply = dialog.findViewById(R.id.viewReply);
-        imgDelete = (ImageButton) dialog.findViewById(R.id.imgDelete);
+        imgDelete = (ImageView) dialog.findViewById(R.id.ivDelete);
     }
 
     private void setViews() {
@@ -97,17 +97,9 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
                 tv_clue.setText(String.format(Locale.ENGLISH, getString(R.string.to_x), response.getUser().getName()));
         } else {
             if (!TextUtils.isEmpty(message.getMessageClue())) {
-                tv_clue.setVisibility(View.VISIBLE);
                 tv_clue.setText(message.getMessageClue());
             } else {
-                tv_clue.setVisibility(View.GONE);
-            }
-            if (message.getCanReply().equalsIgnoreCase("YES")) {
-                ivReply.setVisibility(View.VISIBLE);
-                viewReply.setVisibility(View.VISIBLE);
-            } else {
-                ivReply.setVisibility(View.GONE);
-                viewReply.setVisibility(View.GONE);
+                tv_clue.setText(getString(R.string.anonymous_sender));
             }
         }
     }
@@ -115,7 +107,7 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.imgReply:
+            case R.id.ivReply:
                 if (response != null && response.getUser() != null) {
                     CreateMessageActivity.startActivityForResult(getActivity(), response.getUser(), TAG, RC_SEND_MESSAGE);
                     getActivity().overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
@@ -125,9 +117,10 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
                 if (response != null && response.getUser() != null) {
                     ProfileActivity.startActivity(getActivity(), response.getUser());
                     getActivity().overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
+                    dismiss();
                 }
                 break;
-            case R.id.imgDelete:
+            case R.id.ivDelete:
                 if (response.getMessage() != null) {
                     if (deleteDialog == null) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())

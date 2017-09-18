@@ -85,7 +85,7 @@
 
             <com.secreto.widgets.CustomFontButton
                 android:id="@+id/btnOk"
-                style="@style/DefaultButtonStyle"
+                style="@style/ButtonStyle"
                 android:text="@string/ok" />
 
         </LinearLayout>

@@ -84,7 +84,7 @@
 
             <com.secreto.widgets.CustomFontButton
                 android:id="@+id/tvSend"
-                style="@style/DefaultButtonStyle"
+                style="@style/ButtonStyle"
                 android:layout_marginTop="@dimen/dimen_size_20"
                 android:text="@string/send" />
         </LinearLayout>

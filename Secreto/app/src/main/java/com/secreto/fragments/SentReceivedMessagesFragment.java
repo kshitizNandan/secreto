@@ -219,7 +219,7 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.imgReply:
+            case R.id.ivReply:
                 if (view.getTag() != null && view.getTag() instanceof User) {
                     User user = (User) view.getTag();
                     CreateMessageActivity.startActivityForResult(getActivity(), user, TAG, RC_SEND_MESSAGE);

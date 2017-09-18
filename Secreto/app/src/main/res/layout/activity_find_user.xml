@@ -43,7 +43,7 @@
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_layout_email_editText"
-                    style="@style/DefaultTextInputLayoutStyle"
+                    style="@style/TextInputLayoutStyle"
                     android:layout_marginTop="@dimen/dimen_size_30"
                     app:errorEnabled="true"
                     app:hintEnabled="true">
@@ -59,7 +59,7 @@
 
                 <com.secreto.widgets.CustomFontButton
                     android:id="@+id/btnSubmit"
-                    style="@style/DefaultButtonStyle"
+                    style="@style/ButtonStyle"
                     android:layout_marginTop="@dimen/dimen_size_10"
                     android:text="@string/submit" />
             </LinearLayout>

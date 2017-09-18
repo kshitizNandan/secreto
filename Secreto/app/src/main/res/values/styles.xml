@@ -80,6 +80,12 @@
         <item name="android:padding">@dimen/dimen_size_7</item>
     </style>
 
+    <style name="RippleEffect">
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+
     <style name="TabStyle" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorColor">@color/colorPrimary</item>
         <item name="tabTextAppearance">@style/CustomTabTextStyle</item>
@@ -108,7 +114,7 @@
         <item name="fontStyle">fontRegular</item>
     </style>
 
-    <style name="DefaultButtonStyle">
+    <style name="ButtonStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/dimen_size_40</item>
         <item name="android:textColor">@android:color/white</item>
@@ -119,7 +125,7 @@
         <item name="fontStyle">fontRegular</item>
     </style>
 
-    <style name="DefaultTextInputLayoutStyle" parent="Widget.Design.TextInputLayout">
+    <style name="TextInputLayoutStyle" parent="Widget.Design.TextInputLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>

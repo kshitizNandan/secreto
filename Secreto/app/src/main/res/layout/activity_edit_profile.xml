@@ -59,7 +59,7 @@
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_name_editText"
-                style="@style/DefaultTextInputLayoutStyle"
+                style="@style/TextInputLayoutStyle"
                 android:layout_marginTop="@dimen/dimen_size_20"
                 app:errorEnabled="true"
                 app:hintEnabled="true">
@@ -75,7 +75,7 @@
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_gender_editText"
-                style="@style/DefaultTextInputLayoutStyle"
+                style="@style/TextInputLayoutStyle"
                 app:errorEnabled="true"
                 app:hintEnabled="true">
 
@@ -93,7 +93,7 @@
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_userName_editText"
-                style="@style/DefaultTextInputLayoutStyle"
+                style="@style/TextInputLayoutStyle"
                 app:errorEnabled="true"
                 app:hintEnabled="true">
 
@@ -109,7 +109,7 @@
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_email_editText"
-                style="@style/DefaultTextInputLayoutStyle"
+                style="@style/TextInputLayoutStyle"
                 app:errorEnabled="true"
                 app:hintEnabled="true">
 
@@ -127,7 +127,7 @@
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_mobile_editText"
-                style="@style/DefaultTextInputLayoutStyle"
+                style="@style/TextInputLayoutStyle"
                 app:errorEnabled="true"
                 app:hintEnabled="true">
 
@@ -151,13 +151,13 @@
 
             <com.secreto.widgets.CustomFontButton
                 android:id="@+id/btnUpdateAccount"
-                style="@style/DefaultButtonStyle"
+                style="@style/ButtonStyle"
                 android:layout_marginTop="@dimen/dimen_size_10"
                 android:text="@string/update" />
 
             <com.secreto.widgets.CustomFontButton
                 android:id="@+id/btnDeleteAccount"
-                style="@style/DefaultButtonStyle"
+                style="@style/ButtonStyle"
                 android:layout_marginTop="@dimen/dimen_size_10"
                 android:text="@string/delete_your_account" />
         </LinearLayout>

@@ -16,7 +16,7 @@ import java.util.TimeZone;
 public class DateFormatter {
     private static final String TAG = DateFormatter.class.getSimpleName();
     private static final String FORMAT_YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
-    private static final String MMM_DD_YYYY = "MMM dd, yy";
+    private static final String MMM_DD_YYYY = "dd,MMM yy";
 
     public static String getTime(final long timestamp) {
         Logger.d(TAG, "getTime date: " + timestamp);

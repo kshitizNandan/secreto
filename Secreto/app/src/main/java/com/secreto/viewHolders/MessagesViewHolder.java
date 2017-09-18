@@ -1,7 +1,6 @@
 package com.secreto.viewHolders;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,7 +30,7 @@ public class MessagesViewHolder extends BaseViewHolder {
     TextView tv_time;
     @BindView(R.id.tvClue)
     TextView tv_clue;
-    @BindView(R.id.imgReply)
+    @BindView(R.id.ivReply)
     ImageView img_reply;
     @BindView(R.id.llMessageItem)
     LinearLayout cardMessageItem;

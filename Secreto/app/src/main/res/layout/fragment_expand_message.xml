@@ -72,16 +72,19 @@
         <View style="@style/SeparatorStyle" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="3">
 
-            <ImageButton
-                android:id="@+id/imgReply"
-                android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/ivReply"
+                style="@style/RippleEffect"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_size_5"
-                android:background="@drawable/reply_icon" />
+                android:layout_weight="1"
+                android:padding="@dimen/dimen_size_10"
+                android:src="@drawable/reply" />
 
             <View
                 android:id="@+id/viewReply"
@@ -89,24 +92,28 @@
                 android:layout_height="match_parent"
                 android:background="@color/gray" />
 
-            <ImageButton
-                android:id="@+id/imgDelete"
-                android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/ivDelete"
+                style="@style/RippleEffect"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_size_5"
-                android:background="@drawable/reply_icon" />
+                android:layout_weight="1"
+                android:padding="@dimen/dimen_size_10"
+                android:src="@drawable/delete" />
 
             <View
                 android:layout_width="@dimen/dimen_size_1"
                 android:layout_height="match_parent"
                 android:background="@color/gray" />
 
-            <ImageButton
-                android:id="@+id/imgShare"
-                android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/ivShare"
+                style="@style/RippleEffect"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_size_5"
-                android:background="@drawable/reply_icon" />
+                android:layout_weight="1"
+                android:padding="@dimen/dimen_size_10"
+                android:src="@drawable/share" />
         </LinearLayout>
 
         <View style="@style/SeparatorStyle" />
