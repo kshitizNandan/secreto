@@ -2,22 +2,32 @@ package com.secreto.fragments;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.secreto.R;
 import com.secreto.activities.CreateMessageActivity;
 import com.secreto.activities.ProfileActivity;
+import com.secreto.common.Common;
 import com.secreto.common.Constants;
 import com.secreto.common.MyApplication;
+import com.secreto.data.DataManager;
+import com.secreto.data.volley.ResultListenerNG;
 import com.secreto.model.Message;
 import com.secreto.model.MessageAndUserResponse;
+import com.secreto.responsemodel.BaseResponse;
 import com.secreto.utils.DateFormatter;
 
 import java.util.Locale;
@@ -29,10 +39,11 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
     private TextView tv_message;
     private TextView tv_time;
     private TextView tv_clue;
-    private ImageButton ivReply;
+    private ImageButton ivReply, imgDelete;
     private ProgressDialog progressDialog;
     private MessageAndUserResponse response;
     private View viewReply;
+    private AlertDialog deleteDialog;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -58,6 +69,7 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
     private void setListeners() {
         tv_clue.setOnClickListener(this);
         ivReply.setOnClickListener(this);
+        imgDelete.setOnClickListener(this);
     }
 
     private void initViews(Dialog dialog) {
@@ -69,6 +81,7 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
         tv_clue = (TextView) dialog.findViewById(R.id.tvClue);
         ivReply = (ImageButton) dialog.findViewById(R.id.imgReply);
         viewReply = dialog.findViewById(R.id.viewReply);
+        imgDelete = (ImageButton) dialog.findViewById(R.id.imgDelete);
     }
 
     private void setViews() {
@@ -114,7 +127,61 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
                     getActivity().overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
                 }
                 break;
+            case R.id.imgDelete:
+                if (response.getMessage() != null) {
+                    if (deleteDialog == null) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                                .setTitle(getString(R.string.app_name))
+                                .setMessage(getString(R.string.are_you_sure_you_want_to_delete_this_message))
+                                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        dialog.dismiss();
+                                        deleteMessage();
+                                    }
+
+                                })
+                                .setNegativeButton(getString(R.string.no), null);
+                        deleteDialog = builder.create();
+                    }
+                    deleteDialog.show();
+                }
         }
+    }
+
+    private void deleteMessage() {
+        if (Common.isOnline(getActivity())) {
+            progressDialog.show();
+            DataManager.getInstance().deleteMessageApiCall(response.getMessage().getMessageId(), response.getMessageType(), new ResultListenerNG<BaseResponse>() {
+                @Override
+                public void onSuccess(BaseResponse response) {
+                    progressDialog.dismiss();
+                    if (!TextUtils.isEmpty(response.getMessage())) {
+                        Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    sendBroadcastMessage();
+                    dismiss();
+                }
+
+                @Override
+                public void onError(VolleyError error) {
+                    progressDialog.dismiss();
+                    BaseResponse statusMessage = Common.getStatusMessage(error);
+                    if (statusMessage == null || TextUtils.isEmpty(statusMessage.getMessage())) {
+                        Toast.makeText(getActivity(), R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), statusMessage.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(getActivity(), R.string.check_your_internet_connection, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Send Broadcast to My Events
+    private void sendBroadcastMessage() {
+        Intent intent = new Intent(Constants.REFRESH_LIST_BROADCAST);
+        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
     }
 
     @Override
