@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,8 +48,6 @@ public class EditProfileActivity extends ImagePickerActivity {
     TextView tvChangePass;
     @BindView(R.id.etName)
     EditText etName;
-    @BindView(R.id.etMobile)
-    EditText etMobile;
     @BindView(R.id.btnUpdateAccount)
     TextView btnUpdateAccount;
     @BindView(R.id.etUserName)
@@ -59,8 +58,6 @@ public class EditProfileActivity extends ImagePickerActivity {
     ImageView iv_profileImg;
     @BindView(R.id.input_layout_name_editText)
     TextInputLayout textInputLayoutName;
-    @BindView(R.id.input_layout_mobile_editText)
-    TextInputLayout textInputLayoutMobile;
     @BindView(R.id.input_layout_userName_editText)
     TextInputLayout textInputLayoutuserName;
     @BindView(R.id.etGender)
@@ -97,15 +94,14 @@ public class EditProfileActivity extends ImagePickerActivity {
         User user = SharedPreferenceManager.getUserObject();
         if (user != null) {
             etName.setText(user.getName());
-            etGender.setText(user.getGender());
-            String[] genders = getResources().getStringArray(R.array.gender_types);
+            String[] genders = getResources().getStringArray(R.array.gender_types_enum);
             for (int i = 0; i < genders.length; i++) {
                 if (genders[i].equalsIgnoreCase(user.getGender())) {
                     genderSelection = i;
+                    etGender.setText(genders[i]);
                     break;
                 }
             }
-            etMobile.setText(user.getContact());
             etUserName.setText(user.getUserName());
             etEmail.setText(user.getEmail());
             tv_status.setText(user.getCaption());
@@ -133,9 +129,7 @@ public class EditProfileActivity extends ImagePickerActivity {
                     case R.id.etUserName:
                         textInputLayoutuserName.setError("");
                         break;
-                    case R.id.etMobile:
-                        textInputLayoutMobile.setError("");
-                        break;
+
 
                 }
             }
@@ -143,7 +137,7 @@ public class EditProfileActivity extends ImagePickerActivity {
         etName.addTextChangedListener(new GenericTextWatcher(etName));
         etUserName.addTextChangedListener(new GenericTextWatcher(etUserName));
         etEmail.addTextChangedListener(new GenericTextWatcher(etEmail));
-        etMobile.addTextChangedListener(new GenericTextWatcher(etMobile));
+
     }
 
     @Override
@@ -163,7 +157,7 @@ public class EditProfileActivity extends ImagePickerActivity {
 
     @OnClick(R.id.etGender)
     void genderSelctionDialog() {
-        final CharSequence[] charSequences = getResources().getStringArray(R.array.gender_types);
+        final CharSequence[] charSequences = getResources().getStringArray(R.array.gender_types_enum);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.select_gender)).
                         setSingleChoiceItems(charSequences, genderSelection, new DialogInterface.OnClickListener() {
@@ -187,7 +181,6 @@ public class EditProfileActivity extends ImagePickerActivity {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.change_status_dialog, null);
         final EditText et_status = (EditText) contentView.findViewById(R.id.et_status);
-        et_status.setText(!TextUtils.isEmpty(tv_status.getText()) ? tv_status.getText().toString() : "");
         final TextInputLayout input_layout_status = (TextInputLayout) contentView.findViewById(R.id.input_layout_status);
         final Dialog dialog = new Dialog(this, R.style.dialog_style);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -247,7 +240,36 @@ public class EditProfileActivity extends ImagePickerActivity {
         if (dialog.getWindow() != null) {
             dialog.setCancelable(false);
             dialog.show();
-
+            et_oldPass.addTextChangedListener(new TextWatcherMediator(et_oldPass) {
+                @Override
+                public void afterTextChanged(Editable s) {
+                    String result = s.toString().replaceAll(" ", "");
+                    if (!s.toString().equals(result)) {
+                        et_oldPass.setText(result);
+                        et_oldPass.setSelection(result.length());
+                    }
+                }
+            });
+            et_newPass.addTextChangedListener(new TextWatcherMediator(et_newPass) {
+                @Override
+                public void afterTextChanged(Editable s) {
+                    String result = s.toString().replaceAll(" ", "");
+                    if (!s.toString().equals(result)) {
+                        et_newPass.setText(result);
+                        et_newPass.setSelection(result.length());
+                    }
+                }
+            });
+            et_confirmPass.addTextChangedListener(new TextWatcherMediator(et_confirmPass) {
+                @Override
+                public void afterTextChanged(Editable s) {
+                    String result = s.toString().replaceAll(" ", "");
+                    if (!s.toString().equals(result)) {
+                        et_confirmPass.setText(result);
+                        et_confirmPass.setSelection(result.length());
+                    }
+                }
+            });
             View.OnClickListener onClickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -314,20 +336,17 @@ public class EditProfileActivity extends ImagePickerActivity {
     @OnClick(R.id.btnUpdateAccount)
     void updateProfile() {
         String name = etName.getText().toString();
-        String mobile = etMobile.getText().toString().trim();
-        String gender = etGender.getText().toString().trim();
+        String gender = etGender.getText().toString().trim().toUpperCase();
         String userName = etUserName.getText().toString().trim();
         String status = tv_status.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
             textInputLayoutName.setError(getString(R.string.nick_name_can_not_be_left_blank));
         } else if (TextUtils.isEmpty(userName)) {
             textInputLayoutuserName.setError(getString(R.string.user_name_can_not_be_left_blank));
-        } else if (!TextUtils.isEmpty(mobile) && mobile.length() < 10) {
-            textInputLayoutName.setError(getString(R.string.mobile_phone_number_should_be_of_10_digits));
         } else {
             if (Common.isOnline(this)) {
                 progressDialog.show();
-                DataManager.getInstance().updateProfile(name, userName, mobile, gender, status, new ResultListenerNG<UserResponse>() {
+                DataManager.getInstance().updateProfile(name, userName, "", gender, status, new ResultListenerNG<UserResponse>() {
                     @Override
                     public void onSuccess(UserResponse response) {
                         Logger.d(TAG, "Profile update onSuccess : " + response);
