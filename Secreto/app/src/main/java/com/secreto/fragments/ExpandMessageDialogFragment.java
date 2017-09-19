@@ -2,6 +2,7 @@ package com.secreto.fragments;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.IntentService;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,7 +12,9 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -205,37 +208,17 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
 
     private void persistImage() {
         RelativeLayout rlMain = (RelativeLayout) dialog.findViewById(R.id.rlMain);
-        llButtons.setVisibility(View.GONE);
         rlMain.setDrawingCacheEnabled(true);
         rlMain.buildDrawingCache();
         Bitmap bitmap = rlMain.getDrawingCache();
-        File mediaDir;
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            mediaDir = new File(SDCardHandler.IMAGE_STORAGE_PATH);
-        } else {
-            mediaDir = new File(getActivity().getFilesDir(), Constants.APP_NAME);
-        }
-        if (!mediaDir.exists()) {
-            mediaDir.mkdirs();
-        }
-        File imageFile = new File(mediaDir, System.currentTimeMillis() + ".jpg");
-        OutputStream os;
-        try {
-            os = new FileOutputStream(imageFile);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
-            // Share image
-            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-            sharingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-            sharingIntent.setType("image/*");
-            sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(imageFile.getAbsolutePath()));
-            startActivity(Intent.createChooser(sharingIntent, "Share Image Using"));
-            os.flush();
-            os.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            llButtons.setVisibility(View.VISIBLE);
-        }
+
+        String pathofBmp = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, getString(R.string.app_name), null);
+        Uri bmpUri = Uri.parse(pathofBmp);
+        final Intent intent1 = new Intent(android.content.Intent.ACTION_SEND);
+        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent1.putExtra(Intent.EXTRA_STREAM, bmpUri);
+        intent1.setType("image/*");
+        startActivity(Intent.createChooser(intent1, getString(R.string.share_message_using)));
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

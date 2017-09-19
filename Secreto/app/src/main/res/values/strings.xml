@@ -142,4 +142,8 @@
     <string name="no">no</string>
     <string name="anonymous_sender">Anonymous Sender</string>
     <string name="signing_up">Signing up…</string>
+    <string name="share_message_using">Share Message Using</string>
+    <string name="delete">delete</string>
+    <string name="reply">Reply</string>
+    <string name="share">Share</string>
 </resources>

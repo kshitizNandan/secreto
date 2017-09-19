@@ -1,17 +1,27 @@
 package com.secreto.fragments;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -19,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.android.volley.VolleyError;
@@ -39,17 +50,22 @@ import com.secreto.utils.LoginLogoutHandler;
 import com.secreto.widgets.CircleTransform;
 import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.content.Context.SYSTEM_HEALTH_SERVICE;
 import static com.secreto.activities.HomeActivity.RC_SEND_MESSAGE;
 
 
-public class SentReceivedMessagesFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
+public class SentReceivedMessagesFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener, PopupMenu.OnMenuItemClickListener {
     public static final String TAG = SentReceivedMessagesFragment.class.getSimpleName();
+    private static final String[] PERMISSIONS = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private static final int PERMISSION_ALL = 500;
     @BindView(R.id.llForOfflineScreen)
     LinearLayout llForOfflineScreen;
     @BindView(R.id.rlForLoadingScreen)
@@ -221,23 +237,23 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ivMenu:
-//                if (view.getTag() != null && view.getTag() instanceof MessageAndUserResponse) {
-//                    User user = (User) view.getTag();
-//                    CreateMessageActivity.startActivityForResult(getActivity(), user, TAG, RC_SEND_MESSAGE);
-//                    getActivity().overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
-//
-//                }
-                View menuItemView = getActivity().findViewById(R.id.ivMenu);
-                PopupMenu popupMenu = new PopupMenu(getActivity(), menuItemView);
-                popupMenu.inflate(R.menu.message_menu); popupMenu.show();
-//                if (view.getTag() != null && view.getTag() instanceof MessageAndUserResponse) {
-//                    MessageAndUserResponse response = (MessageAndUserResponse) view.getTag();
-//                    ExpandMessageDialogFragment expandMessageDialogFragment = new ExpandMessageDialogFragment();
-//                    Bundle args = new Bundle();
-//                    args.putSerializable(Constants.MESSAGE_AND_USER_RESPONSE, response);
-//                    expandMessageDialogFragment.setArguments(args);
-//                    expandMessageDialogFragment.show(getActivity().getSupportFragmentManager(), "");
-//                }
+                PopupMenu popupMenu = new PopupMenu(getActivity(), view);
+                popupMenu.inflate(R.menu.message_menu);
+                try {
+                    Field fieldPopup = popupMenu.getClass().getDeclaredField("mPopup");
+                    fieldPopup.setAccessible(true);
+                    MenuPopupHelper mPopup = (MenuPopupHelper) fieldPopup.get(popupMenu);
+                    mPopup.setForceShowIcon(true);
+                } catch (Exception e) {
+                    Log.e(TAG, "Exception");
+                }
+                popupMenu.show();
+                if (messageType.equalsIgnoreCase(Constants.SENT)) {
+                    popupMenu.getMenu().findItem(R.id.actionReply).setVisible(false);
+                } else {
+                    popupMenu.getMenu().findItem(R.id.actionReply).setVisible(true);
+                }
+                popupMenu.setOnMenuItemClickListener(this);
                 break;
             case R.id.tvClue:
                 if (view.getTag() != null && view.getTag() instanceof User) {
@@ -291,14 +307,57 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
 
     @Override
     public boolean onLongClick(View v) {
-//        if (v.getTag() != null && v.getTag() instanceof MessageAndUserResponse) {
-//            MessageAndUserResponse response = (MessageAndUserResponse) v.getTag();
-//            ExpandMessageDialogFragment expandMessageDialogFragment = new ExpandMessageDialogFragment();
-//            Bundle args = new Bundle();
-//            args.putSerializable(Constants.MESSAGE_AND_USER_RESPONSE, response);
-//            expandMessageDialogFragment.setArguments(args);
-//            expandMessageDialogFragment.show(getActivity().getSupportFragmentManager(), "");
-//        }
         return true;
     }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actionReply:
+                break;
+            case R.id.actionDelete:
+                break;
+            case R.id.actionShare:
+                requestPermissions(PERMISSIONS, PERMISSION_ALL);
+                break;
+        }
+        return false;
+    }
+
+    private void persistImage() {
+        LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = layoutInflater.inflate(R.layout.message_item, null);
+//        RelativeLayout rlMain = (RelativeLayout) findViewById(R.id.rlMain);
+        view.setDrawingCacheEnabled(true);
+        view.buildDrawingCache();
+        Bitmap bitmap = view.getDrawingCache();
+
+        String pathofBmp = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, getString(R.string.app_name), null);
+        Uri bmpUri = Uri.parse(pathofBmp);
+        final Intent intent1 = new Intent(android.content.Intent.ACTION_SEND);
+        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent1.putExtra(Intent.EXTRA_STREAM, bmpUri);
+        intent1.setType("image/*");
+        startActivity(Intent.createChooser(intent1, getString(R.string.share_message_using)));
+    }
+
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        boolean isPermissionGranted = true;
+        switch (requestCode) {
+            case PERMISSION_ALL:
+                for (int i : grantResults) {
+                    if (i != PackageManager.PERMISSION_GRANTED) {
+                        isPermissionGranted = false;
+                        break;
+                    }
+                }
+                break;
+        }
+        if (isPermissionGranted) {
+            persistImage();
+        } else {
+            Toast.makeText(getActivity(), R.string.permission_denied, Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

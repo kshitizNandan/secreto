@@ -1,20 +1,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/one"
+        android:id="@+id/actionReply"
         android:icon="@drawable/reply"
-        android:title="aa"
+        android:title="@string/reply"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/two"
+        android:id="@+id/actionDelete"
         android:icon="@drawable/delete"
-        android:title="ss"
+        android:title="@string/delete"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/three"
+        android:id="@+id/actionShare"
         android:icon="@drawable/share"
-        android:title="sss"
+        android:title="@string/share"
         app:showAsAction="always" />
 </menu>
