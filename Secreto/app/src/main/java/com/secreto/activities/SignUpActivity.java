@@ -98,7 +98,7 @@ public class SignUpActivity extends ImagePickerActivity {
         ButterKnife.bind(this);
         init();
         setTextWatcher();
-        //to remove password 
+        //to remove password
         etPassword.addTextChangedListener(new TextWatcherMediator(etPassword) {
             @Override
             public void afterTextChanged(Editable s) {
@@ -224,6 +224,7 @@ public class SignUpActivity extends ImagePickerActivity {
 
     @OnClick(R.id.btnCreateAccount)
     void onClickCreateAccount() {
+        Common.hideKeyboard(this, etConfirmPassword);
         String name = etName.getText().toString();
         String userName = etUserName.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
