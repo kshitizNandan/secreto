@@ -36,6 +36,7 @@
     <string name="email_id_can_not_be_left_blank">Email id/User Name can not be left blank</string>
     <string name="invalid_email_id_format">Invalid email format</string>
     <string name="logout">Logout</string>
+    <string name="signing_in">Signing in…</string>
 
     <!-- SignUpActivity -->
     <string name="sign_up">Sign Up</string>

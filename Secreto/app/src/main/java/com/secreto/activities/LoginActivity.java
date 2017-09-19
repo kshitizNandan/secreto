@@ -77,6 +77,7 @@ public class LoginActivity extends BaseActivityWithActionBar {
                 else SharedPreferenceManager.removeLoginCredentials();
 
                 progressDialog.show();
+                progressDialog.setMessage(getString(R.string.signing_in));
                 DataManager.getInstance().login(email, password, new ResultListenerNG<UserResponse>() {
                     @Override
                     public void onSuccess(UserResponse response) {

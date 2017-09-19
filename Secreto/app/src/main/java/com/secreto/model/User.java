@@ -32,6 +32,11 @@ public class User extends UserMedia implements Serializable {
         return userId;
     }
 
+    public User setUserId(String userId) {
+        this.userId = userId;
+        return this;
+    }
+
     public String getName() {
         return name;
     }
