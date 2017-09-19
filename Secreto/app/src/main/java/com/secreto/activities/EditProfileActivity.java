@@ -94,11 +94,11 @@ public class EditProfileActivity extends ImagePickerActivity {
         User user = SharedPreferenceManager.getUserObject();
         if (user != null) {
             etName.setText(user.getName());
-            etGender.setText(user.getGender());
-            String[] genders = getResources().getStringArray(R.array.gender_types);
+            String[] genders = getResources().getStringArray(R.array.gender_types_enum);
             for (int i = 0; i < genders.length; i++) {
                 if (genders[i].equalsIgnoreCase(user.getGender())) {
                     genderSelection = i;
+                    etGender.setText(genders[i]);
                     break;
                 }
             }
@@ -157,7 +157,7 @@ public class EditProfileActivity extends ImagePickerActivity {
 
     @OnClick(R.id.etGender)
     void genderSelctionDialog() {
-        final CharSequence[] charSequences = getResources().getStringArray(R.array.gender_types);
+        final CharSequence[] charSequences = getResources().getStringArray(R.array.gender_types_enum);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.select_gender)).
                         setSingleChoiceItems(charSequences, genderSelection, new DialogInterface.OnClickListener() {
@@ -336,7 +336,7 @@ public class EditProfileActivity extends ImagePickerActivity {
     @OnClick(R.id.btnUpdateAccount)
     void updateProfile() {
         String name = etName.getText().toString();
-        String gender = etGender.getText().toString().trim();
+        String gender = etGender.getText().toString().trim().toUpperCase();
         String userName = etUserName.getText().toString().trim();
         String status = tv_status.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {

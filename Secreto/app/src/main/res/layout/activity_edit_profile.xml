@@ -69,7 +69,7 @@
                     style="@style/DefaultEditTextStyle"
                     android:layout_marginTop="@dimen/dimen_size_20"
                     android:hint="@string/name"
-                    android:imeOptions="actionNext"
+                    android:imeOptions="actionDone"
                     android:inputType="textCapSentences" />
             </android.support.design.widget.TextInputLayout>
 
@@ -94,16 +94,22 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_userName_editText"
                 style="@style/TextInputLayoutStyle"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 app:errorEnabled="true"
                 app:hintEnabled="true">
 
                 <com.secreto.widgets.CustomFontEditText
                     android:id="@+id/etUserName"
                     style="@style/DefaultEditTextStyle"
-                    android:enabled="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:hint="@string/user_name"
                     android:imeOptions="actionNext"
                     android:inputType="textPersonName"
+                    android:textColor="@color/gray"
                     android:textIsSelectable="false" />
 
             </android.support.design.widget.TextInputLayout>
@@ -111,6 +117,9 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_email_editText"
                 style="@style/TextInputLayoutStyle"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 app:errorEnabled="true"
                 app:hintEnabled="true">
 
@@ -118,14 +127,15 @@
                     android:id="@+id/etEmail"
                     style="@style/DefaultEditTextStyle"
                     android:cursorVisible="false"
-                    android:enabled="false"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:hint="@string/email_id"
                     android:imeOptions="actionNext"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/gray" />
 
             </android.support.design.widget.TextInputLayout>
+
 
             <com.secreto.widgets.CustomFontTextView
                 android:id="@+id/tvChangePass"

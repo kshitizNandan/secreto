@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="gender_types">
-        <item>MALE</item>
-        <item>FEMALE</item>
-        <item>OTHER</item>
+    <string-array name="gender_types_enum">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
     </string-array>
     <string-array name="message_types">
         <item>Received</item>
