@@ -39,6 +39,7 @@ public class DataManager {
     private static final String URL_LOGOUT = BASE_SERVER_ADDRESS + "logout";
     private static final String URL_DELETE_MESSAGE = BASE_SERVER_ADDRESS + "deleteMessage";
     private static final String URL_DELETE_ACCOUNT = BASE_SERVER_ADDRESS + "deleteAccount";
+    private static final String URL_FEEDBACK = BASE_SERVER_ADDRESS + "feedback";
 
 
     private static DataManager singleton;
@@ -190,6 +191,6 @@ public class DataManager {
         HashMap<Object, Object> params = new HashMap<>();
         params.put(ApiConstants.FEEDBACK, feedback);
         params.put(ApiConstants.USER_ID, userId);
-        makeRequest(Request.Method.POST, URL_DELETE_ACCOUNT, params, BaseResponse.class, resultListenerNG);
+        makeRequest(Request.Method.POST, URL_FEEDBACK, params, BaseResponse.class, resultListenerNG);
     }
 }
