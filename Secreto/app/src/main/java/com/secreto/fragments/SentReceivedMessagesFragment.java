@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -226,14 +227,17 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
 //                    getActivity().overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
 //
 //                }
-                if (view.getTag() != null && view.getTag() instanceof MessageAndUserResponse) {
-                    MessageAndUserResponse response = (MessageAndUserResponse) view.getTag();
-                    ExpandMessageDialogFragment expandMessageDialogFragment = new ExpandMessageDialogFragment();
-                    Bundle args = new Bundle();
-                    args.putSerializable(Constants.MESSAGE_AND_USER_RESPONSE, response);
-                    expandMessageDialogFragment.setArguments(args);
-                    expandMessageDialogFragment.show(getActivity().getSupportFragmentManager(), "");
-                }
+                View menuItemView = getActivity().findViewById(R.id.ivMenu);
+                PopupMenu popupMenu = new PopupMenu(getActivity(), menuItemView);
+                popupMenu.inflate(R.menu.message_menu); popupMenu.show();
+//                if (view.getTag() != null && view.getTag() instanceof MessageAndUserResponse) {
+//                    MessageAndUserResponse response = (MessageAndUserResponse) view.getTag();
+//                    ExpandMessageDialogFragment expandMessageDialogFragment = new ExpandMessageDialogFragment();
+//                    Bundle args = new Bundle();
+//                    args.putSerializable(Constants.MESSAGE_AND_USER_RESPONSE, response);
+//                    expandMessageDialogFragment.setArguments(args);
+//                    expandMessageDialogFragment.show(getActivity().getSupportFragmentManager(), "");
+//                }
                 break;
             case R.id.tvClue:
                 if (view.getTag() != null && view.getTag() instanceof User) {
