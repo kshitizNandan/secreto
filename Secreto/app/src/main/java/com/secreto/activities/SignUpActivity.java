@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,8 +55,6 @@ public class SignUpActivity extends ImagePickerActivity {
     EditText etPassword;
     @BindView(R.id.etConfirmPassword)
     EditText etConfirmPassword;
-    @BindView(R.id.etMobile)
-    EditText etMobile;
     @BindView(R.id.tv_status)
     TextView tv_status;
     @BindView(R.id.cbTermsOfUse)
@@ -74,8 +73,6 @@ public class SignUpActivity extends ImagePickerActivity {
     TextInputLayout textInputLayoutPassword;
     @BindView(R.id.input_layout_confirmPass_editText)
     TextInputLayout textInputLayoutconfirmPass;
-    @BindView(R.id.input_layout_mobile_editText)
-    TextInputLayout textInputLayoutMobile;
     private AlertDialog registrationSuccessDialog;
     private File photoFile;
 
@@ -101,6 +98,27 @@ public class SignUpActivity extends ImagePickerActivity {
         ButterKnife.bind(this);
         init();
         setTextWatcher();
+        //to remove password 
+        etPassword.addTextChangedListener(new TextWatcherMediator(etPassword) {
+            @Override
+            public void afterTextChanged(Editable s) {
+                String result = s.toString().replaceAll(" ", "");
+                if (!s.toString().equals(result)) {
+                    etPassword.setText(result);
+                    etPassword.setSelection(result.length());
+                }
+            }
+        });
+        etConfirmPassword.addTextChangedListener(new TextWatcherMediator(etConfirmPassword) {
+            @Override
+            public void afterTextChanged(Editable s) {
+                String result = s.toString().replaceAll(" ", "");
+                if (!s.toString().equals(result)) {
+                    etPassword.setText(result);
+                    etPassword.setSelection(result.length());
+                }
+            }
+        });
     }
 
     private void init() {
@@ -141,10 +159,6 @@ public class SignUpActivity extends ImagePickerActivity {
                     case R.id.etConfirmPassword:
                         textInputLayoutconfirmPass.setError("");
                         break;
-                    case R.id.etMobile:
-                        textInputLayoutMobile.setError("");
-                        break;
-
                 }
             }
         }
@@ -153,7 +167,6 @@ public class SignUpActivity extends ImagePickerActivity {
         etEmail.addTextChangedListener(new GenericTextWatcher(etEmail));
         etPassword.addTextChangedListener(new GenericTextWatcher(etPassword));
         etConfirmPassword.addTextChangedListener(new GenericTextWatcher(etConfirmPassword));
-        etMobile.addTextChangedListener(new GenericTextWatcher(etMobile));
     }
 
     @OnClick(R.id.tv_status)
@@ -161,7 +174,6 @@ public class SignUpActivity extends ImagePickerActivity {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.change_status_dialog, null);
         final EditText et_status = (EditText) contentView.findViewById(R.id.et_status);
-        et_status.setText(!TextUtils.isEmpty(tv_status.getText()) ? tv_status.getText().toString() : "");
         final TextInputLayout input_layout_status = (TextInputLayout) contentView.findViewById(R.id.input_layout_status);
         final Dialog dialog = new Dialog(this, R.style.dialog_style);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -217,7 +229,6 @@ public class SignUpActivity extends ImagePickerActivity {
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         String confirmPassword = etConfirmPassword.getText().toString().trim();
-        String mobile = etMobile.getText().toString().trim();
         String status = tv_status.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
             textInputLayoutName.setError(getString(R.string.nick_name_can_not_be_left_blank));
@@ -233,14 +244,13 @@ public class SignUpActivity extends ImagePickerActivity {
             textInputLayoutconfirmPass.setError(getString(R.string.confirm_password_can_not_be_left_blank));
         } else if (!TextUtils.equals(password, confirmPassword)) {
             textInputLayoutconfirmPass.setError(getString(R.string.password_and_confirm_password_does_not_match));
-        } else if (!TextUtils.isEmpty(mobile) && mobile.length() < 10) {
-            textInputLayoutMobile.setError(getString(R.string.mobile_phone_number_should_be_of_10_digits));
         } else if (!cbTermsOfUse.isChecked()) {
             Toast.makeText(this, R.string.please_agree_to_terms_of_use, Toast.LENGTH_SHORT).show();
         } else {
             if (Common.isOnline(this)) {
+                progressDialog.setMessage(getString(R.string.signing_up));
                 progressDialog.show();
-                DataManager.getInstance().signUp(name, userName, email, password, mobile, status, new ResultListenerNG<UserResponse>() {
+                DataManager.getInstance().signUp(name, userName, email, password, "", status, new ResultListenerNG<UserResponse>() {
                     @Override
                     public void onSuccess(UserResponse response) {
                         Logger.d(TAG, "signUp onSuccess : " + response);
@@ -351,7 +361,7 @@ public class SignUpActivity extends ImagePickerActivity {
         Intent homeIntent = new Intent(this, HomeActivity.class);
         homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(homeIntent);
-        Common.hideKeyboard(this, etMobile);
+        Common.hideKeyboard(this, etConfirmPassword);
     }
 
 }

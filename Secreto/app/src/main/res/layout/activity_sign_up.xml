@@ -135,21 +135,6 @@
                     android:inputType="textPassword" />
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_mobile_editText"
-                style="@style/TextInputLayoutStyle"
-                app:errorEnabled="true"
-                app:hintEnabled="true">
-
-                <com.secreto.widgets.CustomFontEditText
-                    android:id="@+id/etMobile"
-                    style="@style/DefaultEditTextStyle"
-                    android:hint="@string/contact_number_optional"
-                    android:imeOptions="actionDone"
-                    android:inputType="phone"
-                    android:maxLength="10" />
-            </android.support.design.widget.TextInputLayout>
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

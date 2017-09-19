@@ -68,9 +68,9 @@
 
                 <com.secreto.widgets.CustomFontEditText
                     android:id="@+id/et_status"
+                    android:hint="@string/status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/status"
                     android:imeOptions="actionDone"
                     android:inputType="text"
                     android:textColor="@color/dark_gray"

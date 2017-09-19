@@ -67,7 +67,7 @@ public class LoginActivity extends BaseActivityWithActionBar {
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         if (TextUtils.isEmpty(email)) {
-            textInputLayoutEmail.setError(getString(R.string.email_id_can_not_be_left_blank));
+            textInputLayoutEmail.setError(getString(R.string.email_id_or_username_can_not_be_left_blank));
         } else if (TextUtils.isEmpty(password)) {
             textInputLayoutPassword.setError(getString(R.string.password_can_not_be_left_blank));
         } else {
