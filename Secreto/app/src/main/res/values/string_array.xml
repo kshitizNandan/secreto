@@ -3,9 +3,7 @@
     <string-array name="gender_types">
         <item>MALE</item>
         <item>FEMALE</item>
-        <item>BI-SEXUAL</item>
-        <item>LESBO</item>
-        <item>GAY</item>
+        <item>OTHER</item>
     </string-array>
     <string-array name="message_types">
         <item>Received</item>
