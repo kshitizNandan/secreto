@@ -77,7 +77,7 @@ public class ProfileActivity extends BaseActivityWithActionBar {
             }
             tv_name.setText(user.getName());
             tv_status.setText(user.getCaption());
-            tv_gender.setText(!TextUtils.isEmpty(user.getGender()) ? user.getGender() : "-");
+            tv_gender.setText(!TextUtils.isEmpty(user.getGender()) ? user.getGender().toLowerCase() : "-");
             tv_contact.setText(!TextUtils.isEmpty(user.getContact()) ? user.getContact() : "-");
             tv_userName.setText(user.getUserName());
             tv_emailId.setText(user.getEmail());

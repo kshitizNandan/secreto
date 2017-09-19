@@ -54,7 +54,7 @@
                     android:gravity="left"
                     android:text="@string/name"
                     android:textSize="@dimen/text_size_18"
-                    app:fontStyle="StylishfontRegular" />
+                    app:fontStyle="fontRegular" />
 
                 <com.secreto.widgets.CustomFontTextView
                     android:id="@+id/tv_name"
@@ -62,9 +62,10 @@
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/dimen_size_10"
                     android:layout_weight="1"
+                    android:gravity="left"
                     android:textColor="@color/half_black"
                     android:textSize="@dimen/text_size_18"
-                    app:fontStyle="StylishfontRegular" />
+                    app:fontStyle="fontRegular" />
             </LinearLayout>
 
 
@@ -83,7 +84,7 @@
                     android:gravity="left"
                     android:text="@string/gender"
                     android:textSize="@dimen/text_size_18"
-                    app:fontStyle="StylishfontRegular" />
+                    app:fontStyle="fontRegular" />
 
                 <com.secreto.widgets.CustomFontTextView
                     android:id="@+id/tv_gender"
@@ -91,9 +92,10 @@
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/dimen_size_10"
                     android:layout_weight="1"
+                    android:gravity="left"
                     android:textColor="@color/half_black"
                     android:textSize="@dimen/text_size_18"
-                    app:fontStyle="StylishfontRegular" />
+                    app:fontStyle="fontRegular" />
             </LinearLayout>
 
             <LinearLayout
@@ -101,6 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_size_10"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:weightSum="2">
 
                 <com.secreto.widgets.CustomFontTextView
@@ -139,7 +142,7 @@
                     android:gravity="left"
                     android:text="@string/user_name"
                     android:textSize="@dimen/text_size_18"
-                    app:fontStyle="StylishfontRegular" />
+                    app:fontStyle="fontRegular" />
 
                 <com.secreto.widgets.CustomFontTextView
                     android:id="@+id/tv_userName"
@@ -147,9 +150,10 @@
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/dimen_size_10"
                     android:layout_weight="1"
+                    android:gravity="left"
                     android:textColor="@color/half_black"
                     android:textSize="@dimen/text_size_18"
-                    app:fontStyle="StylishfontRegular" />
+                    app:fontStyle="fontRegular" />
             </LinearLayout>
 
             <LinearLayout
@@ -160,6 +164,7 @@
                 android:weightSum="2">
 
                 <com.secreto.widgets.CustomFontTextView
+                    android:id="@+id/customFontTextView"
                     style="@style/TextViewStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/dimen_size_10"
@@ -167,7 +172,7 @@
                     android:gravity="left"
                     android:text="@string/email_id"
                     android:textSize="@dimen/text_size_18"
-                    app:fontStyle="StylishfontRegular" />
+                    app:fontStyle="fontRegular" />
 
                 <com.secreto.widgets.CustomFontTextView
                     android:id="@+id/tv_emailId"
@@ -175,9 +180,10 @@
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/dimen_size_10"
                     android:layout_weight="1"
+                    android:gravity="left"
                     android:textColor="@color/half_black"
                     android:textSize="@dimen/text_size_18"
-                    app:fontStyle="StylishfontRegular" />
+                    app:fontStyle="fontRegular" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
