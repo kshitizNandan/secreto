@@ -66,6 +66,7 @@ public class HomeActivity extends BaseActivityWithActionBar {
         ButterKnife.bind(this);
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter(Constants.REFRESH_LIST_BROADCAST));
         initViews();
+        getIntentData();
     }
 
     @Override
@@ -121,6 +122,13 @@ public class HomeActivity extends BaseActivityWithActionBar {
                 overlayView.setVisibility(View.GONE);
             }
         });
+    }
+
+    private void getIntentData() {
+        String nav = getIntent().getStringExtra(Constants.NAVIGATION_FROM);
+        if (!TextUtils.isEmpty(nav) && nav.equalsIgnoreCase(CreateMessageActivity.TAG)) {
+            viewPager.setCurrentItem(1);
+        }
     }
 
     @Override

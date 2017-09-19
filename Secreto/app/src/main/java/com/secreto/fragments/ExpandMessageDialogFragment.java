@@ -36,6 +36,7 @@ import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
 import com.secreto.model.Message;
 import com.secreto.model.MessageAndUserResponse;
+import com.secreto.model.User;
 import com.secreto.responsemodel.BaseResponse;
 import com.secreto.utils.DateFormatter;
 import com.secreto.utils.SDCardHandler;
@@ -128,8 +129,8 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ivReply:
-                if (response != null && response.getUser() != null) {
-                    CreateMessageActivity.startActivityForResult(getActivity(), response.getUser(), TAG, RC_SEND_MESSAGE);
+                if (response != null && response.getMessage() != null) {
+                    CreateMessageActivity.startActivity(getActivity(), new User().setUserId(response.getMessage().getUserId()), SentReceivedMessagesFragment.TAG);
                     getActivity().overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
                 }
                 break;

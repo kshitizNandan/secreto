@@ -63,7 +63,7 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
         user = (User) getIntent().getSerializableExtra(Constants.USER);
         if (user != null) {
             this.userId = user.getUserId();
-            tvUserName.setText(user.getName());
+            tvUserName.setText(!TextUtils.isEmpty(user.getName()) ? user.getName() : "");
             iv_profileImg.setImageUrl(user.getProfile_pic(), ImageCacheManager.getInstance().getImageLoader());
         }
         allowCheckBox.setText(String.format(getString(R.string.allow_to_get_reply), user.getName()));
@@ -75,6 +75,15 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
         intent.putExtra(Constants.NAVIGATION_FROM, navFrom);
         activity.startActivityForResult(intent, REQUEST_CODE);
     }
+
+    public static void startActivity(Activity activity, User user, String navFrom) {
+        Intent intent = new Intent(activity, CreateMessageActivity.class);
+        intent.putExtra(Constants.USER, user);
+        intent.putExtra(Constants.NAVIGATION_FROM, navFrom);
+        activity.startActivity(intent);
+    }
+
+
 
     private void initView() {
         iv_profileImg.setDefaultImageResId(R.drawable.default_user);
@@ -118,7 +127,7 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
-                                startHomeScreen();
+                                startHomeScreen(TAG);
                             }
                         }, false);
                     }
@@ -140,9 +149,10 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
         }
     }
 
-    private void startHomeScreen() {
+    private void startHomeScreen(String tag) {
         Intent intent = new Intent(this, HomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(Constants.NAVIGATION_FROM, tag);
         startActivity(intent);
         overridePendingTransition(R.anim.in_from_left_animation, R.anim.out_from_right_animation);
         Common.hideKeyboard(mActivity, etMessage);

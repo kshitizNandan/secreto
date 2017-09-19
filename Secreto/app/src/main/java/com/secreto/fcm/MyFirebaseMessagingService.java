@@ -21,8 +21,6 @@ import com.secreto.common.Constants;
 import com.secreto.common.MyApplication;
 import com.secreto.common.SharedPreferenceManager;
 
-import org.json.JSONObject;
-
 import java.util.List;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -46,9 +44,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.v("", "inside app-");
             String classNameTag = HomeActivity.class.getName();
             Log.v(TAG, "classNameTag-->" + classNameTag);
-            if (className.equalsIgnoreCase(classNameTag)) {
-                sendBroadcastMessage();
-            } else {
+            if (!className.equalsIgnoreCase(classNameTag)) {
                 if (SharedPreferenceManager.getNotificationService()) // weather user turned off the notifications of not
                     showNotification(notification);
             }
@@ -69,11 +65,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher).setTicker(getResources().getString(R.string.app_name))
+                .setSmallIcon(R.mipmap.app_logo).setTicker(getResources().getString(R.string.app_name))
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher))
+                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.app_logo))
                 .setContentTitle(getString(R.string.app_name))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(!TextUtils.isEmpty(notification.getBody()) ? notification.getBody() : ""))
                 .setContentText(!TextUtils.isEmpty(notification.getBody()) ? notification.getBody() : "");
