@@ -8,10 +8,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.secreto.R;
+import com.secreto.common.Common;
 import com.secreto.common.Constants;
 import com.secreto.model.Message;
 import com.secreto.model.MessageAndUserResponse;
 import com.secreto.utils.DateFormatter;
+import com.secreto.utils.ExpandableTextView;
 
 import java.util.Locale;
 
@@ -25,13 +27,13 @@ import butterknife.ButterKnife;
 public class MessagesViewHolder extends BaseViewHolder {
     private final Context context;
     @BindView(R.id.tv_message)
-    TextView tv_message;
+    ExpandableTextView tv_message;
     @BindView(R.id.tv_time)
     TextView tv_time;
     @BindView(R.id.tvClue)
     TextView tv_clue;
-    @BindView(R.id.ivReply)
-    ImageView img_reply;
+    @BindView(R.id.ivMenu)
+    ImageView ivMenu;
     @BindView(R.id.llMessageItem)
     LinearLayout cardMessageItem;
     private String messageType;
@@ -42,7 +44,7 @@ public class MessagesViewHolder extends BaseViewHolder {
         super(itemView);
         this.context = itemView.getContext();
         ButterKnife.bind(this, itemView);
-        img_reply.setOnClickListener(onClickListener);
+        ivMenu.setOnClickListener(onClickListener);
         this.messageType = messageType;
         cardMessageItem.setOnLongClickListener(onLongClickListener);
         if (messageType.equalsIgnoreCase(Constants.SENT)) {
@@ -57,11 +59,10 @@ public class MessagesViewHolder extends BaseViewHolder {
         response.setMessageType(messageType);
         tv_message.setText(message.getMessage());
         tv_time.setText(DateFormatter.getTimeString(message.getCreatedDate()));
-        img_reply.setTag(response.getUser());
+        ivMenu.setTag(response);
         cardMessageItem.setTag(response);
         tv_clue.setTag(response.getUser());
         if (messageType.equalsIgnoreCase(Constants.SENT)) {
-            img_reply.setVisibility(View.GONE);
             if (response.getUser() != null && !TextUtils.isEmpty(response.getUser().getName()))
                 tv_clue.setText(String.format(Locale.ENGLISH, context.getString(R.string.to_x), response.getUser().getName()));
         } else {
@@ -70,11 +71,6 @@ public class MessagesViewHolder extends BaseViewHolder {
                 tv_clue.setText(message.getMessageClue());
             } else {
                 tv_clue.setVisibility(View.GONE);
-            }
-            if (message.getCanReply().equalsIgnoreCase("YES")) {
-                img_reply.setVisibility(View.VISIBLE);
-            } else {
-                img_reply.setVisibility(View.GONE);
             }
         }
     }

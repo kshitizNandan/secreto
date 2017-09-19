@@ -11,5 +11,8 @@
         <attr name="roundedCorner" format="boolean" />
         <attr name="roundedCornerDP" format="float" />
     </declare-styleable>
+    <declare-styleable name="ExpandableTextView">
+        <attr name="trimLength" format="integer" />
+    </declare-styleable>
 </resources>
 

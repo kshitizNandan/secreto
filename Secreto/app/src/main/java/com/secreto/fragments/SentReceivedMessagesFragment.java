@@ -219,12 +219,20 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.ivReply:
-                if (view.getTag() != null && view.getTag() instanceof User) {
-                    User user = (User) view.getTag();
-                    CreateMessageActivity.startActivityForResult(getActivity(), user, TAG, RC_SEND_MESSAGE);
-                    getActivity().overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
-
+            case R.id.ivMenu:
+//                if (view.getTag() != null && view.getTag() instanceof MessageAndUserResponse) {
+//                    User user = (User) view.getTag();
+//                    CreateMessageActivity.startActivityForResult(getActivity(), user, TAG, RC_SEND_MESSAGE);
+//                    getActivity().overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
+//
+//                }
+                if (view.getTag() != null && view.getTag() instanceof MessageAndUserResponse) {
+                    MessageAndUserResponse response = (MessageAndUserResponse) view.getTag();
+                    ExpandMessageDialogFragment expandMessageDialogFragment = new ExpandMessageDialogFragment();
+                    Bundle args = new Bundle();
+                    args.putSerializable(Constants.MESSAGE_AND_USER_RESPONSE, response);
+                    expandMessageDialogFragment.setArguments(args);
+                    expandMessageDialogFragment.show(getActivity().getSupportFragmentManager(), "");
                 }
                 break;
             case R.id.tvClue:
@@ -279,14 +287,14 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
 
     @Override
     public boolean onLongClick(View v) {
-        if (v.getTag() != null && v.getTag() instanceof MessageAndUserResponse) {
-            MessageAndUserResponse response = (MessageAndUserResponse) v.getTag();
-            ExpandMessageDialogFragment expandMessageDialogFragment = new ExpandMessageDialogFragment();
-            Bundle args = new Bundle();
-            args.putSerializable(Constants.MESSAGE_AND_USER_RESPONSE, response);
-            expandMessageDialogFragment.setArguments(args);
-            expandMessageDialogFragment.show(getActivity().getSupportFragmentManager(), "");
-        }
+//        if (v.getTag() != null && v.getTag() instanceof MessageAndUserResponse) {
+//            MessageAndUserResponse response = (MessageAndUserResponse) v.getTag();
+//            ExpandMessageDialogFragment expandMessageDialogFragment = new ExpandMessageDialogFragment();
+//            Bundle args = new Bundle();
+//            args.putSerializable(Constants.MESSAGE_AND_USER_RESPONSE, response);
+//            expandMessageDialogFragment.setArguments(args);
+//            expandMessageDialogFragment.show(getActivity().getSupportFragmentManager(), "");
+//        }
         return true;
     }
 }

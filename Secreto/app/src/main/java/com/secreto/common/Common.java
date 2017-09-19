@@ -14,14 +14,19 @@ import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Environment;
 import android.support.v7.app.AlertDialog;
+import android.text.Html;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -34,15 +39,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.secreto.R;
 import com.secreto.responsemodel.BaseResponse;
 import com.secreto.utils.Logger;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.text.NumberFormat;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -230,4 +232,5 @@ public class Common {
         }
 
     }
+
 }
