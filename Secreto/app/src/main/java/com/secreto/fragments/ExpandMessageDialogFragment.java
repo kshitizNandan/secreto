@@ -132,10 +132,7 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ivReply:
-                if (response != null && response.getMessage() != null) {
-                    CreateMessageActivity.startActivity(getActivity(), new User().setUserId(response.getMessage().getUserId()), SentReceivedMessagesFragment.TAG);
-                    getActivity().overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
-                }
+
                 break;
             case R.id.tvClue:
                 if (response != null && response.getUser() != null) {
@@ -145,23 +142,7 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
                 }
                 break;
             case R.id.ivDelete:
-                if (response.getMessage() != null) {
-                    if (deleteDialog == null) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                                .setTitle(getString(R.string.app_name))
-                                .setMessage(getString(R.string.are_you_sure_you_want_to_delete_this_message))
-                                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                        dialog.dismiss();
-                                        deleteMessage();
-                                    }
 
-                                })
-                                .setNegativeButton(getString(R.string.no), null);
-                        deleteDialog = builder.create();
-                    }
-                    deleteDialog.show();
-                }
                 break;
             case R.id.ivShare:
                 requestPermissions(PERMISSIONS, PERMISSION_ALL);
@@ -169,35 +150,6 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
         }
     }
 
-    private void deleteMessage() {
-        if (Common.isOnline(getActivity())) {
-            progressDialog.show();
-            DataManager.getInstance().deleteMessageApiCall(response.getMessage().getMessageId(), response.getMessageType(), new ResultListenerNG<BaseResponse>() {
-                @Override
-                public void onSuccess(BaseResponse response) {
-                    progressDialog.dismiss();
-                    if (!TextUtils.isEmpty(response.getMessage())) {
-                        Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                    sendBroadcastMessage();
-                    dismiss();
-                }
-
-                @Override
-                public void onError(VolleyError error) {
-                    progressDialog.dismiss();
-                    BaseResponse statusMessage = Common.getStatusMessage(error);
-                    if (statusMessage == null || TextUtils.isEmpty(statusMessage.getMessage())) {
-                        Toast.makeText(getActivity(), R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getActivity(), statusMessage.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        } else {
-            Toast.makeText(getActivity(), R.string.check_your_internet_connection, Toast.LENGTH_SHORT).show();
-        }
-    }
 
     // Send Broadcast to My Events
     private void sendBroadcastMessage() {
@@ -240,10 +192,5 @@ public class ExpandMessageDialogFragment extends DialogFragment implements View.
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
+
 }

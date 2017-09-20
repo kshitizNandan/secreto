@@ -2,7 +2,9 @@ package com.secreto.fragments;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -14,6 +16,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -82,11 +85,16 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
     SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.rl_progressBar)
     RelativeLayout rl_progressBar;
+    @BindView(R.id.llTest)
+    LinearLayout llTest;
     private int offset;
     private boolean isLoading;
     private String messageType;
     private SentOrReceivedMessagesRecyclerAdapter nAdapter;
+    private MessageAndUserResponse response;
     private ArrayList<Object> objectArrayList = new ArrayList<>();
+    private AlertDialog deleteDialog;
+    private ProgressDialog progressDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -115,6 +123,9 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
     }
 
     private void init() {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage(getString(R.string.please_wait));
+        progressDialog.setCancelable(false);
         swipeRefresh.setColorSchemeResources(R.color.colorPrimaryDark);
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -237,23 +248,26 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ivMenu:
-                PopupMenu popupMenu = new PopupMenu(getActivity(), view);
-                popupMenu.inflate(R.menu.message_menu);
-                try {
-                    Field fieldPopup = popupMenu.getClass().getDeclaredField("mPopup");
-                    fieldPopup.setAccessible(true);
-                    MenuPopupHelper mPopup = (MenuPopupHelper) fieldPopup.get(popupMenu);
-                    mPopup.setForceShowIcon(true);
-                } catch (Exception e) {
-                    Log.e(TAG, "Exception");
+                if (view.getTag() != null && view.getTag() instanceof MessageAndUserResponse) {
+                    response = (MessageAndUserResponse) view.getTag();
+                    PopupMenu popupMenu = new PopupMenu(getActivity(), view);
+                    popupMenu.inflate(R.menu.message_menu);
+                    try {
+                        Field fieldPopup = popupMenu.getClass().getDeclaredField("mPopup");
+                        fieldPopup.setAccessible(true);
+                        MenuPopupHelper mPopup = (MenuPopupHelper) fieldPopup.get(popupMenu);
+                        mPopup.setForceShowIcon(true);
+                    } catch (Exception e) {
+                        Log.e(TAG, "Exception");
+                    }
+                    popupMenu.show();
+                    if (messageType.equalsIgnoreCase(Constants.SENT)) {
+                        popupMenu.getMenu().findItem(R.id.actionReply).setVisible(false);
+                    } else {
+                        popupMenu.getMenu().findItem(R.id.actionReply).setVisible(true);
+                    }
+                    popupMenu.setOnMenuItemClickListener(this);
                 }
-                popupMenu.show();
-                if (messageType.equalsIgnoreCase(Constants.SENT)) {
-                    popupMenu.getMenu().findItem(R.id.actionReply).setVisible(false);
-                } else {
-                    popupMenu.getMenu().findItem(R.id.actionReply).setVisible(true);
-                }
-                popupMenu.setOnMenuItemClickListener(this);
                 break;
             case R.id.tvClue:
                 if (view.getTag() != null && view.getTag() instanceof User) {
@@ -265,57 +279,33 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
         }
     }
 
-    boolean showOptionsDialog() {
-        final Dialog dialog = new Dialog(getActivity(), R.style.dialog_style);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = inflater.inflate(R.layout.custom_logout_dilaog, null);
-        dialog.setContentView(contentView);
-        dialog.setCancelable(false);
-        dialog.show();
-
-        User user = SharedPreferenceManager.getUserObject();
-        if (user != null) {
-            ((TextView) contentView.findViewById(R.id.tv_name)).setText(user.getName());
-            ((TextView) contentView.findViewById(R.id.tv_status)).setText(user.getCaption());
-            ImageView iv_profileImg = (ImageView) contentView.findViewById(R.id.iv_profileImg);
-            if (!TextUtils.isEmpty(user.getProfile_pic())) {
-                int size = Common.dipToPixel(getActivity(), 40);
-                Picasso.with(getActivity()).load(user.getProfile_pic()).transform(new CircleTransform()).resize(size, size).placeholder(R.drawable.default_user).into(iv_profileImg);
-            } else {
-                iv_profileImg.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.default_user));
-            }
-
-        }
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.iv_cross:
-                        dialog.dismiss();
-                        break;
-                    case R.id.tv_logout:
-                        LoginLogoutHandler.logoutUserWithConfirm(getActivity());
-                        break;
-                }
-            }
-        };
-        contentView.findViewById(R.id.iv_cross).setOnClickListener(listener);
-        contentView.findViewById(R.id.tv_logout).setOnClickListener(listener);
-        return true;
-    }
-
-    @Override
-    public boolean onLongClick(View v) {
-        return true;
-    }
-
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionReply:
+                if (response != null && response.getMessage() != null) {
+                    CreateMessageActivity.startActivity(getActivity(), new User().setUserId(response.getMessage().getUserId()), SentReceivedMessagesFragment.TAG);
+                    getActivity().overridePendingTransition(R.anim.in_from_right_animation, R.anim.out_from_left_animation);
+                }
                 break;
             case R.id.actionDelete:
+                if (response.getMessage() != null) {
+                    if (deleteDialog == null) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                                .setTitle(getString(R.string.app_name))
+                                .setMessage(getString(R.string.are_you_sure_you_want_to_delete_this_message))
+                                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        dialog.dismiss();
+                                        deleteMessage();
+                                    }
+
+                                })
+                                .setNegativeButton(getString(R.string.no), null);
+                        deleteDialog = builder.create();
+                    }
+                    deleteDialog.show();
+                }
                 break;
             case R.id.actionShare:
                 requestPermissions(PERMISSIONS, PERMISSION_ALL);
@@ -325,12 +315,11 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
     }
 
     private void persistImage() {
-        LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = layoutInflater.inflate(R.layout.message_item, null);
-//        RelativeLayout rlMain = (RelativeLayout) findViewById(R.id.rlMain);
-        view.setDrawingCacheEnabled(true);
-        view.buildDrawingCache();
-        Bitmap bitmap = view.getDrawingCache();
+//        LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View view = layoutInflater.inflate(R.layout.test, null);
+        llTest.setDrawingCacheEnabled(true);
+        llTest.buildDrawingCache();
+        Bitmap bitmap = llTest.getDrawingCache();
 
         String pathofBmp = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, getString(R.string.app_name), null);
         Uri bmpUri = Uri.parse(pathofBmp);
@@ -360,4 +349,44 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
         }
     }
 
+    private void deleteMessage() {
+        if (Common.isOnline(getActivity())) {
+            progressDialog.show();
+            DataManager.getInstance().deleteMessageApiCall(response.getMessage().getMessageId(), response.getMessageType(), new ResultListenerNG<BaseResponse>() {
+                @Override
+                public void onSuccess(BaseResponse response) {
+                    progressDialog.dismiss();
+                    if (!TextUtils.isEmpty(response.getMessage())) {
+                        Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    refreshList();
+                }
+
+                @Override
+                public void onError(VolleyError error) {
+                    progressDialog.dismiss();
+                    BaseResponse statusMessage = Common.getStatusMessage(error);
+                    if (statusMessage == null || TextUtils.isEmpty(statusMessage.getMessage())) {
+                        Toast.makeText(getActivity(), R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), statusMessage.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(getActivity(), R.string.check_your_internet_connection, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (progressDialog != null && progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        return false;
+    }
 }
