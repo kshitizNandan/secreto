@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.menu.MenuPopupHelper;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -72,7 +73,7 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
     SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.rl_progressBar)
     RelativeLayout rl_progressBar;
-    LinearLayout layout;
+    private LinearLayout layout;
 
     private int offset;
     private boolean isLoading;
@@ -236,7 +237,7 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
         switch (view.getId()) {
             case R.id.ivMenu:
                 if (view.getTag() != null && view.getTag() instanceof MessageAndUserResponse) {
-                    layout= (LinearLayout) view.getParent();
+                    layout = (LinearLayout) view.getParent();
                     response = (MessageAndUserResponse) view.getTag();
                     PopupMenu popupMenu = new PopupMenu(getActivity(), view);
                     popupMenu.inflate(R.menu.message_menu);

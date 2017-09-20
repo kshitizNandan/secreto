@@ -40,6 +40,7 @@
                     android:textSize="@dimen/text_size_16" />
 
                 <ImageView
+                    android:paddingLeft="@dimen/dimen_size_10"
                     android:id="@+id/ivMenu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
