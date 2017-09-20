@@ -181,15 +181,6 @@ public class Common {
         sendIntent.putExtra(Intent.EXTRA_TEXT, "http://rajanpatelmakeupartist.com/secreto/" + SharedPreferenceManager.getUserObject().getUserName());
         context.startActivity(Intent.createChooser(sendIntent, "Share link!"));
     }
-
-    public static void shareImage(Context context, File file) {
-        Intent share = new Intent(Intent.ACTION_SEND);
-        share.setType("text/plain");
-        Uri uri = Uri.parse(file.getAbsolutePath());
-        share.putExtra(Intent.EXTRA_TEXT, uri);
-        context.startActivity(Intent.createChooser(share, "Share Image!"));
-    }
-
     public Bitmap drawTextToBitmap(Context mContext, int resourceId, String mText) {
         try {
             Resources resources = mContext.getResources();
@@ -226,8 +217,6 @@ public class Common {
             return bitmap;
         } catch (Exception e) {
             // TODO: handle exception
-
-
             return null;
         }
 

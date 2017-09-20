@@ -39,7 +39,6 @@ import com.secreto.common.Common;
 import com.secreto.common.Constants;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
-import com.secreto.interfaces.ISetShareingMessageView;
 import com.secreto.model.MessageAndUserResponse;
 import com.secreto.model.User;
 import com.secreto.responsemodel.BaseResponse;
@@ -53,9 +52,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class SentReceivedMessagesFragment extends Fragment implements View.OnClickListener, PopupMenu.OnMenuItemClickListener, ISetShareingMessageView {
+public class SentReceivedMessagesFragment extends Fragment implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
     public static final String TAG = SentReceivedMessagesFragment.class.getSimpleName();
-    private static final String[] PERMISSIONS = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private static final String[] PERMISSIONS = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
     private static final int PERMISSION_ALL = 500;
     @BindView(R.id.llForOfflineScreen)
     LinearLayout llForOfflineScreen;
@@ -73,6 +72,8 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
     SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.rl_progressBar)
     RelativeLayout rl_progressBar;
+    LinearLayout layout;
+
     private int offset;
     private boolean isLoading;
     private String messageType;
@@ -81,7 +82,6 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
     private ArrayList<Object> objectArrayList = new ArrayList<>();
     private AlertDialog deleteDialog;
     private ProgressDialog progressDialog;
-    private View messageView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -126,7 +126,7 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
     private void setRecyclerAdapter() {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-        nAdapter = new SentOrReceivedMessagesRecyclerAdapter(objectArrayList, this, messageType, this);
+        nAdapter = new SentOrReceivedMessagesRecyclerAdapter(objectArrayList, this, messageType);
         recyclerView.setAdapter(nAdapter);
 
         // Load More
@@ -236,6 +236,7 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
         switch (view.getId()) {
             case R.id.ivMenu:
                 if (view.getTag() != null && view.getTag() instanceof MessageAndUserResponse) {
+                    layout= (LinearLayout) view.getParent();
                     response = (MessageAndUserResponse) view.getTag();
                     PopupMenu popupMenu = new PopupMenu(getActivity(), view);
                     popupMenu.inflate(R.menu.message_menu);
@@ -302,11 +303,9 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
     }
 
     private void persistImage() {
-//        LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        View view = layoutInflater.inflate(R.layout.test, null);
-        messageView.setDrawingCacheEnabled(true);
-        messageView.buildDrawingCache();
-        Bitmap bitmap = messageView.getDrawingCache();
+        layout.setDrawingCacheEnabled(true);
+        layout.buildDrawingCache();
+        Bitmap bitmap = layout.getDrawingCache();
 
         String pathofBmp = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, getString(R.string.app_name), null);
         Uri bmpUri = Uri.parse(pathofBmp);
@@ -372,10 +371,5 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
             progressDialog.dismiss();
     }
 
-
-    @Override
-    public void setSharingMessageView(View sharingMessageView) {
-        this.messageView = sharingMessageView;
-    }
 
 }

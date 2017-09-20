@@ -23,13 +23,11 @@ public class SentOrReceivedMessagesRecyclerAdapter extends RecyclerView.Adapter<
     private static final int MESSAGE = 0;
     private View.OnClickListener onClickListener;
     private String messageType;
-    private ISetShareingMessageView iSetShareingMessageView;
 
-    public SentOrReceivedMessagesRecyclerAdapter(List<Object> objectList, View.OnClickListener onClickListener, String messageType, ISetShareingMessageView iSetShareingMessageView) {
+    public SentOrReceivedMessagesRecyclerAdapter(List<Object> objectList, View.OnClickListener onClickListener, String messageType) {
         this.objectList = objectList;
         this.onClickListener = onClickListener;
         this.messageType = messageType;
-        this.iSetShareingMessageView = iSetShareingMessageView;
     }
 
     @Override
@@ -37,7 +35,7 @@ public class SentOrReceivedMessagesRecyclerAdapter extends RecyclerView.Adapter<
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
             case MESSAGE:
-                return new MessagesViewHolder(inflater.inflate(R.layout.message_item, parent, false), onClickListener, messageType, iSetShareingMessageView);
+                return new MessagesViewHolder(inflater.inflate(R.layout.message_item, parent, false), onClickListener, messageType);
         }
         return null;
     }

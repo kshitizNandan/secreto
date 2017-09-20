@@ -40,13 +40,12 @@ public class MessagesViewHolder extends BaseViewHolder {
     private MessageAndUserResponse response;
 
 
-    public MessagesViewHolder(View itemView, View.OnClickListener onClickListener, String messageType, ISetShareingMessageView iSetShareingMessageView) {
+    public MessagesViewHolder(View itemView, View.OnClickListener onClickListener, String messageType) {
         super(itemView);
         this.context = itemView.getContext();
         ButterKnife.bind(this, itemView);
         ivMenu.setOnClickListener(onClickListener);
         this.messageType = messageType;
-        iSetShareingMessageView.setSharingMessageView(itemView);
         if (messageType.equalsIgnoreCase(Constants.SENT)) {
             tv_clue.setOnClickListener(onClickListener);
         }
