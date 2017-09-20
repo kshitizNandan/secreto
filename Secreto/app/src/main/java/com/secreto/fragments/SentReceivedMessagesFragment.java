@@ -1,9 +1,7 @@
 package com.secreto.fragments;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,7 +12,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.menu.MenuPopupHelper;
@@ -27,8 +24,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -42,30 +37,23 @@ import com.secreto.activities.ProfileActivity;
 import com.secreto.adapters.SentOrReceivedMessagesRecyclerAdapter;
 import com.secreto.common.Common;
 import com.secreto.common.Constants;
-import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
+import com.secreto.interfaces.ISetShareingMessageView;
 import com.secreto.model.MessageAndUserResponse;
 import com.secreto.model.User;
 import com.secreto.responsemodel.BaseResponse;
 import com.secreto.responsemodel.SendOrReceivedMessageResponse;
-import com.secreto.utils.LoginLogoutHandler;
-import com.secreto.widgets.CircleTransform;
-import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.content.Context.SYSTEM_HEALTH_SERVICE;
-import static com.secreto.activities.HomeActivity.RC_SEND_MESSAGE;
 
-
-public class SentReceivedMessagesFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener, PopupMenu.OnMenuItemClickListener {
+public class SentReceivedMessagesFragment extends Fragment implements View.OnClickListener, PopupMenu.OnMenuItemClickListener, ISetShareingMessageView {
     public static final String TAG = SentReceivedMessagesFragment.class.getSimpleName();
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private static final int PERMISSION_ALL = 500;
@@ -85,8 +73,6 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
     SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.rl_progressBar)
     RelativeLayout rl_progressBar;
-    @BindView(R.id.llTest)
-    LinearLayout llTest;
     private int offset;
     private boolean isLoading;
     private String messageType;
@@ -95,6 +81,7 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
     private ArrayList<Object> objectArrayList = new ArrayList<>();
     private AlertDialog deleteDialog;
     private ProgressDialog progressDialog;
+    private View messageView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -139,7 +126,7 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
     private void setRecyclerAdapter() {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-        nAdapter = new SentOrReceivedMessagesRecyclerAdapter(objectArrayList, this, this, messageType);
+        nAdapter = new SentOrReceivedMessagesRecyclerAdapter(objectArrayList, this, messageType, this);
         recyclerView.setAdapter(nAdapter);
 
         // Load More
@@ -317,9 +304,9 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
     private void persistImage() {
 //        LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //        View view = layoutInflater.inflate(R.layout.test, null);
-        llTest.setDrawingCacheEnabled(true);
-        llTest.buildDrawingCache();
-        Bitmap bitmap = llTest.getDrawingCache();
+        messageView.setDrawingCacheEnabled(true);
+        messageView.buildDrawingCache();
+        Bitmap bitmap = messageView.getDrawingCache();
 
         String pathofBmp = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, getString(R.string.app_name), null);
         Uri bmpUri = Uri.parse(pathofBmp);
@@ -385,8 +372,10 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
             progressDialog.dismiss();
     }
 
+
     @Override
-    public boolean onLongClick(View view) {
-        return false;
+    public void setSharingMessageView(View sharingMessageView) {
+        this.messageView = sharingMessageView;
     }
+
 }

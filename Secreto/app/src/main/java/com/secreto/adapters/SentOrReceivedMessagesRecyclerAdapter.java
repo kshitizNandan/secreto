@@ -6,12 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.secreto.R;
-import com.secreto.model.Message;
+import com.secreto.interfaces.ISetShareingMessageView;
 import com.secreto.model.MessageAndUserResponse;
 import com.secreto.viewHolders.BaseViewHolder;
 import com.secreto.viewHolders.MessagesViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,14 +22,14 @@ public class SentOrReceivedMessagesRecyclerAdapter extends RecyclerView.Adapter<
     private final List<Object> objectList;
     private static final int MESSAGE = 0;
     private View.OnClickListener onClickListener;
-    private View.OnLongClickListener onLongClickListener;
     private String messageType;
+    private ISetShareingMessageView iSetShareingMessageView;
 
-    public SentOrReceivedMessagesRecyclerAdapter(List<Object> objectList, View.OnClickListener onClickListener, View.OnLongClickListener onLongClickListener, String messageType) {
+    public SentOrReceivedMessagesRecyclerAdapter(List<Object> objectList, View.OnClickListener onClickListener, String messageType, ISetShareingMessageView iSetShareingMessageView) {
         this.objectList = objectList;
         this.onClickListener = onClickListener;
-        this.onLongClickListener = onLongClickListener;
         this.messageType = messageType;
+        this.iSetShareingMessageView = iSetShareingMessageView;
     }
 
     @Override
@@ -38,7 +37,7 @@ public class SentOrReceivedMessagesRecyclerAdapter extends RecyclerView.Adapter<
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
             case MESSAGE:
-                return new MessagesViewHolder(inflater.inflate(R.layout.message_item, parent, false), onClickListener, onLongClickListener, messageType);
+                return new MessagesViewHolder(inflater.inflate(R.layout.message_item, parent, false), onClickListener, messageType, iSetShareingMessageView);
         }
         return null;
     }

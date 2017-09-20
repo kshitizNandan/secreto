@@ -28,7 +28,6 @@
                     android:layout_height="match_parent"
                     android:layout_above="@+id/rl_progressBar" />
 
-                <include layout="@layout/test"/>
                 <com.secreto.widgets.CustomFontTextView
                     android:id="@+id/tvEmptyText"
                     style="@style/EmptyTextStyle"

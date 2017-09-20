@@ -8,8 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.secreto.R;
-import com.secreto.common.Common;
 import com.secreto.common.Constants;
+import com.secreto.interfaces.ISetShareingMessageView;
 import com.secreto.model.Message;
 import com.secreto.model.MessageAndUserResponse;
 import com.secreto.utils.DateFormatter;
@@ -40,13 +40,13 @@ public class MessagesViewHolder extends BaseViewHolder {
     private MessageAndUserResponse response;
 
 
-    public MessagesViewHolder(View itemView, View.OnClickListener onClickListener, View.OnLongClickListener onLongClickListener, String messageType) {
+    public MessagesViewHolder(View itemView, View.OnClickListener onClickListener, String messageType, ISetShareingMessageView iSetShareingMessageView) {
         super(itemView);
         this.context = itemView.getContext();
         ButterKnife.bind(this, itemView);
         ivMenu.setOnClickListener(onClickListener);
         this.messageType = messageType;
-        cardMessageItem.setOnLongClickListener(onLongClickListener);
+        iSetShareingMessageView.setSharingMessageView(itemView);
         if (messageType.equalsIgnoreCase(Constants.SENT)) {
             tv_clue.setOnClickListener(onClickListener);
         }
