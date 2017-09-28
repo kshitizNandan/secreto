@@ -250,7 +250,7 @@ public class SentReceivedMessagesFragment extends Fragment implements View.OnCli
                         Log.e(TAG, "Exception");
                     }
                     popupMenu.show();
-                    if (messageType.equalsIgnoreCase(Constants.SENT)) {
+                    if (messageType.equalsIgnoreCase(Constants.SENT) || response.getMessage().getCanReply().equalsIgnoreCase("NO")) {
                         popupMenu.getMenu().findItem(R.id.actionReply).setVisible(false);
                     } else {
                         popupMenu.getMenu().findItem(R.id.actionReply).setVisible(true);

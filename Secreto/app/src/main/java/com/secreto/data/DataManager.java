@@ -100,9 +100,8 @@ public class DataManager {
         makeMultipartRequest(URL_UPLOAD_IMAGE, params, MediaResponse.class, resultListenerNG, ApiConstants.FILE, file);
     }
 
-    public void sendMessage(String toUserId, String message, String messageClue, String canReply, ResultListenerNG<BaseResponse> resultListenerNG) {
+    public void sendMessage(String userId,String toUserId, String message, String messageClue, String canReply, ResultListenerNG<BaseResponse> resultListenerNG) {
         HashMap<Object, Object> params = new HashMap<>();
-        String userId = SharedPreferenceManager.getUserObject().getUserId();
         params.put(ApiConstants.USER_ID, userId);
         params.put(ApiConstants.MESSAGE, message);
         params.put(ApiConstants.MESSAGE_CLUE, messageClue);

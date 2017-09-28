@@ -16,6 +16,7 @@ import com.secreto.R;
 import com.secreto.base_activities.BaseActivityWithActionBar;
 import com.secreto.common.Common;
 import com.secreto.common.Constants;
+import com.secreto.common.SharedPreferenceManager;
 import com.secreto.data.DataManager;
 import com.secreto.data.volley.ResultListenerNG;
 import com.secreto.fragments.SentReceivedMessagesFragment;
@@ -42,7 +43,7 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
     EditText etClue;
     @BindView(R.id.tvAppName)
     TextView tvAppName;
-    private String userId;
+    private String toUserId;
     private Activity mActivity;
     private String navFrom;
     private User user;
@@ -62,7 +63,7 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
         navFrom = getIntent().getStringExtra(Constants.NAVIGATION_FROM);
         user = (User) getIntent().getSerializableExtra(Constants.USER);
         if (user != null) {
-            this.userId = user.getUserId();
+            this.toUserId = user.getUserId();
             tvUserName.setText(!TextUtils.isEmpty(user.getName()) ? user.getName() : "");
             iv_profileImg.setImageUrl(user.getProfile_pic(), ImageCacheManager.getInstance().getImageLoader());
         }
@@ -82,7 +83,6 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
         intent.putExtra(Constants.NAVIGATION_FROM, navFrom);
         activity.startActivity(intent);
     }
-
 
 
     private void initView() {
@@ -119,7 +119,8 @@ public class CreateMessageActivity extends BaseActivityWithActionBar {
             if (Common.isOnline(this)) {
                 progressDialog.show();
                 String messageClue = etClue.getText().toString();
-                DataManager.getInstance().sendMessage(userId, message, messageClue, canReply, new ResultListenerNG<BaseResponse>() {
+                String userId = SharedPreferenceManager.getUserObject().getUserId();
+                DataManager.getInstance().sendMessage(userId,toUserId, message, messageClue, canReply, new ResultListenerNG<BaseResponse>() {
                     @Override
                     public void onSuccess(BaseResponse response) {
                         progressDialog.hide();
